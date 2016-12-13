@@ -22,7 +22,7 @@ module.exports = (event, context, callback) => {
     url: "https://api.github.com/user/" + data.id + "?access_token=" + data.token,
     method: "get",
     headers: {
-      'User-Agent': "GitMax"
+      'User-Agent': "GitMax"// Todo 用户1小时超过5000时会导致超过访问limit，而无法获得新用户
     }
   };
   
