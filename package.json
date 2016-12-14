@@ -1,0 +1,16 @@
+{
+  "name": "gitmax",
+  "version": "0.1.0",
+  "description": "A social app for github users",
+  "main": " ",
+  "dependencies": {
+    "aws-sdk": "^2.7.13",
+    "serverless": "^1.3.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chen Li",
+  "license": "ISC"
+}

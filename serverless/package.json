@@ -1,0 +1,12 @@
+{
+  "name": "gitmax",
+  "version": "0.1.0",
+  "description": "A social app for github users",
+  "main": " ",
+  "dependencies": {
+    "request": "^2.79.0"
+  },
+  "devDependencies": {},
+  "author": "Chen Li",
+  "license": "ISC"
+}
