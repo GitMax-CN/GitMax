@@ -14,110 +14,115 @@ let AWS = require("aws-sdk");
 let docClient = new AWS.DynamoDB.DocumentClient();
 let request = require('request');
 
-module.exports = (event, context, callback) => {
-  let data = JSON.parse(event.body);
-  // console.log("data", JSON.stringify(data));
-  if (!data.id || !data.token) callback(new Error("Data format error: id and token are required."));
+const getUserInfo = (token, email, id) => {
+  // console.log("get user info start - token", token);
+  return new Promise((resolve, reject) => {
+    let options = {
+      url: "https://api.github.com/user?access_token=" + token,
+      method: "get",
+      headers: {
+        'User-Agent': "GitMax"
+      }
+    };
+
+    request(options, (error, response, body) => {
+      if (error) {
+        return reject(error);
+      }
+      let getData = JSON.parse(body);
+      // console.log("response", response);
+      // console.log("data", data);
+      // console.log("getData", getData);
+      let user = Object.assign({}, getData,
+          {"token": token, "email": email, "id": id});
   
-  let options = {
-    url: "https://api.github.com/user/" + data.id + "?access_token=" + data.token,
-    method: "get",
-    headers: {
-      'User-Agent': getAgent()// Todo 用户1小时超过5000时会导致超过访问limit，而无法获得新用户
-    }
-  };
-  
-  request(options, function (error, response, body) {
-    if (error) {
-      callback(new Error("Can't get user's data from Github:", JSON.stringify(error)));
-      return;
-    }
-    
-    let getData = JSON.parse(body);
-    // console.log("response", response);
-    // console.log("data", data);
-    // console.log("getData", getData);
-    let user = Object.assign({}, getData,
-        {"token": data.token, "email": data.email, "id": data.id});
-    
-    Object.keys(user).forEach(key => {// Dela with empty attributes
-      if (user[key] === null ||
-          (typeof user[key] === "string" && user[key].length === 0)) user[key] = "N/A";
-    });
-    // console.log("user", user);
-    
-    let promises = [];
-    
-    let addUserToDB = new Promise((resolve, reject) => {
-      let params = {
-        TableName: "test",
-        Item: user,
-      };
-      docClient.put(params, function (err, data) {
-        if (err) {
-          console.error("Unable to add item. Error JSON:", JSON.stringify(err));
-          return reject(err);
-        } else {
-          console.log("User added successfully");
-          resolve();
-        }
+      Object.keys(user).forEach(key => {// Dela with empty attributes
+        if (user[key] === null ||
+            (typeof user[key] === "string" && user[key].length === 0)) user[key] = "N/A";
       });
+      
+      resolve(user);
     });
-    
-    // let addUserNameToCache = new Promise((resolve, reject) => {
-    //   let params = {
-    //     TableName: "test",
-    //     Item: user,
-    //   };
-    //   docClient.put(params, function (err, data) {
-    //     if (err) {
-    //       console.error("Unable to add item. Error JSON:", JSON.stringify(err));
-    //       return reject(err);
-    //     } else {
-    //       console.log("User added successfully");
-    //       resolve();
-    //     }
-    //   });
-    //   return reject(new Error("there is an error adding user name to cache!"));
-    // });
-    
-    promises.push(addUserToDB);
-    // promises.push(addUserNameToCache);
-    
-    Promise.all(promises)
-        .then(() => {
-          const response = {
-            statusCode: 200,
-            headers: {"Access-Control-Allow-Origin": "*"},
-            body: JSON.stringify({}),
-          };
-          callback(null, response);
-        })
-        .catch((err) => {
-          console.log("err", err);
-          callback(new Error("Error found:", err));
-        });
-    
-    // docClient.put(params, function (err, data) {
-    //   if (err) {
-    //     console.error("Unable to add item. Error JSON:", JSON.stringify(err));
-    //     callback(new Error(JSON.stringify(err)));
-    //   } else {
-    //     // console.log("Added item:", JSON.stringify(data));
-    //     const response = {
-    //       statusCode: 200,
-    //       headers: {"Access-Control-Allow-Origin": "*"},
-    //       body: JSON.stringify(data),
-    //     };
-    //     callback(null, response);
-    //   }
-    // });
   });
-  
-  function getAgent() {
-    let accounts = ["StephenFinn2", "ChenLi0830", "GitMax"],
-        index = Math.floor(Math.random() * accounts.length);
-    return accounts[index];
+};
+
+const checkIdExist = (userId) => {
+  return new Promise((resolve, reject) => {
+    let params = {
+      TableName: "test",
+      Key: {
+        id: userId
+      },
+      ProjectionExpression: "login"
+    };
+    docClient.get(params, (err, data) => {
+      if (err) {
+        console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
+        return reject(err);
+      } else {
+        console.log("GetItem succeeded:", JSON.stringify(data, null, 2));
+        resolve(data);
+      }
+    });
+  });
+};
+
+const storeToDB = (fullUser) => {
+  // console.log("fullUser is ready to be stored", fullUser);
+  return new Promise((resolve, reject) => {
+    let params = {
+      TableName: "test",
+      Item: fullUser,
+    };
+    docClient.put(params, (err, data) => {
+      if (err) {
+        console.error("Unable to add item. Error JSON:", JSON.stringify(err));
+        return reject(err);
+      } else {
+        console.log("User added successfully");
+        resolve(fullUser);
+      }
+    });
+  })
+};
+
+const main = (event, context, callback) => {
+  let data = JSON.parse(event.body);
+  console.log("input data", JSON.stringify(data));
+  if (!data.id || !data.token) {
+    callback(new Error("Data format error: id and token are required."));
+    return;
   }
   
+  const response = {
+    statusCode: 200,
+    headers: {"Access-Control-Allow-Origin": "*"},
+  };
+  
+  checkIdExist(data.id)
+      .then((user) => {
+        let isUserExist = !isEmpty(user);
+        if (isUserExist) {
+          response.body = JSON.stringify({message: "Not a new user, don't need to be stored"});
+          callback(null, response);
+        }
+        else {
+          return getUserInfo(data.token, data.email, data.id)
+              .then(storeToDB)
+              .then((storedUser) => {
+                response.body = JSON.stringify({storedUser});
+                callback(null, response);
+              });
+        }
+      })
+      .catch((err) => {
+        console.log("err", err);
+        callback(new Error("Error found:", err));
+      })
 };
+
+function isEmpty(obj) {
+  return Object.keys(obj).length === 0;
+}
+
+module.exports = main;
