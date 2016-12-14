@@ -5,10 +5,11 @@
 'use strict';
 
 let AWS = require("aws-sdk");
-AWS.config.update({
-  region: "us-west-2",
-  endpoint: "http://localhost:8000"
-});
+
+// AWS.config.update({
+//   region: "us-west-2",
+//   endpoint: "http://localhost:8000"
+// });
 
 let docClient = new AWS.DynamoDB.DocumentClient();
 let request = require('request');
