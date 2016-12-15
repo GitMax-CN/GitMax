@@ -49,7 +49,7 @@ limitations under the License.
     <script src="https://www.gstatic.com/firebasejs/3.6.3/firebase.js"></script>
     <script>
       // Initialize Firebase
-      var config = {
+      let config = {
         apiKey: "AIzaSyAab1zs9uBoYdQ_PYJHKe_b0_I3837FoLw",
         authDomain: "gitmax-5fcea.firebaseapp.com",
         databaseURL: "https://gitmax-5fcea.firebaseio.com",
@@ -80,7 +80,7 @@ limitations under the License.
       function toggleSignIn() {
         if (!firebase.auth().currentUser) {
           // [START createprovider]
-          var provider = new firebase.auth.GithubAuthProvider();
+          let provider = new firebase.auth.GithubAuthProvider();
           // [END createprovider]
           // [START addscopes]
           provider.addScope('public_repo');
@@ -114,31 +114,29 @@ limitations under the License.
           console.log("result", result);
           if (result.credential) {
             // This gives you a GitHub Access Token. You can use it to access the GitHub API.
-            var token = result.credential.accessToken;
+            let token = result.credential.accessToken;
             // [START_EXCLUDE]
+
             document.getElementById('quickstart-oauthtoken').textContent = token;
 
             // The signed-in user info.
-            var user = result.user;
+            let user = result.user;
 
-            var displayName = user.displayName;
-            var email = user.email;
-            var emailVerified = user.emailVerified;
-            var photoURL = user.photoURL;
-            var isAnonymous = user.isAnonymous;
-            var uid = user.uid;
-            var providerData = user.providerData;
+            let displayName = user.displayName;
+            let email = user.email;
+            let photoURL = user.photoURL;
+            let uid = Array.isArray(user.providerData) ? user.providerData[0].uid : user.providerData.uid;
 
             $.ajax({
-              method: "POST",
-              url: "https://i41ozwzq3k.execute-api.us-west-2.amazonaws.com/dev/addUser",
-              data: JSON.stringify({displayName, email, photoURL, id: uid, token}),// corresponds to the lambda event.body
+                method: "POST",
+                url: "https://i41ozwzq3k.execute-api.us-west-2.amazonaws.com/dev/addUser",
+                data: JSON.stringify({displayName, email, photoURL, id: uid, token}),// corresponds to the lambda event.body
             })
                 .done((result) => {
-                  console.log("post call result", result);
+                    console.log("post call result", result);
                 })
                 .fail((err) => {
-                  console.error("Found an error: ", err);
+                    console.error("Found an error: ", err);
                 });
 
           } else {
@@ -147,12 +145,12 @@ limitations under the License.
           }
         }).catch(function (error) {
           // Handle Errors here.
-          var errorCode = error.code;
-          var errorMessage = error.message;
+          let errorCode = error.code;
+          let errorMessage = error.message;
           // The email of the user's account used.
-          var email = error.email;
+          let email = error.email;
           // The firebase.auth.AuthCredential type that was used.
-          var credential = error.credential;
+          let credential = error.credential;
           // [START_EXCLUDE]
           if (errorCode === 'auth/account-exists-with-different-credential') {
             alert('You have already signed up with a different auth provider for that email.');
@@ -171,18 +169,19 @@ limitations under the License.
           if (user) {
             // User is signed in.
             console.log("user", user);
-            var displayName = user.displayName;
-            var email = user.email;
-            var emailVerified = user.emailVerified;
-            var photoURL = user.photoURL;
-            var isAnonymous = user.isAnonymous;
-            var uid = user.uid;
-            var providerData = user.providerData;
+            let displayName = user.displayName;
+            let email = user.email;
+            let emailVerified = user.emailVerified;
+            let photoURL = user.photoURL;
+            let isAnonymous = user.isAnonymous;
+            let uid = user.uid;
+            let providerData = user.providerData;
             // [START_EXCLUDE]
             document.getElementById('quickstart-sign-in-status').textContent = 'Signed in';
             document.getElementById('quickstart-sign-in').textContent = 'Sign out';
             document.getElementById('quickstart-account-details').textContent = JSON.stringify(user, null, '  ');
 
+/*
             $.ajax({
               method: "GET",
               url: "https://rrkpwmptba.execute-api.us-east-1.amazonaws.com/dev/hello"
@@ -194,6 +193,7 @@ limitations under the License.
                 .fail((err) => {
                   console.error("Found an error: ", err);
                 });
+*/
 
             // [END_EXCLUDE]
           } else {
