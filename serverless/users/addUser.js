@@ -68,10 +68,10 @@ const checkIdExist = (userId) => {
 };
 
 const updateIdsInDB = (fullUser) => {
-  console.log("fullUser.id", fullUser.id);
+  // console.log("fullUser.id", fullUser.id);
   return new Promise((resolve, reject) => {
     let params = {
-      TableName: "Users",
+      TableName: "UserIds",
       Key: {
         "id": "allIds"
       },
@@ -129,6 +129,7 @@ const main = (event, context, callback) => {
       .then((user) => {
         let isUserExist = !isEmpty(user);
         if (isUserExist) {
+          console.log("Not a new user, don't need to be stored");
           response.body = JSON.stringify({message: "Not a new user, don't need to be stored"});
           callback(null, response);
         }
