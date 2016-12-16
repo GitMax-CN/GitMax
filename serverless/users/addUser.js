@@ -57,10 +57,10 @@ const checkIdExist = (userId) => {
     };
     docClient.get(params, (err, data) => {
       if (err) {
-        console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
+        console.error("Unable to read item. Error JSON:", JSON.stringify(err));
         return reject(err);
       } else {
-        console.log("GetItem succeeded:", JSON.stringify(data, null, 2));
+        console.log("GetItem succeeded:", JSON.stringify(data));
         resolve(data);
       }
     });
@@ -84,6 +84,7 @@ const updateIdsInDB = (fullUser) => {
     
     docClient.update(params, (err, data) => {
       if (err) {
+        console.error("Unable to update userIds. Error JSON:", JSON.stringify(err));
         return reject(err);
       }
       console.log("Updated userIds successfully:", /*data*/);
