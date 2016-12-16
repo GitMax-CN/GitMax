@@ -6,10 +6,10 @@
 
 let AWS = require("aws-sdk");
 
-// AWS.config.update({
-//   region: "us-west-2",
-//   endpoint: "http://localhost:8000"
-// });
+/*AWS.config.update({
+  region: "us-west-2",
+  endpoint: "http://localhost:8000"
+});*/
 
 let docClient = new AWS.DynamoDB.DocumentClient();
 let request = require('request');
@@ -87,7 +87,7 @@ const updateIdsInDB = (fullUser) => {
         console.error("Unable to update userIds. Error JSON:", JSON.stringify(err));
         return reject(err);
       }
-      console.log("Updated userIds successfully:", /*data*/);
+      console.log("Updated userIds successfully:");
       resolve(fullUser);
     });
   });
