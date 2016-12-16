@@ -14,8 +14,8 @@ let AWS = require("aws-sdk");
 let docClient = new AWS.DynamoDB.DocumentClient();
 let request = require('request');
 
-const getUserInfo = (token, email, id) => {
-  // console.log("get user info start - token", token);
+const getUserInfo = (token, email, id, followNumber) => {
+  // console.log("getUserInfo start - token", token);
   return new Promise((resolve, reject) => {
     let options = {
       url: "https://api.github.com/user?access_token=" + token,
@@ -34,13 +34,13 @@ const getUserInfo = (token, email, id) => {
       // console.log("data", data);
       // console.log("getData", getData);
       let user = Object.assign({}, getData,
-          {"token": token, "email": email, "id": id});
+          {"token": token, "email": email, "id": id, "followNumber": followNumber});
   
       Object.keys(user).forEach(key => {// Dela with empty attributes
         if (user[key] === null ||
             (typeof user[key] === "string" && user[key].length === 0)) user[key] = "N/A";
       });
-      
+      // console.log("typeof user.follower", typeof user.follower);
       resolve(user);
     });
   });
@@ -49,7 +49,7 @@ const getUserInfo = (token, email, id) => {
 const checkIdExist = (userId) => {
   return new Promise((resolve, reject) => {
     let params = {
-      TableName: "test",
+      TableName: "Users",
       Key: {
         id: userId
       },
@@ -67,11 +67,36 @@ const checkIdExist = (userId) => {
   });
 };
 
-const storeToDB = (fullUser) => {
+const updateIdsInDB = (fullUser) => {
+  console.log("fullUser.id", fullUser.id);
+  return new Promise((resolve, reject) => {
+    let params = {
+      TableName: "Users",
+      Key: {
+        "id": "allIds"
+      },
+      UpdateExpression: "ADD usersIds :newId",
+      ExpressionAttributeValues: {
+        ":newId": docClient.createSet([fullUser.id])
+      },
+      ReturnValues: "UPDATED_NEW"
+    };
+    
+    docClient.update(params, (err, data) => {
+      if (err) {
+        return reject(err);
+      }
+      console.log("Updated userIds successfully:", /*data*/);
+      resolve(fullUser);
+    });
+  });
+};
+
+const storeItemToDB = (fullUser) => {
   // console.log("fullUser is ready to be stored", fullUser);
   return new Promise((resolve, reject) => {
     let params = {
-      TableName: "test",
+      TableName: "Users",
       Item: fullUser,
     };
     docClient.put(params, (err, data) => {
@@ -107,8 +132,9 @@ const main = (event, context, callback) => {
           callback(null, response);
         }
         else {
-          return getUserInfo(data.token, data.email, data.id)
-              .then(storeToDB)
+          return getUserInfo(data.token, data.email, data.id, data.followNumber ? data.followNumber : 99)
+              .then(updateIdsInDB)
+              .then(storeItemToDB)
               .then((storedUser) => {
                 response.body = JSON.stringify({storedUser});
                 callback(null, response);
