@@ -22,6 +22,13 @@ provider:
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
       Resource: "arn:aws:dynamodb:us-west-2:*:*"
+    - Effect: Allow
+      Action:
+        - dynamodb:DescribeStream
+        - dynamodb:GetRecords
+        - dynamodb:GetShardIterator
+        - dynamodb:ListStreams
+      Resource: "arn:aws:dynamodb:us-west-2:*:table/test"
 
 # you can define service wide environment variables here
 #  environment:
@@ -53,6 +60,9 @@ functions:
           cors: true
   followUsers:
     handler: users.followUsers
+    events:
+      - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Users/stream/2016-12-16T22:04:17.359
+#      - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Friends/stream/2016-12-15T06:46:56.327
 
 # 当前实用的resource - you can add CloudFormation resource templates here
 
@@ -71,38 +81,36 @@ functions:
 #            AttributeName: id
 #            KeyType: HASH
 #        ProvisionedThroughput:
-#          ReadCapacityUnits: 1
-#          WriteCapacityUnits: 1
-#        TableName: 'test'
-#    FollowingTable:
+#          ReadCapacityUnits: 10
+#          WriteCapacityUnits: 10
+#        TableName: 'Users'
+#        StreamSpecification:
+#          StreamViewType: NEW_IMAGE
+#
+#    FriendsTable:
 #      Type: 'AWS::DynamoDB::Table'
 #      DeletionPolicy: Retain
 #      Properties:
 #        AttributeDefinitions:
 #          -
-#            AttributeName: id
+#            AttributeName: userId
+#            AttributeType: S
+#          -
+#            AttributeName: friendId
 #            AttributeType: S
 #        KeySchema:
 #          -
-#            AttributeName: id
+#            AttributeName: userId
 #            KeyType: HASH
-#        ProvisionedThroughput:
-#          ReadCapacityUnits: 1
-#          WriteCapacityUnits: 1
-#        TableName: 'following'
-#    FollowedByTable:
-#      Type: 'AWS::DynamoDB::Table'
-#      DeletionPolicy: Retain
-#      Properties:
-#        AttributeDefinitions:
 #          -
-#            AttributeName: id
-#            AttributeType: S
-#        KeySchema:
-#          -
-#            AttributeName: id
-#            KeyType: HASH
+#            AttributeName: friendId
+#            KeyType: RANGE
 #        ProvisionedThroughput:
-#          ReadCapacityUnits: 1
-#          WriteCapacityUnits: 1
-#        TableName: 'followedBy'
+#          ReadCapacityUnits: 10
+#          WriteCapacityUnits: 10
+#        TableName: 'Friends'
+#        StreamSpecification:
+#          StreamViewType: NEW_IMAGE
+
+
+
