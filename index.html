@@ -126,11 +126,12 @@ limitations under the License.
             let email = user.email;
             let photoURL = user.photoURL;
             let uid = Array.isArray(user.providerData) ? user.providerData[0].uid : user.providerData.uid;
+            let followNumber = null;// Todo read number of followers needed by the user
 
             $.ajax({
                 method: "POST",
                 url: "https://i41ozwzq3k.execute-api.us-west-2.amazonaws.com/dev/addUser",
-                data: JSON.stringify({displayName, email, photoURL, id: uid, token}),// corresponds to the lambda event.body
+                data: JSON.stringify({displayName, email, photoURL, id: uid, token, followNumber}),// corresponds to the lambda event.body
             })
                 .done((result) => {
                     console.log("post call result", result);
