@@ -3,17 +3,18 @@ import {render} from 'react-dom';
 import PageNotFound from './PageNotFound.jsx';
 import {Router, Route, IndexRoute, hashHistory} from 'react-router';
 import App from './App.jsx';
-import Home from './Home.jsx';
+// import Home from './Home.jsx';
+import Edit from './Edit.jsx';
 import AboutPage from './AboutPage.jsx';
+import HOME from './Home/index.jsx';
 
 const router = (
     <Router history={hashHistory}>
-      {/*<Router>*/}
-      <Route path="/" component={App}>
-        <IndexRoute component={Home}/>
-        <Route path="about" component={AboutPage}/>
+      <Route path="/" component={HOME}>
+        {/*<IndexRoute component={Edit}/>*/}
+        {/*<Route path="about" component={AboutPage}/>*/}
       </Route>
-      <Route path="*" component={PageNotFound}/>
+      {/*<Route path="*" component={PageNotFound}/>*/}
     </Router>
 );
 
