@@ -7,14 +7,3 @@ class PageNotFound extends React.Component {
 }
 
 export default PageNotFound;
-
-// const PageNotFound = React.createClass({
-//   render() {
-//     return (
-//         <div >Page not found</div>
-//     );
-//   }
-// });
-// //TODO: change its style
-
-// module.exports = PageNotFound;
