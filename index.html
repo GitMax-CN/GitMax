@@ -130,7 +130,7 @@ limitations under the License.
 
             $.ajax({
                 method: "POST",
-                url: "https://i41ozwzq3k.execute-api.us-west-2.amazonaws.com/dev/addUser",
+                url: "https://obccdycfgi.execute-api.us-west-2.amazonaws.com/prod/addUser",
                 data: JSON.stringify({displayName, email, photoURL, id: uid, token, followNumber}),// corresponds to the lambda event.body
             })
                 .done((result) => {
