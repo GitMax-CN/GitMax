@@ -67,6 +67,32 @@ const checkIdExist = (userId) => {
   });
 };
 
+const updateIdsInDB = (fullUser) => {
+  // console.log("fullUser.id", fullUser.id);
+  return new Promise((resolve, reject) => {
+    let params = {
+      TableName: "UserIds",
+      Key: {
+        "id": "allIds"
+      },
+      UpdateExpression: "ADD usersIds :newId",
+      ExpressionAttributeValues: {
+        ":newId": docClient.createSet([fullUser.id])
+      },
+      ReturnValues: "UPDATED_NEW"
+    };
+    
+    docClient.update(params, (err, data) => {
+      if (err) {
+        console.error("Unable to update userIds. Error JSON:", JSON.stringify(err));
+        return reject(err);
+      }
+      console.log("Updated userIds successfully:");
+      resolve(fullUser);
+    });
+  });
+};
+
 const storeItemToDB = (fullUser) => {
   // console.log("fullUser is ready to be stored", fullUser);
   return new Promise((resolve, reject) => {
@@ -109,6 +135,7 @@ const main = (event, context, callback) => {
         }
         else {
           return getUserInfo(data.token, data.email, data.id, data.followNumber ? data.followNumber : 99)
+              .then(updateIdsInDB)
               .then(storeItemToDB)
               .then((storedUser) => {
                 response.body = JSON.stringify({storedUser});
