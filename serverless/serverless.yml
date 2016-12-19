@@ -112,3 +112,9 @@ functions:
 
 
 
+plugins:
+  - serverless-client-s3
+
+custom:
+  client:
+    bucketName: www.gitmax.cn

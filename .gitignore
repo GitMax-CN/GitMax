@@ -39,3 +39,5 @@ jspm_packages
 serverless/.serverless
 followUsersEvent.json
 addUserEvent.json
+.serverless
+client/dist
