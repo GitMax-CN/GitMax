@@ -7,7 +7,8 @@ service: GitMax
 provider:
   name: aws
   runtime: nodejs4.3
-  stage: dev
+  stage: prod
+#  stage: dev
   region: us-west-2
 
 # you can add statements to the Lambda function's IAM Role here
@@ -44,15 +45,10 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: hello
-          method: get
-          cors: true
   addUser:
     handler: users.addUser
+    memorySize: 128 # optional, default is 1024
+    timeout: 10 # optional, default is 6
     events:
       - http:
           path: addUser
@@ -60,6 +56,8 @@ functions:
           cors: true
   followUsers:
     handler: users.followUsers
+    memorySize: 512 # optional, default is 1024
+    timeout: 60 # optional, default is 6
     events:
       - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Users/stream/2016-12-16T22:04:17.359
 #      - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Friends/stream/2016-12-15T06:46:56.327
