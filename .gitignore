@@ -41,3 +41,4 @@ followUsersEvent.json
 addUserEvent.json
 .serverless
 client/dist
+*.psd
