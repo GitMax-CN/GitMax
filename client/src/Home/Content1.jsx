@@ -31,7 +31,7 @@ class Content extends React.Component {
             animation={{ x: '-=30', opacity: 0, type: 'from' }}
             className={`${this.props.className}-img`}
           >
-            <span style={{ width: '75%', right: '5%' }}>
+            <span style={{width: '75%', right: '5%'}}>
               <img width="100%" src="images/plumber.jpg" />
             </span>
           </TweenOne>

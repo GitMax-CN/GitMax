@@ -29,12 +29,12 @@ class Content extends React.Component {
             key="title"
             style={{ width: '450px' }}
           >
-            <img width="100%" src="https://s3-us-west-2.amazonaws.com/gitmax.cn/images/gitmax_logo_mono.png" />
+            <img width="100%" src="images/gitmax_logo_mono.png" />
           </span>
           <p
               key="content"
           >
-            一个帮你扩展Github影响力的工具
+            为你扩展Github影响力
           </p>
   
           <Button type="ghost" key="button">
