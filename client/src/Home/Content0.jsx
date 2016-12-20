@@ -1,11 +1,13 @@
-import React, { PropTypes } from 'react';
+import React, {PropTypes} from 'react';
 import Button from 'antd/lib/button';
 import QueueAnim from 'rc-queue-anim';
 import TweenOne from 'rc-tween-one';
 import Icon from 'antd/lib/icon';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
+import {Link} from 'rc-scroll-anim';
 
 class Content extends React.Component {
+  
   render() {
     return (
       <OverPack
@@ -15,6 +17,7 @@ class Content extends React.Component {
         style={{ backgroundColor: '#585858' }}
         hideProps={{ icon: { reverse: true } }}
       >
+  
         <QueueAnim
           type={['bottom', 'top']}
           delay={200}
@@ -24,24 +27,31 @@ class Content extends React.Component {
           <span
             className="title"
             key="title"
+            style={{ width: '450px' }}
           >
-            <img width="100%" src="https://zos.alipayobjects.com/rmsportal/HqnZZjBjWRbjyMr.png" />
+            <img width="100%" src="https://s3-us-west-2.amazonaws.com/gitmax.cn/images/gitmax_logo_mono.png" />
           </span>
           <p
-            key="content"
+              key="content"
           >
-            一个高效的页面动画解决方案
+            一个帮你扩展Github影响力的工具
           </p>
+  
           <Button type="ghost" key="button">
-            Learn More
+            <Link key={"Content1"} to={"Content1"} toHash={false}>
+              了解一下
+            </Link>
           </Button>
+          
         </QueueAnim>
         <TweenOne
           animation={{ y: '-=20', yoyo: true, repeat: -1, duration: 1000 }}
           className={`${this.props.className}-icon`}
           key="icon"
         >
-          <Icon type="down" />
+          <Link key={"Content1"} to={"Content1"} toHash={false}>
+            <Icon type="down"/>
+          </Link>
         </TweenOne>
       </OverPack>
     );
