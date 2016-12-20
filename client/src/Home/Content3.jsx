@@ -26,9 +26,9 @@ class Content extends React.Component {
 
   render() {
     const dataSource = [
-      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/WBnVOjtIlGWbzyQivuyq.png' }, title: { children: '一站式业务接入' }, content: { children: '支付、结算、核算接入产品效率翻四倍' } } },
-      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png' }, title: { children: '一站式事中风险监控' }, content: { children: '在所有需求配置环节事前风险控制和质量控制能力' } } },
-      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png' }, title: { children: '一站式数据运营' }, content: { children: '沉淀产品接入效率和运营小二工作效率数据' } } },
+      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/WBnVOjtIlGWbzyQivuyq.png' }, title: { children: 'GitMax收费吗？' }, content: { children: 'Gitmax添加好友完全免费，用户需通过Github登录，之后GitMax会自动为你的Github账户添加follower' } } },
+      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png' }, title: { children: '可以删除GitMax为我添加的好友吗？' }, content: { children: '当然可以，用户可以随时无理由删除好友。你只需要在Github中unfollow该好友即可。GitMax后台会自动将你从该好友的follow列表中也删除。' } } },
+      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png' }, title: { children: '添加好友在Github里多久生效？' }, content: { children: '通常情况下，当用户登录成功后，在5分钟内即会完成添加follower' } } },
     ]
     const listChildren = dataSource.map(this.getBlockChildren);
     return (
@@ -47,7 +47,7 @@ class Content extends React.Component {
             key="h1"
             reverseDelay={300}
           >
-            产品与服务
+            GitMax问答
           </TweenOne>
           <QueueAnim
             component="ul" type="bottom" key="block" leaveReverse
