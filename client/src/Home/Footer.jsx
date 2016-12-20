@@ -23,7 +23,8 @@ class Footer extends React.Component {
       >
         <span
         >
-          Copyright © 2016 The Project by <a href="#">Ant Motion</a>. All Rights Reserved
+          版权 © 2016 The Project by <a href="#">GitMax</a> | 联系我们：
+          <a href="mailto:support@gitmax.cn">support@gitmax.cn</a>
         </span>
       </TweenOne>
     </OverPack>);
