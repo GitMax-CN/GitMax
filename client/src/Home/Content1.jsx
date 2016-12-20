@@ -31,9 +31,8 @@ class Content extends React.Component {
             animation={{ x: '-=30', opacity: 0, type: 'from' }}
             className={`${this.props.className}-img`}
           >
-            <span
-            >
-              <img width="100%" src="https://zos.alipayobjects.com/rmsportal/nLzbeGQLPyBJoli.png" />
+            <span style={{ width: '75%', right: '5%' }}>
+              <img width="100%" src="images/plumber.jpg" />
             </span>
           </TweenOne>
           <QueueAnim
@@ -45,12 +44,12 @@ class Content extends React.Component {
             <h1
               key="h1"
             >
-              企业资源管理
+              添加Github Follower
             </h1>
             <p
               key="p"
             >
-              云资源集中编排、弹性伸缩、持续发布和部署，高可用及容灾。云资源集中编排、弹性伸缩、持续发布和部署，高可用及容灾。云资源集中编排、弹性伸缩、持续发布和部署，高可用及容灾。
+              水平虽好，其他人却不认识你？一心专注编程，没时间写博客，发知乎，译教程？GitMax替你找到同路人，互加好友，共同进步。
             </p>
           </QueueAnim>
         </OverPack>
