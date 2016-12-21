@@ -1,13 +1,12 @@
 import React from 'react';
 import {render} from 'react-dom';
-import PageNotFound from './PageNotFound.jsx';
-import {Router, Route, IndexRoute, hashHistory} from 'react-router';
-import App from './App.jsx';
+import {Router, Route, hashHistory} from 'react-router';
 // import Home from './Home.jsx';
-import Edit from './Edit.jsx';
-import AboutPage from './AboutPage.jsx';
 import HOME from './Home/index.jsx';
 import firebaseConfig from './firebaseConf';
+import {Provider} from 'react-redux';
+import {createStore} from 'redux';
+import GitMaxApp from './reducers/GitMaxApp';
 
 firebaseConfig();
 
@@ -21,4 +20,11 @@ const router = (
     </Router>
 );
 
-render(router, document.getElementById('app'));
+const store = createStore(GitMaxApp);
+
+render(
+    <Provider store={store}>
+      {router}
+    </Provider>,
+    document.getElementById('app')
+);
