@@ -8,16 +8,10 @@ import Edit from './Edit.jsx';
 import AboutPage from './AboutPage.jsx';
 import HOME from './Home/index.jsx';
 import * as firebase from 'firebase';
+import config from '../config';
 
-let config = {// Todo check if this is safe
-  apiKey: "AIzaSyAab1zs9uBoYdQ_PYJHKe_b0_I3837FoLw",
-  authDomain: "gitmax-5fcea.firebaseapp.com",
-  databaseURL: "https://gitmax-5fcea.firebaseio.com",
-  storageBucket: "gitmax-5fcea.appspot.com",
-  messagingSenderId: "113159157575"
-};
 console.log("inializeing firebase");
-firebase.initializeApp(config);
+firebase.initializeApp(config.firebase);
 
 // Result from Redirect auth flow.
 // [START getidptoken]
