@@ -1,9 +1,9 @@
-import {userLogin, userLogout} from '../actions'
+import {userLogin, userLogout} from '../actions/actions'
 import {connect} from 'react-redux';
 import Nav from './Nav';
 
 const mapStateToProps = (state, ownProps) => {
-  'use strict';
+  console.log("state.user", state.user);
   console.log("ownProps", ownProps);
   return {
     user: state.user,
@@ -12,7 +12,7 @@ const mapStateToProps = (state, ownProps) => {
 };
 
 const mapDispatchToProps = (dispatch) => {
-  'use strict';
+  
   return {
     onUserLogin: () => dispatch(userLogin()),
     onUserLogout: ()=> dispatch(userLogout())

@@ -3,12 +3,12 @@ import {render} from 'react-dom';
 import {Router, Route, hashHistory} from 'react-router';
 // import Home from './Home.jsx';
 import HOME from './Home/index.jsx';
-import firebaseConfig from './firebaseConf';
+import 'babel-polyfill';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import GitMaxApp from './reducers/GitMaxApp';
-
+import firebaseConfig from './firebaseConf';
 firebaseConfig();
 
 const store = createStore(

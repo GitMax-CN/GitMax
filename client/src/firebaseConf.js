@@ -8,9 +8,10 @@ import config from '../config';
 // console.log("inializing firebase");
 
 let firebaseConfig = () => {
-  'use strict';
-  firebase.initializeApp(config.firebase);
   
+  let defaultApp = firebase.initializeApp(config.firebase);
+  
+  // console.log("defaultApp", defaultApp);  // "[DEFAULT]"
 /*  // Result from Redirect auth flow.
   // [START getidptoken]
   firebase.auth().getRedirectResult().then(function (result) {
@@ -101,4 +102,4 @@ let firebaseConfig = () => {
   // [END authstatelistener]*/
 };
 
-module.exports = firebaseConfig;
+export default firebaseConfig;

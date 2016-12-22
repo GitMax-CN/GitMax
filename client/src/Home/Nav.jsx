@@ -7,7 +7,7 @@ const Item = Menu.Item;
 
 let Header = (props) => {
   let onBtnClick = () => {
-    if (!props.user.userId) {
+    if (!props.user.id) {
       props.onUserLogin();
     } else {
       props.onUserLogout();
@@ -36,7 +36,7 @@ let Header = (props) => {
         animation={{x: 30, type: 'from', ease: 'easeOutQuad'}}
     >
       <Button type="primary" key="button" onClick={onBtnClick}>
-        开始使用
+        {props.user.id ? "登出" : "开始使用"}
       </Button>
       
       {/*<Menu*/}
@@ -59,7 +59,9 @@ Header.propTypes = {
 
 Header.defaultProps = {
   className: 'header0',
-  user: {isLogging: false}
+  user: {
+    isLogging: false
+  }
 };
 
 export default Header;
