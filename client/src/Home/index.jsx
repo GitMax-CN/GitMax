@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { scrollScreen } from 'rc-scroll-anim';
 
-import Nav from './Nav';
+import NavContainer from './NavContainer';
 import Content0 from './Content0';
 import Content1 from './Content1';
 import Content2 from './Content2';
@@ -22,7 +22,7 @@ export default class Home extends React.Component {
 
   render() {
     const children = [
-      <Nav id="Nav" key="Nav"/>,
+      <NavContainer id="Nav" key="Nav"/>,
       <Content0 id="Content0" key="Content0"/>,
       <Content1 id="Content1" key="Content1"/>,
       <Content2 id="Content2" key="Content2"/>,
