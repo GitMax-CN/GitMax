@@ -2,18 +2,15 @@ import React, {PropTypes} from 'react';
 import TweenOne from 'rc-tween-one';
 import Menu from 'antd/lib/menu';
 import {Button} from 'antd';
-import * as firebase from 'firebase';
-import {connect} from 'react-redux';
-import {userLogout, userLogin} from '../actions';
 
 const Item = Menu.Item;
 
 let Header = (props) => {
   let onBtnClick = () => {
-    if (!firebase.auth().currentUser) {
-      props.dispatch(userLogin());
+    if (!props.user.userId) {
+      props.onUserLogin();
     } else {
-      props.dispatch(userLogout());
+      props.onUserLogout();
     }
   };
   
@@ -24,7 +21,8 @@ let Header = (props) => {
   return (<TweenOne
       component="header"
       animation={{opacity: 0, type: 'from'}}
-      {...props}
+      id = {props.id}
+      className = {props.className}
       style={{backgroundColor: '#ffffff', position: 'fixed'}}
   >
     <TweenOne
@@ -51,15 +49,17 @@ let Header = (props) => {
   </TweenOne>);
 };
 
-Header = connect()(Header);
-
-// Header.propTypes = {
-//   className: PropTypes.string,
-//   dispatch: PropTypes.function,
-// };
+Header.propTypes = {
+  id: PropTypes.string,
+  className: PropTypes.string,
+  user: PropTypes.object,
+  onUserLogin: PropTypes.func,
+  onUserLogout: PropTypes.func,
+};
 
 Header.defaultProps = {
   className: 'header0',
+  user: {isLogging: false}
 };
 
 export default Header;
