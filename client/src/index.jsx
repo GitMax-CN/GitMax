@@ -5,10 +5,16 @@ import {Router, Route, hashHistory} from 'react-router';
 import HOME from './Home/index.jsx';
 import firebaseConfig from './firebaseConf';
 import {Provider} from 'react-redux';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware} from 'redux';
+import thunk from 'redux-thunk';
 import GitMaxApp from './reducers/GitMaxApp';
 
 firebaseConfig();
+
+const store = createStore(
+    GitMaxApp,
+    applyMiddleware(thunk)
+);
 
 const router = (
     <Router history={hashHistory}>
@@ -19,8 +25,6 @@ const router = (
       {/*<Route path="*" component={PageNotFound}/>*/}
     </Router>
 );
-
-const store = createStore(GitMaxApp);
 
 render(
     <Provider store={store}>

@@ -11,7 +11,7 @@ let firebaseConfig = () => {
   'use strict';
   firebase.initializeApp(config.firebase);
   
-  // Result from Redirect auth flow.
+/*  // Result from Redirect auth flow.
   // [START getidptoken]
   firebase.auth().getRedirectResult().then(function (result) {
     console.log("result", result);
@@ -75,7 +75,7 @@ let firebaseConfig = () => {
       // [START_EXCLUDE]
       
       console.log("登录成功");
-      /*
+      /!*
        $.ajax({
        method: "GET",
        url: "https://rrkpwmptba.execute-api.us-east-1.amazonaws.com/dev/hello"
@@ -87,7 +87,7 @@ let firebaseConfig = () => {
        .fail((err) => {
        console.error("Found an error: ", err);
        });
-       */
+       *!/
       
       // [END_EXCLUDE]
     } else {
@@ -98,7 +98,7 @@ let firebaseConfig = () => {
       // [END_EXCLUDE]
     }
   });
-  // [END authstatelistener]
+  // [END authstatelistener]*/
 };
 
 module.exports = firebaseConfig;
