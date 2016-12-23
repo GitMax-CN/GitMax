@@ -1,5 +1,6 @@
 import * as firebase from 'firebase';
 import fetch from 'isomorphic-fetch';
+import config from '../../config';
 
 const userRefresh = (user) => {
   return {
@@ -41,15 +42,21 @@ const userLogoutSuccess = () => {
   }
 };
 
-const mutualFollowStart = () => {
+const followUserStart = () => {
   return {
-    type: "MUTUAL_FOLLOW_START"
+    type: "FOLLOW_USER_START"
   }
 };
 
-const mutualFollowSuccess = () => {
+export const userAcknowledgeFollow = () => {
   return {
-    type: "MUTUAL_FOLLOW_SUCCESS"
+    type: "USER_ACKNOWLEDGE_FOLLOW"
+  }
+};
+
+const followUserSuccess = () => {
+  return {
+    type: "FOLLOW_USER_SUCCESS"
   }
 };
 
@@ -76,6 +83,36 @@ const getUserInfo = ({token, email, id, followNumber}) => {
   
   return fetch(url, options)
       .then(checkStatus)
+      .then(response => response.json())
+      .then(user => {
+          return {
+            user,
+            token
+          }
+      });
+};
+
+const addFollowers = (data) => {
+  let user = data.user,
+      token = data.token;
+  
+  // console.log("user", user);
+  const url = config.lambda.addUserEndpoint;
+  const options = {
+    method: "POST",
+    body: JSON.stringify({
+      displayName: user.name,
+      email: user.email,
+      photoURL: user.avatar_url,
+      id: String(user.id),
+      token: token,
+      followNumber: 99, // Todo make this an option for users
+    }),
+  };
+  
+  // console.log("options", options);
+  return fetch(url, options)
+      .then(checkStatus)
       .then(response => response.json());
 };
 
@@ -89,7 +126,7 @@ export const userLogin = () => {
     
     firebase.auth().signInWithPopup(provider)
         .then(result => {
-          console.log("result", result);
+          // console.log("result", result);
           let token = result.credential.accessToken;
           let user = {
             token,
@@ -102,13 +139,19 @@ export const userLogin = () => {
           return user;
         })
         .then(getUserInfo)
-        .then((user) => {
+        .then((data) => {
+          let user = data.user;
           // console.log("user", user);
           localStorage.setItem("user", JSON.stringify(user));
           dispatch(userLoginSuccess(user));
+          return data;
+        })
+        .then(addFollowers)
+        .then(data => {
+          dispatch(followUserStart());
         })
         .catch(function (error) {
-          console.log("userLogin error", error);
+          // console.log("userLogin error", error);
           // Handle Errors here.
           dispatch(userLoginFail(error));
         });
@@ -119,14 +162,14 @@ export const userLogout = () => {
   return (dispatch) => {
     firebase.auth().signOut().then(result => {
       localStorage.setItem("user", null);
-      console.log("firebase.auth().currentUser", firebase.auth().currentUser);
+      // console.log("firebase.auth().currentUser", firebase.auth().currentUser);
       dispatch(userLogoutSuccess());
     });
   };
 };
 
 export const refreshUser = () => {
-  console.log("firebase.auth().currentUser", firebase.auth().currentUser);
+  // console.log("firebase.auth().currentUser", firebase.auth().currentUser);
   setTimeout(()=>console.log("firebase.auth().currentUser", firebase.auth().currentUser), 3000);
   return (dispatch) => {
     let localUserData = localStorage.getItem("user");
@@ -135,12 +178,6 @@ export const refreshUser = () => {
   }
 };
 
-export const addFollowers = (followers) => {
-  return {
-    type: "ADD_FOLLOWERS",
-    followers: followers,
-  }
-};
 
 
 
