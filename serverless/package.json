@@ -4,6 +4,10 @@
   "description": "A social app for github users",
   "main": " ",
   "dependencies": {
+    "fs": "0.0.1-security",
+    "oauth": "^0.9.14",
+    "passport": "^0.3.2",
+    "passport-github2": "^0.1.10",
     "request": "^2.79.0"
   },
   "devDependencies": {},

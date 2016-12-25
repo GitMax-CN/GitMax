@@ -7,8 +7,10 @@ service: GitMax
 provider:
   name: aws
   runtime: nodejs4.3
-#  stage: prod
-  stage: dev
+  stage: prod
+  profile: prodProfile
+#  stage: dev
+#  profile: devProfile
   region: us-west-2
 
 # you can add statements to the Lambda function's IAM Role here
@@ -54,6 +56,11 @@ functions:
           path: addUser
           method: post
           cors: true
+#          integration: lambda
+#          request:
+#            parameters:
+#              querystrings:
+#                url: true
   followUsers:
     handler: users.followUsers
     memorySize: 512 # optional, default is 1024
@@ -61,6 +68,22 @@ functions:
     events:
       - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Users/stream/2016-12-16T22:04:17.359
 #      - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Friends/stream/2016-12-15T06:46:56.327
+
+  loginStart:
+    handler: login.loginStart
+    events:
+      - http:
+          path: loginStart
+          method: get
+          cors: true
+  getToken:
+    handler: login.getToken
+    events:
+      - http:
+          path: getToken
+          method: get
+          cors: true
+
 
 # 当前实用的resource - you can add CloudFormation resource templates here
 
@@ -112,9 +135,9 @@ functions:
 
 
 
-plugins:
-  - serverless-client-s3
-
-custom:
-  client:
-    bucketName: www.gitmax.cn
+#plugins:
+#  - serverless-client-s3
+#
+#custom:
+#  client:
+#    bucketName: www.gitmax.cn
