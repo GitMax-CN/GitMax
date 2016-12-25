@@ -7,6 +7,8 @@ const requestToken = (event, context, callback) => {
   let configJSON;
   let params = event.queryStringParameters;
   console.log("params", params);
+  console.log("event", JSON.stringify(event));
+  console.log("context", JSON.stringify(context));
   // let config;
   // configJSON = fs.readFileSync('config.json', {encoding: 'utf-8'});
   // config = JSON.parse(configJSON);
@@ -81,9 +83,11 @@ const requestToken = (event, context, callback) => {
 
   
   if (params["code"]){
+    console.log("start to get token");
+
     oauth2.getOAuthAccessToken(
-        /*event.code*/null,
-        {'redirect_uri': 'http://localhost:8080/code/'},
+        params["code"],
+        {'redirect_uri': 'https://obccdycfgi.execute-api.us-west-2.amazonaws.com/prod/getToken'},
         function (e, access_token, refresh_token, results) {
           console.log("access_token", access_token);
           console.log("refresh_token", refresh_token);
@@ -106,6 +110,15 @@ const requestToken = (event, context, callback) => {
           // context.succeed(access_token);
         }
     );
+  }
+  else if (params["access_token"]){
+    console.log("received token");
+    const response = {
+      statusCode: 200,
+      headers: {"Access-Control-Allow-Origin": "*"},
+      body: JSON.stringify(params),
+    };
+    callback(null, response);
   }
 };
 

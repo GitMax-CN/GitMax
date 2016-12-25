@@ -18,7 +18,7 @@ const main = (event, context, callback) => {
     baseURI: "https://github.com/",
     authorizeUrl: "login/oauth/authorize",
     accessTokenUrl: "login/oauth/access_token",
-    callbackURI: "https://obccdycfgi.execute-api.us-west-2.amazonaws.com/prod/loginCallback",
+    callbackURI: "https://obccdycfgi.execute-api.us-west-2.amazonaws.com/prod/getToken",
   };
   
   // {
@@ -59,7 +59,7 @@ const main = (event, context, callback) => {
   // );
   
   let authURL = oauth2.getAuthorizeUrl({
-    // redirect_uri: config.callbackURI,
+    redirect_uri: config.callbackURI,
     scope: ['repo', 'user'],
     // state: 'some random string to protect against cross-site request forgery attacks'
   });
