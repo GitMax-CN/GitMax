@@ -2,63 +2,21 @@
 
 // let fs = require('fs');
 let OAuth2 = require('oauth').OAuth2;
+const config = require('../config').githubConfig;
 
 const requestToken = (event, context, callback) => {
-  let configJSON;
   let params = event.queryStringParameters;
-  console.log("params", params);
-  console.log("event", JSON.stringify(event));
-  console.log("context", JSON.stringify(context));
-  // let config;
-  // configJSON = fs.readFileSync('config.json', {encoding: 'utf-8'});
-  // config = JSON.parse(configJSON);
-  //
-  // if (!config) return context.fail('Failed to read configuration');
-  const config = {
-    clientID: "6707bd9401a01cd50972",
-    clientSecret: "7eb545d403d4f85f0662e60ca9c0865c50a976ee",
-    baseURI: "https://github.com/",
-    authorizeUrl: "login/oauth/authorize",
-    accessTokenUrl: "login/oauth/access_token",
-    callbackURI: "",
-  };
-  
-  // {
-  //   "clientID": "4b7d2e5f12a770aa20e2",
-  //     "clientSecret": "7b90949cc7064300017714f4867f4f83dbde0132",
-  //     "baseURI": "https://github.com/",
-  //     "endpointURI": "login/oauth/access_token",
-  //     "callbackURI": null,
-  //     "scope": ["user"]
-  // }
-  //
-  
-  // _clientId
-  // _clientSecret
-  // _baseSite
-  // _authorizeUrl
-  // _accessTokenUrl
-  // _accessTokenName
-  // _authMethod
-  // _customHeaders
-  // _useAuthorizationHeaderForGET
-  
+  // console.log("params", params);
+  // console.log("event", JSON.stringify(event));
+  // console.log("context", JSON.stringify(context));
   
   let oauth2 = new OAuth2(
       config.clientID,
       config.clientSecret,
-      'https://github.com/',
-      'login/oauth/authorize',
-      'login/oauth/access_token',
+      config.baseURI,
+      config.authorizeUrl,
+      config.accessTokenUrl,
       null); /** Custom headers */
-  
-  // let oauth2 = new OAuth2(
-  //     config.clientID,
-  //     config.clientSecret,
-  //     config.baseURI,
-  //     null,
-  //     config.endpointURI
-  // );
   
   let options = {};
   if (config.callbackURI) options.redirect_uri = config.callbackURI;
@@ -87,7 +45,7 @@ const requestToken = (event, context, callback) => {
 
     oauth2.getOAuthAccessToken(
         params["code"],
-        {'redirect_uri': 'https://obccdycfgi.execute-api.us-west-2.amazonaws.com/prod/getToken'},
+        {'redirect_uri': config.redirectUrl},
         function (e, access_token, refresh_token, results) {
           console.log("access_token", access_token);
           console.log("refresh_token", refresh_token);

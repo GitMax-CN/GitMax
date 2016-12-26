@@ -43,3 +43,4 @@ addUserEvent.json
 client/dist
 *.psd
 client/config.js
+serverless/config.js
