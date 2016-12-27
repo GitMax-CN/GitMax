@@ -7,7 +7,7 @@ service: GitMax
 provider:
   name: aws
   runtime: nodejs4.3
-  stage: prod
+  stage: production
   profile: prodProfile
 #  stage: dev
 #  profile: devProfile
