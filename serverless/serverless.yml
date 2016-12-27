@@ -4,13 +4,16 @@ service: GitMax
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
 
+custom:
+  defaultStage: dev
+
 provider:
   name: aws
   runtime: nodejs4.3
-  stage: production
-  profile: prodProfile
-#  stage: dev
-#  profile: devProfile
+  stage: ${opt:stage, self:custom.defaultStage}
+  # Deploys to dev stage by default.
+  # To deploy for production, run 'serverless deploy --stage production'
+  profile: ${self:provider.stage}Profile
   region: us-west-2
 
 # you can add statements to the Lambda function's IAM Role here
@@ -66,7 +69,7 @@ functions:
     memorySize: 512 # optional, default is 1024
     timeout: 60 # optional, default is 6
     events:
-      - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Users/stream/2016-12-16T22:04:17.359
+#      - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Users/stream/2016-12-16T22:04:17.359
 #      - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Friends/stream/2016-12-15T06:46:56.327
 
   loginStart:
@@ -78,6 +81,9 @@ functions:
           cors: true
   getToken:
     handler: login.getToken
+    environment:
+      STAGE: ${self:provider.stage}
+      variableValue: 123
     events:
       - http:
           path: getToken
@@ -107,6 +113,24 @@ functions:
 #        TableName: 'Users'
 #        StreamSpecification:
 #          StreamViewType: NEW_IMAGE
+#
+#    UserIdsTable:
+#      Type: 'AWS::DynamoDB::Table'
+#      DeletionPolicy: Retain
+#      Properties:
+#        AttributeDefinitions:
+#          -
+#            AttributeName: id
+#            AttributeType: S
+#        KeySchema:
+#          -
+#            AttributeName: id
+#            KeyType: HASH
+#        ProvisionedThroughput:
+#          ReadCapacityUnits: 10
+#          WriteCapacityUnits: 10
+#        TableName: 'UserIds'
+#
 #
 #    FriendsTable:
 #      Type: 'AWS::DynamoDB::Table'

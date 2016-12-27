@@ -5,9 +5,12 @@ const config = require('../config').githubConfig;
 
 const requestToken = (event, context, callback) => {
   let params = event.queryStringParameters;
-  // console.log("params", params);
+  const stage = event.requestContext.stage;
+  console.log("params", params);
+  console.log("stage", stage);
   // console.log("event", JSON.stringify(event));
   // console.log("context", JSON.stringify(context));
+  // console.log("event.requestContext.stage", event.requestContext.stage);
   
   let oauth2 = new OAuth2(
       config.clientID,
@@ -18,7 +21,7 @@ const requestToken = (event, context, callback) => {
       null); /** Custom headers */
   
   if (params["code"]){
-    console.log("start to get token");
+    console.log("start to get token with code:", params["code"]);
 
     oauth2.getOAuthAccessToken(
         params["code"],
@@ -35,23 +38,28 @@ const requestToken = (event, context, callback) => {
             callback(new Error(results.error_description));
             return;
           }
-
-          // const response = {
-          //   statusCode: 200,
-          //   headers: {"Access-Control-Allow-Origin": "*"},
-          //   body: JSON.stringify(results),
-          // };
+          
+          const baseURL = stage === "dev" ? "http://localhost:5000/#/" : "http://www.gitmax.cn/#/";
   
           const response = {
-            statusCode: 301,
+            statusCode: 302,
             headers: {
               "Access-Control-Allow-Origin": "*",
-              Location: "http://localhost:5000",
+              Location: baseURL + "?access_token=" + access_token,
             },
             body: JSON.stringify(results),
           };
           callback(null, response);
           // context.succeed(access_token);
+  
+          // const logResponse = {
+          //   statusCode: 202,
+          //   headers: {
+          //     "Access-Control-Allow-Origin": "*",
+          //   },
+          //   body: JSON.stringify({message: "start redirecting"}),
+          // };
+          // callback(null, logResponse);
         }
     );
   }

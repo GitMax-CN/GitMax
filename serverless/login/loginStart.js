@@ -24,15 +24,23 @@ const main = (event, context, callback) => {
   console.log("authURL", authURL);
   
   const response = {
-    statusCode: 301,
+    statusCode: 302,
     headers: {
       Location: authURL,
     },
     body: '',
   };
-
   callback(null, response);
-
+  
+  // const logResponse = {
+  //   statusCode: 202,
+  //   headers: {
+  //     "Access-Control-Allow-Origin": "*",
+  //   },
+  //   body: JSON.stringify({message: "start redirecting"}),
+  // };
+  // callback(null, logResponse);
+  
 };
 
 module.exports = main;
