@@ -9,8 +9,6 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import {userLogin} from './actions/actions';
 import GitMaxApp from './reducers/GitMaxApp';
-import firebaseConfig from './firebaseConf';
-firebaseConfig();
 
 const store = createStore(
     GitMaxApp,

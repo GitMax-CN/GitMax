@@ -1,4 +1,3 @@
-import * as firebase from 'firebase';
 import fetch from 'isomorphic-fetch';
 import config from '../../config';
 import {getUrlParam, popCenterWindow} from '../api';
@@ -130,7 +129,7 @@ const loginWithPopup = () => {
           default: reject(err);
         }
       }
-    }, 500);
+    }, 200);
   });
 };
 
@@ -185,16 +184,14 @@ export const userLogin = () => {
 export const userLogout = () => {
   return (dispatch) => {
     localStorage.setItem("user", null);
-    // console.log("firebase.auth().currentUser", firebase.auth().currentUser);
     dispatch(userLogoutSuccess());
   };
 };
 
 export const refreshUser = () => {
-  // console.log("firebase.auth().currentUser", firebase.auth().currentUser);
   return (dispatch) => {
     let localUserData = localStorage.getItem("user");
-    let user = firebase.auth().currentUser ? JSON.parse(localUserData) : null;
+    // let user = firebase.auth().currentUser ? JSON.parse(localUserData) : null;
     dispatch(userRefresh(user));
   }
 };
