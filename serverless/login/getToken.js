@@ -13,11 +13,11 @@ const requestToken = (event, context, callback) => {
   // console.log("event.requestContext.stage", event.requestContext.stage);
   
   let oauth2 = new OAuth2(
-      config.clientID,
-      config.clientSecret,
-      config.baseURI,
-      config.authorizeUrl,
-      config.accessTokenUrl,
+      config[stage].clientID,
+      config[stage].clientSecret,
+      config[stage].baseURI,
+      config[stage].authorizeUrl,
+      config[stage].accessTokenUrl,
       null); /** Custom headers */
   
   if (params["code"]){
