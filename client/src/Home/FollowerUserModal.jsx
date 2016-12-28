@@ -25,7 +25,7 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLogin}) => {
           <br/>
           <br/>
           <p> * 恭喜你，至此你已经完成设置GitMax</p>
-          <p> * 随着用户增多，GitMax会自动为你添加更多好友（新用户可添加至多 99 位好友）</p>
+          <p> * 随着用户增多，GitMax会自动为你添加更多好友</p>
         </Modal>
       </div>
   );

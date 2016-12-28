@@ -23,7 +23,6 @@ const userLoginSuccess = (user) => {
 };
 
 const userLoginFail = (error) => {
-  
   let errorCode = error.code;
   let errorMessage = error.message;
   // The email of the user's account used.
@@ -95,7 +94,7 @@ const getUserInfo = (token) => {
 const loginWithPopup = () => {
   const stage = config.getStage();
   const url = config.lambda[stage].loginGithubEndpoint;
-  
+  // console.log("stage", stage, "url", url);
   return new Promise((resolve, reject) => {
     const REDIRECT = location.origin;
     let win = popCenterWindow(url, '_blank', 500, 800);
@@ -176,7 +175,8 @@ export const userLogin = () => {
           dispatch(followUserStart());
         })
         .catch((err) => {
-          console.log("error", err);
+          console.err("error", err);
+          dispatch(userLoginFail(err));
         });
   }
 };

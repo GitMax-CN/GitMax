@@ -4,14 +4,18 @@ const userBase = {
 };
 
 const gitMaxApp = (state = [], action) => {
+  let newUser;
+  
   switch (action.type) {
     case "USER_LOGIN_START":
       console.log("USER_LOGIN start");
-      return state;
+      newUser = Object.assign({}, userBase, {isLogging: true});
+      
+      return Object.assign({}, state, {user: newUser});
     
     case "USER_LOGIN_SUCCESS":
       console.log("USER_LOGIN_SUCCESS, action.user", action.user);
-      let newUser = Object.assign({},
+      newUser = Object.assign({},
           {user: userBase},
           action.user
       );
@@ -21,10 +25,13 @@ const gitMaxApp = (state = [], action) => {
     
     case "USER_LOGIN_FAIL":
       console.log("USER_LOGIN fail, action.error", action.errorMessage);
-      console.log("USER_LOGIN start");
-      return state;
+      return Object.assign({},
+          state,
+          {user: userBase}
+      );
     
     case "USER_LOGOUT":
+      console.log("USER_LOGOUT");
       return Object.assign({},
           state,
           {user: userBase}

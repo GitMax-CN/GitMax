@@ -2,6 +2,7 @@ import React from 'react';
 import QueueAnim from 'rc-queue-anim';
 import TweenOne from 'rc-tween-one';
 import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
+import {Row, Col, Button} from 'antd';
 
 class Content extends React.Component {
 
@@ -26,10 +27,10 @@ class Content extends React.Component {
 
   render() {
     const dataSource = [
-      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/WBnVOjtIlGWbzyQivuyq.png' }, title: { children: 'GitMax收费吗？' }, content: { children: 'Gitmax添加好友完全免费，用户需通过Github登录，之后GitMax会自动为你的Github账户添加follower' } } },
-      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png' }, title: { children: '可以删除GitMax为我添加的好友吗？' }, content: { children: '当然可以，用户可以随时无理由删除好友。你只需要在Github中unfollow该好友即可。GitMax后台会自动将你从该好友的follow列表中也删除。' } } },
-      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png' }, title: { children: '添加好友在Github里多久生效？' }, content: { children: '通常情况下，当用户登录成功后，在5分钟内即会完成添加follower' } } },
-    ]
+      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png' }, title: { children: '添加好友原理是什么？' }, content: { children: '使用GitMax的用户登录Github，之后GitMax为你们相互follow，添加Github好友基数' } } },
+      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/WBnVOjtIlGWbzyQivuyq.png' }, title: { children: 'GitMax收费吗？' }, content: { children: 'Gitmax添加好友服务免费，并会帮你维护与好友的相互follow状态，维护服务也是免费' } } },
+      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png' }, title: { children: '可以删除GitMax为我添加的好友吗？' }, content: { children: '用户可以随时无理由删除好友 - 只需在Github中unfollow该好友。请注意GitMax会自动将你从该好友的follow列表中也删除。' } } },
+    ];
     const listChildren = dataSource.map(this.getBlockChildren);
     return (
       <div
@@ -53,6 +54,16 @@ class Content extends React.Component {
             component="ul" type="bottom" key="block" leaveReverse
           >
             {listChildren}
+  
+            {/*<Row gutter={32} >*/}
+              {/*<Col span={8} offset={8}>*/}
+                {/*<Button type="primary" icon="github"*/}
+                        {/*key="button" size="large" >*/}
+                  {/*Github帐号登录*/}
+                {/*</Button>*/}
+              {/*</Col>*/}
+            {/*</Row>*/}
+            
           </QueueAnim>
         </OverPack>
       </div>

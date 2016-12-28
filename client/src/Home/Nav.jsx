@@ -36,8 +36,9 @@ let Header = (props) => {
           className={`${props.className}-nav`}
           animation={{x: 30, type: 'from', ease: 'easeOutQuad'}}
       >
-        <Button type="primary" key="button" onClick={onBtnClick}>
-          {props.user.id ? "登出" : "开始使用"}
+        <Button type="primary" icon="github" loading={props.user.isLogging}
+                key="button" size="large" onClick={onBtnClick}>
+          {props.user.id ? "登出" : "Github帐号登录"}
         </Button>
         
         {/*<Menu*/}
