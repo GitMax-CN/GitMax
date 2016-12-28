@@ -6,6 +6,8 @@ service: GitMax
 
 custom:
   defaultStage: dev
+  productionStream: arn:aws:dynamodb:us-west-2:151302725877:table/Users/stream/2016-12-16T22:04:17.359
+  devStream: arn:aws:dynamodb:us-west-2:594750710208:table/Users/stream/2016-12-27T16:29:37.237
 
 provider:
   name: aws
@@ -59,31 +61,27 @@ functions:
           path: addUser
           method: post
           cors: true
-#          integration: lambda
-#          request:
-#            parameters:
-#              querystrings:
-#                url: true
+
   followUsers:
     handler: users.followUsers
     memorySize: 512 # optional, default is 1024
     timeout: 60 # optional, default is 6
     events:
-#      - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Users/stream/2016-12-16T22:04:17.359
-#      - stream: arn:aws:dynamodb:us-west-2:151302725877:table/Friends/stream/2016-12-15T06:46:56.327
+#    - stream: ${self:custom.devStream}
+      - stream: ${self:custom.${self:provider.stage}Stream}
 
   loginStart:
     handler: login.loginStart
+    memorySize: 128
     events:
       - http:
           path: loginStart
           method: get
           cors: true
+
   getToken:
     handler: login.getToken
-    environment:
-      STAGE: ${self:provider.stage}
-      variableValue: 123
+    memorySize: 128
     events:
       - http:
           path: getToken
