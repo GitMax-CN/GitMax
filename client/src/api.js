@@ -34,4 +34,16 @@ const getUrlParam = (url, name) => {
     return results[1];
 };
 
-export {getUrlParam, popCenterWindow}
+//Todo better influence factor calculation method (including repo stars)
+/**
+ * Calculate influence factor parameter
+ * @param user
+ * @returns {string}
+ */
+const calcInfluenceFactor = (user) => {
+  let factor = user.public_gists * 0.8 + user.public_repos * 0.6 + user.followers * 0.3;
+  if (factor >= 10000) return (factor/1000).toFixed(1) + "k";
+  return String(factor.toFixed(1));
+};
+
+export {getUrlParam, popCenterWindow, calcInfluenceFactor}

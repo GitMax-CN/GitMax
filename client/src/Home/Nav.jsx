@@ -1,7 +1,9 @@
 import React, {PropTypes} from 'react';
 import TweenOne from 'rc-tween-one';
-import {Button, Menu, Dropdown} from 'antd';
-import FollowerUserModalContainer from './FollowerUserModelContainer'
+import {Button, Menu, Dropdown, Badge} from 'antd';
+import FollowerUserModalContainer from './FollowerUserModelContainer';
+import {calcInfluenceFactor} from '../api';
+
 const Item = Menu.Item;
 
 let Header = (props) => {
@@ -16,19 +18,28 @@ let Header = (props) => {
   
   const onMenuClick = ({item, key, keyPath}) => {
     // console.log("item, key, keyPath", item, key, keyPath);
-    switch (key){
-      case "2": props.onUserLogout();
+    switch (key) {
+      case "2":
+        props.onUserLogout();
     }
   };
   
+  //Todo Better influence factor calculation
   const menu = (
       <Menu onClick={onMenuClick}>
+        <Menu.Item key="badge" disabled={true}>
+          <span><Badge status="success"/>{"GitHub影响因子："}</span>
+          <span>{calcInfluenceFactor(props.user)}</span>
+        </Menu.Item>
+        <Menu.Divider />
+        
         <Menu.Item key="0">
           <a>添加好友设置</a>
         </Menu.Item>
         <Menu.Item key="1">
           <a href={`https://www.github.com/${props.user.login}/followers`} target="_blank">访问Github账户</a>
         </Menu.Item>
+        
         <Menu.Divider />
         <Menu.Item key="2">登出</Menu.Item>
       </Menu>
@@ -52,24 +63,24 @@ let Header = (props) => {
       >
         <img width="100%" src="images/gitmax_logo_mono_horizontal2.png"/>
       </TweenOne>
-  
+      
       {
         props.user.id
-          &&
+        &&
         <Dropdown overlay={menu} trigger={['click']}>
           <TweenOne
               className={`${props.className}-user`}
-              animation={{ x: 30, delay: 100, opacity: 0, type: 'from', ease: 'easeOutQuad' }}
+              animation={{x: 30, delay: 100, opacity: 0, type: 'from', ease: 'easeOutQuad'}}
           >
             <a href="" className="user">
-          <span className="img">
-            <img
-                src={props.user.avatar_url}
-                width="30"
-                height="30"
-            />
-          </span>
-              <span>{props.user.name || props.user.login}</span>
+              <span className="img">
+                <img
+                    src={props.user.avatar_url}
+                    width="30"
+                    height="30"
+                />
+                <span>{props.user.name || props.user.login}</span>
+              </span>
             </a>
           </TweenOne>
         </Dropdown>
@@ -82,7 +93,7 @@ let Header = (props) => {
       >
         {
           !props.user.id
-            &&
+          &&
           <Button type="primary" icon="github" loading={props.user.isLogging}
                   key="button" size="large" onClick={onBtnClick}>
             GitHub帐号登录
@@ -96,7 +107,7 @@ let Header = (props) => {
         {/*{navChildren}*/}
         {/*</Menu>*/}
       </TweenOne>
-      
+    
     </TweenOne>
     <FollowerUserModalContainer />
   </div>);
