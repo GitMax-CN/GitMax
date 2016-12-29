@@ -1,6 +1,6 @@
 @import './custom.less';
 
-@header: header0;
+@header: header1;
 .@{header} {
   height: 64px;
   background: @template-nav-bg-color;
@@ -35,6 +35,7 @@
       background: transparent;
       color: @template-text-color-light;
       line-height: 62px;
+      height: 100%;
       & li {
         float: left;
         text-align: center;
@@ -44,6 +45,52 @@
     & .ant-menu-horizontal > .ant-menu-item-active {
       color: @link-hover-color;
       border-bottom-color: @link-hover-color;
+    }
+  }
+  &-user {
+    float: right;
+    margin-right: 4%;
+    line-height: 62px;
+    height: 64px;
+    & .help {
+      width: 100px;
+      text-align: center;
+      font-size: 22px;
+      border-left: 1px solid fade(@line-color, 5);
+      & .anticon {
+        vertical-align: middle;
+      }
+      & span {
+        display: inline-block;
+        margin-left: 10px;
+        font-size: 12px;
+        line-height: 22px;
+      }
+    }
+    & .user {
+      font-size: 14px;
+      text-align: right;
+      width: 100px;
+      border-left: 1px solid fade(@line-color, 5);
+      & .img {
+        margin-left: 0;
+        & img {
+          vertical-align: middle;
+        }
+      }
+      & span {
+        display: inline-block;
+        margin-left: 10px;
+        font-size: 12px;
+        line-height: 24px;
+      }
+    }
+    & a {
+      display: inline-block;
+      color: @primary-color;
+    }
+    & a:hover {
+      color: @link-hover-color;
     }
   }
 }
