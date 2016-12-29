@@ -27,9 +27,9 @@ class Content extends React.Component {
 
   render() {
     const dataSource = [
-      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png' }, title: { children: '添加好友原理是什么？' }, content: { children: '使用GitMax的用户登录Github，之后GitMax为你们相互follow，添加Github好友基数' } } },
+      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/EkXWVvAaFJKCzhMmQYiX.png' }, title: { children: '添加好友原理是什么？' }, content: { children: '用户登录Github，之后GitMax根据你的需求，为你找到其他GitMax用户，并互相添加为GitHub好友' } } },
       { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/WBnVOjtIlGWbzyQivuyq.png' }, title: { children: 'GitMax收费吗？' }, content: { children: 'Gitmax添加好友服务免费，并会帮你维护与好友的相互follow状态，维护服务也是免费' } } },
-      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png' }, title: { children: '可以删除GitMax为我添加的好友吗？' }, content: { children: '用户可以随时无理由删除好友 - 只需在Github中unfollow该好友。请注意GitMax会自动将你从该好友的follow列表中也删除。' } } },
+      { children: { icon: { children: 'https://zos.alipayobjects.com/rmsportal/YPMsLQuCEXtuEkmXTTdk.png' }, title: { children: '可以删除GitMax为我添加的好友吗？' }, content: { children: '用户可以随时无理由删除好友 - 只需在GitHub中Unfollow该好友。请注意GitMax会自动将你从该好友的follow列表中也删除。' } } },
     ];
     const listChildren = dataSource.map(this.getBlockChildren);
     return (
