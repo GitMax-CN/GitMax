@@ -175,7 +175,7 @@ export const userLogin = () => {
           dispatch(followUserStart());
         })
         .catch((err) => {
-          console.err("error", err);
+          console.error("error", err);
           dispatch(userLoginFail(err));
         });
   }
