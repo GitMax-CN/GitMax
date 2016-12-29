@@ -22,7 +22,7 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
     content: <div>
       <Row>
         <Col span={8}>
-          <Card title={<div>超过一定Follower的用户才加好友</div>} style={{width: 280, margin: "auto"}}
+          <Card title={<div>超过一定Follower的用户才加好友</div>} style={{width: 300, margin: "auto"}}
                 bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
@@ -32,14 +32,14 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
               GitHub的Follower数
             </div>
             <div className="custom-number-input">
-              大于
+              大于：
               <InputNumber min={0} max={10000} defaultValue={0} size="small" onChange={onChange}/>
             </div>
           </Card>
         </Col>
         
         <Col span={8}>
-          <Card title={<div>超过一定Star的用户才加好友</div>} style={{width: 280, margin: "0 auto"}}
+          <Card title={<div>超过一定Star的用户才加好友</div>} style={{width: 300, margin: "0 auto"}}
                 bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
@@ -49,7 +49,7 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
               GitHub项目的Star数
             </div>
             <div className="custom-number-input">
-              大于
+              大于：
               <InputNumber min={0} max={10000} defaultValue={0} size="small" onChange={onChange}/>
             </div>
           </Card>
@@ -57,7 +57,7 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
         
         <Col span={8}>
           <Card title={<div> 总共要添加Follower的上限</div>}
-                style={{width: 280, margin: "auto"}} bodyStyle={{padding: 10}}>
+                style={{width: 300, margin: "auto"}} bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
                    src="https://octodex.github.com/images/setuptocat.jpg"/>
@@ -67,14 +67,16 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
               <Popover placement="bottom" content={popOver.content1} arrowPointAtCenter>
                 <Icon type="question-circle-o"/>
               </Popover>
+              ：
               <InputNumber min={0} max={99} defaultValue={99} size="small" onChange={onChange}/>
             </div>
             <div className="custom-number-input">
-              总共
+              总计
               <Popover placement="bottom" content={popOver.content2} arrowPointAtCenter>
                 <Icon type="question-circle-o"/>
               </Popover>
-              <InputNumber min={0} max={9999} defaultValue={9999} size="small" onChange={onChange}/>
+              ：
+              <InputNumber min={0} max={10000} defaultValue={5000} size="small" onChange={onChange}/>
             </div>
           </Card>
         </Col>
@@ -143,7 +145,7 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
             visible={true}
             maskClosable={false}
             closable={false}
-            width={1024}
+            width={1100}
             footer={[
               <Button key="back" type="ghost" size="large" onClick={prev}>取消</Button>,
               <Button key="submit" type="primary" size="large" loading={false} onClick={next}>
