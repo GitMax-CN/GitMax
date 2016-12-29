@@ -10,6 +10,10 @@ import thunk from 'redux-thunk';
 import {userLogin} from './actions/actions';
 import GitMaxApp from './reducers/GitMaxApp';
 
+
+// import testFollowModal from './reducers/test';
+// testFollowModal();
+
 const store = createStore(
     GitMaxApp,
     applyMiddleware(thunk)
