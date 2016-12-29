@@ -2,6 +2,22 @@ import fetch from 'isomorphic-fetch';
 import config from '../../config';
 import {getUrlParam, popCenterWindow} from '../api';
 
+export const followModalOpen = () => {
+  return {type: "FOLLOW_MODAL_OPEN"}
+};
+
+export const followModalClose = () => {
+  return {type: "FOLLOW_MODAL_CLOSE"}
+};
+
+const followModalNextStep = () => {
+  return {type: "FOLLOW_NEXT_STEP"}
+};
+
+export const followModalPrevStep = () => {
+  return {type: "FOLLOW_PREV_STEP"}
+};
+
 const userRefresh = (user) => {
   return {
     type: "USER_REFRESH",
@@ -186,6 +202,18 @@ export const userLogout = () => {
     localStorage.setItem("user", null);
     dispatch(userLogoutSuccess());
   };
+};
+
+export const onFollowModalNextStep = (currentStep, data) => {
+  console.log("currentStep, data", currentStep, data);
+  if (currentStep===0){
+    const {crit_FollowersCount, crit_StargazersCount, addFollowersNow, addFollowersMax} = data;
+    return (dispatch) => {
+      dispatch(followModalNextStep());
+    }
+  } else return (dispatch) => {
+      dispatch(followModalNextStep());
+    }
 };
 
 export const refreshUser = () => {

@@ -2,18 +2,38 @@ import React, {PropTypes} from 'react';
 import {Modal, Button, Steps, InputNumber, Row, Col, Card, Icon, Popover} from 'antd';
 const Step = Steps.Step;
 
-let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
+let FollowerUserModal = (props) => {
+  console.log("props",props);
+  let crit_FollowersCount = props.user.crit_FollowersCount,
+      crit_StargazersCount = props.user.crit_StargazersCount,
+      addFollowersNow = props.user.addFollowersNow,
+      addFollowersMax = props.user.addFollowersMax;
+  
+  const next = () => {
+    // 在modal的每一步中，'下一步'按钮对应传递的参数不同
+    switch (props.current){
+      case 0: return props.followModalNextStep(props.current, {
+            crit_FollowersCount,
+            crit_StargazersCount,
+            addFollowersNow,
+            addFollowersMax,
+      });
+      case 1: return props.followModalNextStep(props.current);
+      default: return props.followModalClose();
+    }
+  };
   
   const onChange = (value) => {
     console.log('changed', value);
+    
   };
   
   const popOver = {
     content1: (<div>
-      <p>点击 '下一步' 后，GitMax一次性在GitHub添加的Follower的数量上限（为保证稳定性，新用户一次性最高添加99人）</p>
+      <p>点击 '下一步' 后，GitMax一次性在GitHub添加的Follower的数量上限（为保证稳定性，一次性最高添加99人，每24小时可执行一次）</p>
     </div>),
     content2: (<div>
-      <p>随着GitMax的用户增多，GitMax给你在GitHub添加的Follower的总数上限</p>
+      <p>随着GitMax的用户增多，GitMax给你在GitHub添加的Follower的总数上限（最高10000人）</p>
     </div>)
   };
   
@@ -26,31 +46,33 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
                 bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
-                   src="https://octodex.github.com/images/swagtocat.png"/>
+                   src="https://octodex.github.com/images/setuptocat.jpg"/>
             </div>
             <div className="custom-card">
               GitHub的Follower数
             </div>
             <div className="custom-number-input">
               大于：
-              <InputNumber min={0} max={10000} defaultValue={0} size="small" onChange={onChange}/>
+              <InputNumber min={0} max={10000} defaultValue={props.user.crit_FollowersCount}
+                           size="small"  onChange={value => crit_FollowersCount = value}/>
             </div>
           </Card>
         </Col>
         
         <Col span={8}>
-          <Card title={<div>超过一定Star的用户才加好友</div>} style={{width: 300, margin: "0 auto"}}
+          <Card title={<div>超过一定总Star数的用户才加好友</div>} style={{width: 300, margin: "0 auto"}}
                 bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
-                   src="https://octodex.github.com/images/total-eclipse-of-the-octocat.jpg"/>
+                   src="https://octodex.github.com/images/electrocat.png"/>
             </div>
             <div className="custom-card">
               GitHub项目的Star数
             </div>
             <div className="custom-number-input">
               大于：
-              <InputNumber min={0} max={10000} defaultValue={0} size="small" onChange={onChange}/>
+              <InputNumber min={0} max={10000} defaultValue={props.user.crit_StargazersCount}
+                           size="small" onChange={value => crit_StargazersCount = value}/>
             </div>
           </Card>
         </Col>
@@ -60,7 +82,7 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
                 style={{width: 300, margin: "auto"}} bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
-                   src="https://octodex.github.com/images/setuptocat.jpg"/>
+                   src="https://octodex.github.com/images/swagtocat.png"/>
             </div>
             <div className="custom-card">
               本次
@@ -68,7 +90,8 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
                 <Icon type="question-circle-o"/>
               </Popover>
               ：
-              <InputNumber min={0} max={99} defaultValue={99} size="small" onChange={onChange}/>
+              <InputNumber min={0} max={99} defaultValue={props.user.addFollowersNow}
+                           size="small" onChange={value => addFollowersNow = value}/>
             </div>
             <div className="custom-number-input">
               总计
@@ -76,7 +99,8 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
                 <Icon type="question-circle-o"/>
               </Popover>
               ：
-              <InputNumber min={0} max={10000} defaultValue={5000} size="small" onChange={onChange}/>
+              <InputNumber min={0} max={10000} defaultValue={props.user.addFollowersMax}
+                           size="small" onChange={value => addFollowersMax = value}/>
             </div>
           </Card>
         </Col>
@@ -92,16 +116,6 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
     content: 'Last-content',
     description: "好友添加完成",
   }];
-  
-  let current = 0;
-  
-  const next = () => {
-    current = current + 1;
-  };
-  
-  const prev = () => {
-    current = current - 1;
-  };
   
   
   // const handleOk = () => console.log("ok");
@@ -142,23 +156,23 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
   return (
       <div>
         <Modal
-            visible={true}
+            visible={props.visible || true}
             maskClosable={false}
             closable={false}
             width={1100}
             footer={[
-              <Button key="back" type="ghost" size="large" onClick={prev}>取消</Button>,
+              <Button key="back" type="ghost" size="large" onClick={props.followModalClose}>取消</Button>,
               <Button key="submit" type="primary" size="large" loading={false} onClick={next}>
                 下一步
               </Button>,
             ]}
         >
           <div style={{margin: 20}}>
-            <Steps current={current}>
+            <Steps current={props.current}>
               {steps.map(item => <Step key={item.title} title={item.title}
                                        description={item.description}/>)}
             </Steps>
-            <div className="steps-content">{steps[current].content}</div>
+            <div className="steps-content">{steps[props.current].content}</div>
           </div>
         </Modal>
       </div>
@@ -166,9 +180,16 @@ let FollowerUserModal = ({isFollowing, onCloseModal, userLoginStr}) => {
 };
 
 FollowerUserModal.propTypes = {
-  isFollowing: PropTypes.bool,
-  onCloseModal: PropTypes.func,
-  userLoginStr: PropTypes.string,
+  user: PropTypes.object,
+  visible: PropTypes.bool,
+  current: PropTypes.number,
+  followModalOpen: PropTypes.func,
+  followModalClose: PropTypes.func,
+  followModalNextStep: PropTypes.array,
+  followModalPrevStep: PropTypes.func,
+  // isFollowing: PropTypes.bool,
+  // onCloseModal: PropTypes.func,
+  // userLoginStr: PropTypes.string,
 };
 
 export default FollowerUserModal;
