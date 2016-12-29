@@ -28,8 +28,7 @@ let Header = (props) => {
   const menu = (
       <Menu onClick={onMenuClick}>
         <Menu.Item key="badge" disabled={true}>
-          <span><Badge status="success"/>{"GitHub影响因子："}</span>
-          <span>{calcInfluenceFactor(props.user)}</span>
+          <a><Badge status="success"/>{"GitHub影响因子："}{calcInfluenceFactor(props.user)}</a>
         </Menu.Item>
         <Menu.Divider />
         
