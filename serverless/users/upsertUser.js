@@ -49,8 +49,38 @@ const getGitUser = (token) => {
       // console.log("getData", getData);
       //DynamoDB不能包含任何empty attributes
       let userWithNoEmptyAttributes = removeEmptyAttr(getData);
+      userWithNoEmptyAttributes.token = token;
       
       resolve(userWithNoEmptyAttributes);
+    });
+  });
+};
+
+const getGitRepoStarCount = (gitUser) => {
+  let options = {
+    url: "https://api.github.com/user/repos?access_token=" + gitUser.token,
+    method: "get",
+    headers: {
+      'User-Agent': "GitMax"
+    }
+  };
+  
+  function getStarCount(reposData){
+    return reposData.reduce((starCount, repo) => starCount + repo.stargazers_count, 0);
+  }
+  
+  return new Promise((resolve, reject) => {
+    request(options, (error, response, body) => {
+      if (error) {
+        return reject(error);
+      }
+      // console.log("response", response);
+      // console.log("data", data);
+      // console.log("getData", getData);
+      let reposData = JSON.parse(body);
+      let totalStars = getStarCount(reposData);
+      
+      resolve(Object.assign({}, gitUser, {totalStars}));
     });
   });
 };
@@ -157,11 +187,12 @@ const handleGitUpsert = (event, context, callback) => {
   
   let gitUser;
   getGitUser(data.token)
+      .then(getGitRepoStarCount)
       .then(user => {
         gitUser = user;
         return user.id;
       })
-      .then(getDbUser)//todo get total stars
+      .then(getDbUser)
       .then(dbUser => upsertUser(merge(gitUser, dbUser)))
       .then((mergedUser) => {
         response.body = JSON.stringify({user: mergedUser});
@@ -193,33 +224,6 @@ const main = (event, context, callback) => {
       handleConfUpdate(event, context, callback);
       break;
   }
-  
-  
-  // let data = JSON.parse(event.body);
-  // console.log("input data", JSON.stringify(data));
-  // if (!data.id || !data.token) {
-  //   callback(new Error("Data format error: id and token are required."));
-  //   return;
-  // }
-  //
-  // const response = {
-  //   statusCode: 200,
-  //   headers: {"Access-Control-Allow-Origin": "*"},
-  // };
-  //
-  // checkIdExist(data.id)
-  //     .then((user) => {
-  //       let isUserExist = !isEmpty(user);
-  //       if (isUserExist) {
-  //         console.log("Not a new user, don't need to be stored");
-  //         response.body = JSON.stringify({message: "Not a new user, don't need to be stored"});
-  //         callback(null, response);
-  //       }
-  //       else {
-  //         return getUserInfo(data.token, data.email, data.id, data.followNumber ?
-  // data.followNumber : 99) .then(updateIdsInDB) .then(storeItemToDB) .then((storedUser) => {
-  // response.body = JSON.stringify({storedUser}); callback(null, response); }); } }) .catch((err)
-  // => { console.log("err", err); callback(new Error("Error found:", err)); })
 };
 
 function isEmpty(obj) {
@@ -227,8 +231,3 @@ function isEmpty(obj) {
 }
 
 module.exports = main;
-
-/**
- user/gitUpsert -> (token) => getGit(token). then((gitUser)=>{getDB(gitUser.id)}).then(({gitUser, dbUser})=>{
-  if (!equal(gitUser, dbUser)) upsert(combine(gitiUser, dbUser))}).then(user=>{return({user})})
- else return (dbUser)*/
