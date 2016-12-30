@@ -5,6 +5,6 @@
 'use strict';
 
 module.exports = {
-  addUser: require('./addUser'),
+  upsertUser: require('./upsertUser'),
   followUsers: require('./followUsers'),
 };

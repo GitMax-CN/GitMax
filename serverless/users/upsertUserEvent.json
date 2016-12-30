@@ -1,0 +1,56 @@
+{
+    "resource": "/user/gitUpsert",
+    "path": "/user/gitUpsert",
+    "httpMethod": "POST",
+    "headers": {
+        "Accept": "*/*",
+        "Accept-Encoding": "gzip, deflate, br",
+        "Accept-Language": "en,zh-CN;q=0.8,zh;q=0.6,fr;q=0.4,zh-TW;q=0.2",
+        "Cache-Control": "no-cache",
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "CA",
+        "Content-Type": "application/json",
+        "Host": "c78yntmlp2.execute-api.us-east-1.amazonaws.com",
+        "Origin": "chrome-extension://fhbjgbiflinjbdggehcddcbncdddomop",
+        "Postman-Token": "fd2100c2-2eec-6144-01f8-4bbd7b3641b1",
+        "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36",
+        "Via": "1.1 d01884a3320364227d925bce1a38f0ad.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "m5ntTsHoC-gfJU3YaPNJUg7jWbtVnKnMWJ96dnly19kSPzuLA4vjyw==",
+        "X-Forwarded-For": "50.68.182.98, 54.239.203.60",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "queryStringParameters": null,
+    "pathParameters": {"id": "73ffea4b-e1b2-4c18-93b3-83ff6ed818e5"},
+    "stageVariables": null,
+    "requestContext": {
+        "accountId": "151302725877",
+        "resourceId": "2ctou0",
+        "stage": "dev",
+        "requestId": "73ffea4b-e1b2-4c18-93b3-83ff6ed818e5",
+        "identity": {
+            "cognitoIdentityPoolId": null,
+            "accountId": null,
+            "cognitoIdentityId": null,
+            "caller": null,
+            "apiKey": null,
+            "sourceIp": "50.68.182.98",
+            "accessKey": null,
+            "cognitoAuthenticationType": null,
+            "cognitoAuthenticationProvider": null,
+            "userArn": null,
+            "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.98 Safari/537.36",
+            "user": null
+        },
+        "resourcePath": "/todos",
+        "httpMethod": "POST",
+        "apiId": "c78yntmlp2"
+    },
+
+    "body": "{\"token\": \"d58a367f1fbd94c72be08f96320e7b8eab90e57d\"}",
+    "isBase64Encoded": false
+}

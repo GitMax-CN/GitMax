@@ -210,7 +210,7 @@ let FollowerUserModal = (props) => {
   return (
       <div>
         <Modal
-            visible={props.visible || true}
+            visible={props.visible}
             maskClosable={false}
             closable={false}
             width={1100}

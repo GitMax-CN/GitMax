@@ -52,13 +52,17 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
-  addUser:
-    handler: users.addUser
+  upsertUser:
+    handler: users.upsertUser
     memorySize: 128 # optional, default is 1024
     timeout: 10 # optional, default is 6
     events:
       - http:
-          path: addUser
+          path: user/gitUpsert # User initial login
+          method: post
+          cors: true
+      - http:
+          path: user/confUpdate # User update configuration
           method: post
           cors: true
 
@@ -67,8 +71,11 @@ functions:
     memorySize: 512 # optional, default is 1024
     timeout: 60 # optional, default is 6
     events:
-#    - stream: ${self:custom.devStream}
-      - stream: ${self:custom.${self:provider.stage}Stream}
+      - http:
+          path: user/follow # follow users
+          method: post
+          cors: true
+#      - stream: ${self:custom.${self:provider.stage}Stream}
 
   loginStart:
     handler: login.loginStart
@@ -91,27 +98,53 @@ functions:
 
 # 当前实用的resource - you can add CloudFormation resource templates here
 
-#resources:
-#  Resources:
-#    UsersTable:
-#      Type: 'AWS::DynamoDB::Table'
-#      DeletionPolicy: Retain
-#      Properties:
-#        AttributeDefinitions:
-#          -
-#            AttributeName: id
-#            AttributeType: S
-#        KeySchema:
-#          -
-#            AttributeName: id
-#            KeyType: HASH
-#        ProvisionedThroughput:
-#          ReadCapacityUnits: 10
-#          WriteCapacityUnits: 10
-#        TableName: 'Users'
-#        StreamSpecification:
-#          StreamViewType: NEW_IMAGE
-#
+resources:
+  Resources:
+    UsersTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: id
+            AttributeType: N
+        KeySchema:
+          -
+            AttributeName: id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 100
+          WriteCapacityUnits: 100
+        TableName: 'Users'
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
+
+
+    FriendsTable:
+      Type: 'AWS::DynamoDB::Table'
+      DeletionPolicy: Retain
+      Properties:
+        AttributeDefinitions:
+          -
+            AttributeName: userId
+            AttributeType: N
+          -
+            AttributeName: friendId
+            AttributeType: N
+        KeySchema:
+          -
+            AttributeName: userId
+            KeyType: HASH
+          -
+            AttributeName: friendId
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 100
+          WriteCapacityUnits: 100
+        TableName: 'Friends'
+        StreamSpecification:
+          StreamViewType: NEW_IMAGE
+
 #    UserIdsTable:
 #      Type: 'AWS::DynamoDB::Table'
 #      DeletionPolicy: Retain
@@ -128,34 +161,6 @@ functions:
 #          ReadCapacityUnits: 10
 #          WriteCapacityUnits: 10
 #        TableName: 'UserIds'
-#
-#
-#    FriendsTable:
-#      Type: 'AWS::DynamoDB::Table'
-#      DeletionPolicy: Retain
-#      Properties:
-#        AttributeDefinitions:
-#          -
-#            AttributeName: userId
-#            AttributeType: S
-#          -
-#            AttributeName: friendId
-#            AttributeType: S
-#        KeySchema:
-#          -
-#            AttributeName: userId
-#            KeyType: HASH
-#          -
-#            AttributeName: friendId
-#            KeyType: RANGE
-#        ProvisionedThroughput:
-#          ReadCapacityUnits: 10
-#          WriteCapacityUnits: 10
-#        TableName: 'Friends'
-#        StreamSpecification:
-#          StreamViewType: NEW_IMAGE
-
-
 
 #plugins:
 #  - serverless-client-s3

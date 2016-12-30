@@ -156,24 +156,25 @@ const loginWithPopup = () => {
 };
 
 /**
- * @param user
+ * @param token
  * @returns {Promise.<TResult>|*|Promise<U>|Thenable<U>}
  */
-const upsertUser = (user) => {
+const upsertUser = (token) => {
   // console.log("user", user);
   const stage = config.getStage();
-  const url = config.lambda[stage].addUserEndpoint;
+  const url = config.lambda[stage].gitUpsertEndpoint;
   const options = {
     method: "POST",
-    body: JSON.stringify(user),
+    body: JSON.stringify({token: token}),
   };
   
   // console.log("options", options);
   return fetch(url, options)
       .then(checkStatus)
       .then(response => response.json())
-      .then(response => {//{user, data}
+      .then(response => {//{user}
         console.log("response", response);
+        throw new Error("user stopped manually");
         return response;
       });
 };
@@ -200,7 +201,7 @@ export const userLogin = () => {
     
     dispatch(userLoginStart());
     loginWithPopup()
-        .then(getUserInfo)
+        // .then(getUserInfo)
         .then(upsertUser)
         .then(({user, data}) => {
           dispatch(userLoginSuccess(user));
