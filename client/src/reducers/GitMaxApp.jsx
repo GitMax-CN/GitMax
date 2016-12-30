@@ -13,6 +13,7 @@ export const initialState = {
   userFollowModal: {
     visible: false,
     current: 0,
+    nextBtnLoading: false,
   },
   followers: {
     isFetching: false,
@@ -23,6 +24,7 @@ export const initialState = {
 const gitMaxApp = (state = initialState, action) => {
   let newUser;
   let newCurrent;
+  let newUserFollowModal;
   
   switch (action.type) {
     case "USER_LOGIN_START":
@@ -34,7 +36,7 @@ const gitMaxApp = (state = initialState, action) => {
     case "USER_LOGIN_SUCCESS":
       console.log("USER_LOGIN_SUCCESS, action.user", action.user);
       newUser = Object.assign({},
-          {user: userBase},
+          state.user,
           action.user
       );
       return Object.assign({},
@@ -83,13 +85,18 @@ const gitMaxApp = (state = initialState, action) => {
     case "FOLLOW_NEXT_STEP":
       console.log("FOLLOW_NEXT_STEP");
       newCurrent = state.userFollowModal.current + 1;
-      return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent,}});
+      return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent, nextBtnLoading: false}});
     
     case "FOLLOW_PREV_STEP":
       console.log("FOLLOW_PREV_STEP");
       newCurrent = state.userFollowModal.current - 1;
-      return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent,}});
-    
+      return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent, nextBtnLoading: false}});
+  
+    case "LOAD_NEXT_BUTTON":
+      console.log("LOAD_NEXT_BUTTON", action);
+      newUserFollowModal = Object.assign({}, state.userFollowModal, {nextBtnLoading: true});
+      return Object.assign({}, state, newUserFollowModal);
+      
     case "USER_REFRESH":
       console.log("USER_REFRESH start:", action.user);
       return Object.assign({},

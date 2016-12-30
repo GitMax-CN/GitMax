@@ -76,6 +76,13 @@ const followUserSuccess = (followers) => {
   }
 };
 
+const loadNextBtn = (msg) => {
+  return {
+    type: "LOAD_NEXT_BUTTON",
+    message: msg || "处理中"
+  }
+};
+
 const followUserFail = () => {
   return {
     type: "FOLLOW_USER_FAIL"
@@ -157,9 +164,9 @@ const loginWithPopup = () => {
 
 /**
  * @param token
- * @returns {Promise.<TResult>|*|Promise<U>|Thenable<U>}
+ * @returns {Promise.<user>}
  */
-const upsertUser = (token) => {
+const upsertGitUser = (token) => {
   // console.log("user", user);
   const stage = config.getStage();
   const url = config.lambda[stage].gitUpsertEndpoint;
@@ -174,9 +181,45 @@ const upsertUser = (token) => {
       .then(response => response.json())
       .then(response => {//{user}
         console.log("response", response);
-        throw new Error("user stopped manually");
         return response;
       });
+};
+
+/**
+ * Save the changed config to database if config is changed
+ * @param user
+ * @param data
+ * @returns {Promise.<user>}
+ */
+const saveUserIfChanged = (user, data) => {
+  return new Promise((resolve, reject) => {
+    const configChanged = isConfigChanged(user, data);
+    if (configChanged) {
+      console.log("configChanged");
+      const newUser = Object.assign({}, user, data);
+      resolve(updateConfig(newUser));
+    } else {
+      console.log("config not Changed");
+      resolve(user);
+    }
+  })
+};
+
+const updateConfig = (user) => {
+  const stage = config.getStage();
+  const url = config.lambda[stage].configUpdateEndpoint;
+  const options = {
+    method: "POST",
+    body: JSON.stringify({user: user}),
+  };
+  
+  return fetch(url, options)
+      .then(checkStatus)
+      .then(response => response.json())
+      .then(response => {
+        console.log("response", response);
+        return response;
+      })
 };
 
 const followUsers = (user) => {
@@ -201,8 +244,8 @@ export const userLogin = () => {
     
     dispatch(userLoginStart());
     loginWithPopup()
-        // .then(getUserInfo)
-        .then(upsertUser)
+    // .then(getUserInfo)
+        .then(upsertGitUser)
         .then(({user, data}) => {
           dispatch(userLoginSuccess(user));
           dispatch(followModalOpen());
@@ -223,27 +266,38 @@ export const userLogout = () => {
 
 const userCanFollow = (user, data) => {
   const hasNewCrit = Object.keys(data).reduce((canFollow, key) => {
-    return canFollow || user[key]!==data[key]
+    return canFollow || user[key] !== data[key]
   }, false);
   
-  const passTimeLimit = isNaN(user.lastTimeFollow) || (new Date().getTime() - user.lastTimeFollow) > 24 * 60 * 60 * 1000;
+  const passTimeLimit = isNaN(user.lastTimeFollow) ||
+      (new Date().getTime() - user.lastTimeFollow) > 24 * 60 * 60 * 1000;
   return hasNewCrit || passTimeLimit;
 };
 
-export const onFollowModalNextStep = (user, currentStep, data) => {
+const isConfigChanged = (user, data) => {
+  console.log("user", user);
+  console.log("data", data);
+  
+  return Object.keys(data).reduce((result, key) => {
+    return result || user[key] !== data[key];
+  }, false);
+};
+
+export const onFollowModalNextStep = (currentStep, data) => {
   console.log("currentStep, data", currentStep, data);
   
   switch (currentStep) {
     case 0:
-      return (dispatch) => {
-        if (!userCanFollow(user, data)){
-          return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
-        }
-        
-        dispatch(followModalNextStep());
-        // const {crit_FollowersCount, crit_StargazersCount, addFollowersNow, addFollowersMax} = data;
-        const newUser = Object.assign({}, user, data);
-        upsertUser(newUser)
+      return (dispatch, getState) => {
+        let user = getState().user;
+  
+        dispatch(loadNextBtn("保存中"));
+        saveUserIfChanged(user, data)
+            .then(() => {
+              dispatch(followModalNextStep());
+              dispatch(loadNextBtn("添加中"));
+              throw new Error("Stopped manually for testing");
+            })
             .then(followUsers)
             .then(({followers, data}) => {
               dispatch(followUserSuccess(followers));
@@ -254,7 +308,12 @@ export const onFollowModalNextStep = (user, currentStep, data) => {
               dispatch(followUserFail(err));
             });
       };
-      
+    case 1:
+      return (dispatch) => {
+        if (!userCanFollow(user, data)) {
+          return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
+        }
+      };
     default:
       return (dispatch) => {
         dispatch(followModalNextStep());

@@ -209,7 +209,25 @@ const handleGitUpsert = (event, context, callback) => {
 };
 
 function handleConfUpdate(event, context, callback) {
-  
+  let data = JSON.parse(event.body);
+  console.log("input data", JSON.stringify(data));
+  if (!data.user) {
+    callback(new Error("Data format error: not found `user`."));
+    return;
+  }
+  let response = {
+    statusCode: 200,
+    headers: {"Access-Control-Allow-Origin": "*"},
+  };
+  upsertUser(data.user)
+      .then((user) => {
+        response.body = JSON.stringify({user: user});
+        callback(null, response);
+      })
+      .catch((err) => {
+        console.log("err", err);
+        callback(new Error("Error found:", err));
+      });
 }
 
 const main = (event, context, callback) => {

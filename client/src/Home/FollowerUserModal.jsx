@@ -160,7 +160,7 @@ let FollowerUserModal = (props) => {
           <div>
             <Button key="back" type="ghost" size="large"
                     onClick={props.followModalClose}>取消</Button>
-            <Button key="submit" type="primary" size="large" loading={props.current === 1}
+            <Button key="submit" type="primary" size="large" loading={props.nextBtnLoading}
                     onClick={next}>
               下一步
             </Button>

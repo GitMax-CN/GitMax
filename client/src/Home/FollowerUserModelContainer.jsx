@@ -13,6 +13,7 @@ const mapStateToProps = (state, ownProps) => {
     user: state.user,
     visible: state.userFollowModal.visible,
     current: state.userFollowModal.current,
+    nextBtnLoading: state.userFollowModal.nextBtnLoading,
   }
 };
 const mapDispatchToProps = (dispatch) => {
@@ -21,7 +22,7 @@ const mapDispatchToProps = (dispatch) => {
     followModalOpen: () => dispatch(followModalOpen()),
     followModalClose: () => dispatch(followModalClose()),
     followModalPrevStep: () => dispatch(followModalPrevStep()),
-    followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(state.user, current, data)),
+    followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
   }
 };
 
