@@ -21,7 +21,7 @@ const mapDispatchToProps = (dispatch) => {
     followModalOpen: () => dispatch(followModalOpen()),
     followModalClose: () => dispatch(followModalClose()),
     followModalPrevStep: () => dispatch(followModalPrevStep()),
-    followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
+    followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(state.user, current, data)),
   }
 };
 

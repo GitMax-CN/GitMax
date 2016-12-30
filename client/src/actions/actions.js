@@ -69,9 +69,10 @@ export const userAcknowledgeFollow = () => {
   }
 };
 
-const followUserSuccess = () => {
+const followUserSuccess = (followers) => {
   return {
-    type: "FOLLOW_USER_SUCCESS"
+    type: "FOLLOW_USER_SUCCESS",
+    followers
   }
 };
 
@@ -177,6 +178,23 @@ const upsertUser = (user) => {
       });
 };
 
+const followUsers = (user) => {
+  const stage = config.getStage();
+  const url = config.lambda[stage].followUsersEndpoint;
+  const options = {
+    method: "POST",
+    body: JSON.stringify(user),
+  };
+  
+  return fetch(url, options)
+      .then(checkStatus)
+      .then(response => response.json())
+      .then(response => {
+        console.log("response", response);
+        return response;
+      })
+};
+
 export const userLogin = () => {
   return (dispatch) => {
     
@@ -202,25 +220,38 @@ export const userLogout = () => {
   };
 };
 
-export const onFollowModalNextStep = (currentStep, data) => {
+const userCanFollow = (user, data) => {
+  const hasNewCrit = Object.keys(data).reduce((canFollow, key) => {
+    return canFollow || user[key]!==data[key]
+  }, false);
+  
+  const passTimeLimit = isNaN(user.lastTimeFollow) || (new Date().getTime() - user.lastTimeFollow) > 24 * 60 * 60 * 1000;
+  return hasNewCrit || passTimeLimit;
+};
+
+export const onFollowModalNextStep = (user, currentStep, data) => {
   console.log("currentStep, data", currentStep, data);
   
   switch (currentStep) {
     case 0:
       return (dispatch) => {
+        if (!userCanFollow(user, data)){
+          return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
+        }
+        
         dispatch(followModalNextStep());
         // const {crit_FollowersCount, crit_StargazersCount, addFollowersNow, addFollowersMax} = data;
         const newUser = Object.assign({}, user, data);
         upsertUser(newUser)
-            .then()
+            .then(followUsers)
+            .then(({followers, data}) => {
+              dispatch(followUserSuccess(followers));
+              dispatch(followModalNextStep());
+            })
             .catch(err => {
               console.error(err);
               dispatch(followUserFail(err));
             });
-        
-        setTimeout(() => {
-          dispatch(followModalNextStep())
-        }, 3000);
       };
       
     default:
