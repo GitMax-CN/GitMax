@@ -210,6 +210,7 @@ export const onFollowModalNextStep = (currentStep, data) => {
     const {crit_FollowersCount, crit_StargazersCount, addFollowersNow, addFollowersMax} = data;
     return (dispatch) => {
       dispatch(followModalNextStep());
+      setTimeout(()=>{dispatch(followModalNextStep())}, 3000);
     }
   } else return (dispatch) => {
       dispatch(followModalNextStep());

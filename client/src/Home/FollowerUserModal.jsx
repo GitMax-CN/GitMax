@@ -1,9 +1,10 @@
 import React, {PropTypes} from 'react';
 import {Modal, Button, Steps, InputNumber, Row, Col, Card, Icon, Popover} from 'antd';
+import Spinner from 'react-spinkit';
 const Step = Steps.Step;
 
 let FollowerUserModal = (props) => {
-  console.log("props",props);
+  console.log("props", props);
   let crit_FollowersCount = props.user.crit_FollowersCount,
       crit_StargazersCount = props.user.crit_StargazersCount,
       addFollowersNow = props.user.addFollowersNow,
@@ -11,15 +12,18 @@ let FollowerUserModal = (props) => {
   
   const next = () => {
     // 在modal的每一步中，'下一步'按钮对应传递的参数不同
-    switch (props.current){
-      case 0: return props.followModalNextStep(props.current, {
-            crit_FollowersCount,
-            crit_StargazersCount,
-            addFollowersNow,
-            addFollowersMax,
-      });
-      case 1: return props.followModalNextStep(props.current);
-      default: return props.followModalClose();
+    switch (props.current) {
+      case 0:
+        return props.followModalNextStep(props.current, {
+          crit_FollowersCount,
+          crit_StargazersCount,
+          addFollowersNow,
+          addFollowersMax,
+        });
+      case 1:
+        return props.followModalNextStep(props.current);
+      default:
+        return props.followModalClose();
     }
   };
   
@@ -54,7 +58,7 @@ let FollowerUserModal = (props) => {
             <div className="custom-number-input">
               大于：
               <InputNumber min={0} max={10000} defaultValue={props.user.crit_FollowersCount}
-                           size="small"  onChange={value => crit_FollowersCount = value}/>
+                           size="small" onChange={value => crit_FollowersCount = value}/>
             </div>
           </Card>
         </Col>
@@ -109,14 +113,64 @@ let FollowerUserModal = (props) => {
     description: "请设置您想在GitHub与哪些人互相Follow",
   }, {
     title: '开始添加',
-    content: 'Second-content',
+    content: <div>
+      <div style={{marginTop: 150}}>
+        <Spinner spinnerName='double-bounce' noFadeIn/>
+        <p>正在为您添加好友，请稍候...</p>
+      </div>
+    </div>,
     description: "好友添加中...",
   }, {
     title: '添加成功',
-    content: 'Last-content',
+    content: <div>
+      <Row>
+        <Col span={12}>
+          <img style={{width: 250}} src="https://octodex.github.com/images/welcometocat.png"/>
+          {/*<Progress type="circle" percent={100} />*/}
+          <h2>恭喜你已经完成好友添加</h2>
+          <br/>
+          <p>快去你的GitHub账户，
+            <a href={`https://www.github.com/${props.user.login}/followers`} target="_blank">看看你的新朋友吧</a>
+          </p>
+          <p>随着用户增多，GitMax会自动为你添加更多好友</p>
+        </Col>
+        <Col span={12}>
+          {/*显示follow的用户*/}
+          <Col span={8}>
+          
+          </Col>
+          <Col span={8}>
+          
+          </Col>
+          <Col span={8}>
+          
+          </Col>
+        </Col>
+      </Row>
+    
+    
+    </div>,
     description: "好友添加完成",
   }];
   
+  
+  const modalFooter = <div>
+    {
+      props.current !== 2 ?
+          <div>
+            <Button key="back" type="ghost" size="large"
+                    onClick={props.followModalClose}>取消</Button>
+            <Button key="submit" type="primary" size="large" loading={props.current === 1}
+                    onClick={next}>
+              下一步
+            </Button>
+          </div>
+          :
+          <Button key="submit" type="primary" size="large" onClick={next}>
+            完成
+          </Button>
+    }
+  </div>;
   
   // const handleOk = () => console.log("ok");
   // const handleCancel = () => console.log("cancel");
@@ -160,12 +214,8 @@ let FollowerUserModal = (props) => {
             maskClosable={false}
             closable={false}
             width={1100}
-            footer={[
-              <Button key="back" type="ghost" size="large" onClick={props.followModalClose}>取消</Button>,
-              <Button key="submit" type="primary" size="large" loading={false} onClick={next}>
-                下一步
-              </Button>,
-            ]}
+            wrapClassName="vertical-center-modal"
+            footer={modalFooter}
         >
           <div style={{margin: 20}}>
             <Steps current={props.current}>
