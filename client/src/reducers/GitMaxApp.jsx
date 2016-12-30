@@ -16,7 +16,7 @@ export const initialState = {
   },
   followers: {
     isFetching: false,
-    list:[],
+    list: [],
   }
 };
 
@@ -67,6 +67,13 @@ const gitMaxApp = (state = initialState, action) => {
           {isFollowing: false}
       );
     
+    case "FOLLOW_USER_FAIL":
+      return Object.assign({},
+          state,
+          {isFollowing: true}
+      );
+    
+    
     case "FOLLOW_MODAL_OPEN":
       console.log("FOLLOW_MODAL_OPEN");
       return Object.assign({}, state, {userFollowModal: {visible: true, current: 0,}});
@@ -77,19 +84,19 @@ const gitMaxApp = (state = initialState, action) => {
       console.log("FOLLOW_NEXT_STEP");
       newCurrent = state.userFollowModal.current + 1;
       return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent,}});
-      
+    
     case "FOLLOW_PREV_STEP":
       console.log("FOLLOW_PREV_STEP");
       newCurrent = state.userFollowModal.current - 1;
       return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent,}});
-      
+    
     case "USER_REFRESH":
       console.log("USER_REFRESH start:", action.user);
       return Object.assign({},
           state,
           {user: action.user}
       );
-      
+    
     default:
       return state;
   }

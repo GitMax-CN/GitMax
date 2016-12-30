@@ -71,7 +71,7 @@ let FollowerUserModal = (props) => {
                    src="https://octodex.github.com/images/electrocat.png"/>
             </div>
             <div className="custom-card">
-              GitHub项目的Star数
+              GitHub项目的Star总数
             </div>
             <div className="custom-number-input">
               大于：

@@ -75,6 +75,12 @@ const followUserSuccess = () => {
   }
 };
 
+const followUserFail = () => {
+  return {
+    type: "FOLLOW_USER_FAIL"
+  }
+};
+
 const checkStatus = (response) => {
   if (response.status >= 200 && response.status < 300) {
     return response
@@ -100,10 +106,8 @@ const getUserInfo = (token) => {
       .then(checkStatus)
       .then(response => response.json())
       .then(user => {
-        return {
-          user,
-          token
-        }
+        user.token = token;
+        return user
       });
 };
 
@@ -119,7 +123,7 @@ const loginWithPopup = () => {
     let pollTimer = window.setInterval(() => {
       try {
         // console.log(win.document.URL);
-        if (win.closed){
+        if (win.closed) {
           window.clearInterval(pollTimer);
           reject(new Error("User closed login window"));
         }
@@ -128,67 +132,61 @@ const loginWithPopup = () => {
           const acToken = getUrlParam(url, 'access_token');
           // const tokenType = getUrlParam(url, 'token_type');
           // const expiresIn = getUrlParam(url, 'expires_in');
-        
+          
           console.log("acToken", acToken);
-        
+          
           console.log("closing window");
           win.close();
           window.clearInterval(pollTimer);
-        
+          
           resolve(acToken);
         }
       } catch (err) {
-        switch (err.name){
-          // Prevent cross-origin errors from being thrown
-          case "SecurityError" : break;
-          default: reject(err);
+        switch (err.name) {
+            // Prevent cross-origin errors from being thrown
+          case "SecurityError" :
+            break;
+          default:
+            reject(err);
         }
       }
     }, 200);
   });
 };
 
-const addFollowers = (data) => {
-  let user = data.user,
-      token = data.token;
-  
+/**
+ * @param user
+ * @returns {Promise.<TResult>|*|Promise<U>|Thenable<U>}
+ */
+const upsertUser = (user) => {
   // console.log("user", user);
   const stage = config.getStage();
   const url = config.lambda[stage].addUserEndpoint;
   const options = {
     method: "POST",
-    body: JSON.stringify({
-      displayName: user.name,
-      email: user.email,
-      photoURL: user.avatar_url,
-      id: String(user.id),
-      token: token,
-      followNumber: 99, // Todo make this an option for users
-    }),
+    body: JSON.stringify(user),
   };
   
   // console.log("options", options);
   return fetch(url, options)
       .then(checkStatus)
       .then(response => response.json())
-      .then(response => {
-        return {
-          response: response,
-          user: user
-        }
+      .then(response => {//{user, data}
+        console.log("response", response);
+        return response;
       });
 };
 
 export const userLogin = () => {
   return (dispatch) => {
+    
     dispatch(userLoginStart());
-  
     loginWithPopup()
         .then(getUserInfo)
-        .then(addFollowers)
-        .then((data)=>{
-          dispatch(userLoginSuccess(data.user));
-          dispatch(followUserStart());
+        .then(upsertUser)
+        .then(({user, data}) => {
+          dispatch(userLoginSuccess(user));
+          dispatch(followModalOpen());
         })
         .catch((err) => {
           console.error("error", err);
@@ -206,15 +204,30 @@ export const userLogout = () => {
 
 export const onFollowModalNextStep = (currentStep, data) => {
   console.log("currentStep, data", currentStep, data);
-  if (currentStep===0){
-    const {crit_FollowersCount, crit_StargazersCount, addFollowersNow, addFollowersMax} = data;
-    return (dispatch) => {
-      dispatch(followModalNextStep());
-      setTimeout(()=>{dispatch(followModalNextStep())}, 3000);
-    }
-  } else return (dispatch) => {
-      dispatch(followModalNextStep());
-    }
+  
+  switch (currentStep) {
+    case 0:
+      return (dispatch) => {
+        dispatch(followModalNextStep());
+        // const {crit_FollowersCount, crit_StargazersCount, addFollowersNow, addFollowersMax} = data;
+        const newUser = Object.assign({}, user, data);
+        upsertUser(newUser)
+            .then()
+            .catch(err => {
+              console.error(err);
+              dispatch(followUserFail(err));
+            });
+        
+        setTimeout(() => {
+          dispatch(followModalNextStep())
+        }, 3000);
+      };
+      
+    default:
+      return (dispatch) => {
+        dispatch(followModalNextStep());
+      }
+  }
 };
 
 export const refreshUser = () => {
