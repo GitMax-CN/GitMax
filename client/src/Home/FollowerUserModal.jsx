@@ -5,10 +5,10 @@ const Step = Steps.Step;
 
 let FollowerUserModal = (props) => {
   console.log("props", props);
-  let crit_FollowersCount = props.user.crit_FollowersCount,
-      crit_StargazersCount = props.user.crit_StargazersCount,
-      addFollowersNow = props.user.addFollowersNow,
-      addFollowersMax = props.user.addFollowersMax;
+  let crit_FollowersCount = props.crit_FollowersCount,
+      crit_StargazersCount = props.crit_StargazersCount,
+      addFollowersNow = props.addFollowersNow,
+      addFollowersMax = props.addFollowersMax;
   
   const next = () => {
     // 在modal的每一步中，'下一步'按钮对应传递的参数不同
@@ -57,7 +57,7 @@ let FollowerUserModal = (props) => {
             </div>
             <div className="custom-number-input">
               大于：
-              <InputNumber min={0} max={10000} defaultValue={props.user.crit_FollowersCount}
+              <InputNumber min={0} max={10000} defaultValue={crit_FollowersCount}
                            size="small" onChange={value => crit_FollowersCount = value}/>
             </div>
           </Card>
@@ -75,7 +75,7 @@ let FollowerUserModal = (props) => {
             </div>
             <div className="custom-number-input">
               大于：
-              <InputNumber min={0} max={10000} defaultValue={props.user.crit_StargazersCount}
+              <InputNumber min={0} max={10000} defaultValue={crit_StargazersCount}
                            size="small" onChange={value => crit_StargazersCount = value}/>
             </div>
           </Card>
@@ -94,7 +94,7 @@ let FollowerUserModal = (props) => {
                 <Icon type="question-circle-o"/>
               </Popover>
               ：
-              <InputNumber min={0} max={99} defaultValue={props.user.addFollowersNow}
+              <InputNumber min={0} max={99} defaultValue={addFollowersNow}
                            size="small" onChange={value => addFollowersNow = value}/>
             </div>
             <div className="custom-number-input">
@@ -103,7 +103,7 @@ let FollowerUserModal = (props) => {
                 <Icon type="question-circle-o"/>
               </Popover>
               ：
-              <InputNumber min={0} max={10000} defaultValue={props.user.addFollowersMax}
+              <InputNumber min={0} max={10000} defaultValue={addFollowersMax}
                            size="small" onChange={value => addFollowersMax = value}/>
             </div>
           </Card>
@@ -172,41 +172,7 @@ let FollowerUserModal = (props) => {
     }
   </div>;
   
-  // const handleOk = () => console.log("ok");
-  // const handleCancel = () => console.log("cancel");
-  
-  // return (
-  //     <div>
-  {/*<Modal*/
-  }
-  {/*visible={isFollowing}*/
-  }
-  {/*maskClosable = {false}*/
-  }
-  {/*title="添加好友正在进行中..."*/
-  }
-  {/*onOk={onCloseModal}*/
-  }
-  {/*onCancel={onCloseModal}*/
-  }
-  {/*footer={[*/
-  }
-  {/*<Button key="submit" type="primary" size="large" loading={false} onClick={onCloseModal}>*/
-  }
-  {/*知道了*/
-  }
-  {/*</Button>,*/
-  }
-  {/*]}*/
-  }
-  {/*>*/
-  }
-  //         <p>GitMax正在努力为你添加 GitHub 好友中</p>
-  //         <br/>
-  //         <p>该过程通常在5分钟内完成，快去你的GitHub账户，<a
-  // href={`https://www.github.com/${userLoginStr}/followers`} target="_blank">看看你的新朋友吧</a></p>
-  // <br/> <br/> <p> * 恭喜你，至此你已经完成设置GitMax</p> <p> * 随着用户增多，GitMax会自动为你添加更多好友</p> </Modal> </div>
-  // );
+
   return (
       <div>
         <Modal
@@ -240,6 +206,13 @@ FollowerUserModal.propTypes = {
   // isFollowing: PropTypes.bool,
   // onCloseModal: PropTypes.func,
   // userLoginStr: PropTypes.string,
+};
+
+FollowerUserModal.defaultProps = {
+  crit_FollowersCount: 0,
+  crit_StargazersCount: 0,
+  addFollowersNow: 99,
+  addFollowersMax: 5000,
 };
 
 export default FollowerUserModal;

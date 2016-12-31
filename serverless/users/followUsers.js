@@ -46,22 +46,23 @@ const getAllUserIds = (userId) => {
   });
 };
 
-const pickFollowerIds = (candidateIds, userId, followNumber) => {
-  followNumber = Math.min(followNumber, candidateIds.length);
-  console.log("userId", userId);
-  console.log("candidateIds", candidateIds);
-  for (let i = 0; i < followNumber; i++) {// Todo use followerNumber rather than
+const randPickFollowers = (validCandis, followNumber) => {
+  followNumber = Math.min(followNumber, validCandis.length);
+  // console.log("userId", userId);
+  // console.log("candidateIds", candidateIds);
+  for (let i = 0; i < followNumber; i++) {
     // hardcoded value
-    let index = Math.floor(Math.random() * candidateIds.length);
+    let index = Math.floor(Math.random() * validCandis.length);
     
     //Swap the two elements
-    let temp = candidateIds[i];
-    candidateIds[i] = candidateIds[index];
-    candidateIds[index] = temp;
+    let temp = validCandis[i];
+    validCandis[i] = validCandis[index];
+    validCandis[index] = temp;
   }
-  let pickedIds = candidateIds.slice(0, followNumber);
-  console.log("Picked ids successfully", pickedIds);
-  return pickedIds;
+  let pickedUsers = validCandis.slice(0, followNumber);
+  console.log("Picked ids successfully", pickedUsers);
+  throw new Error("manual break");
+  return pickedUsers;
 };
 
 const getPickedUsers = (pickedIds) => {
@@ -175,58 +176,143 @@ const followAndStore = (users, user) => {
   return Promise.all(promises);
 };
 
+const getFriends = (userId) => {
+  console.log("getFriends start with id", userId);
+  const params = {
+    TableName : "Friends",
+    KeyConditionExpression: "#userId = :id",
+    ExpressionAttributeNames:{
+      "#userId": "userId"
+    },
+    ExpressionAttributeValues: {
+      ":id": userId
+    }
+  };
+  return new Promise((resolve, reject) => {
+    docClient.query(params, (err, data) => {
+      if (err) {
+        console.error("Unable to get friends. Error JSON:", JSON.stringify(err), err.stack);
+        return reject(err);
+      } else {
+        console.log("Query succeeded.", JSON.stringify(data));//Todo, comment data
+        let friends = data.Items;
+        resolve(friends);
+      }
+    });
+  });
+};
+
+const getCandisByScan = (user) => {
+  const params = { // 找到与用户互相欣赏的人，作为好友candidate
+    TableName: "Users",
+    ProjectionExpression: "#id, avatar_url, followers, following, login, #name, #token," +
+    " addFollowersMax, crit_FollowersCount, crit_StargazersCount, totalStars",
+    FilterExpression: "totalStars >= :user_star_crit AND followers >= :user_follower_crit AND" +
+    " crit_StargazersCount <= :user_star AND crit_FollowersCount <= :user_follower",
+    ExpressionAttributeNames: {
+      "#id": "id",
+      "#name": "name",
+      "#token": "token",
+    },
+    ExpressionAttributeValues: {
+      ":user_star_crit": user.crit_StargazersCount,
+      ":user_follower_crit": user.crit_FollowersCount,
+      ":user_star": user.totalStars,
+      ":user_follower": user.followers,
+    }
+  };
+  
+  return new Promise((resolve, reject) => {
+    docClient.scan(params, (err, data)=>{
+      if (err) {
+        console.error("Unable to get item. Error JSON:", JSON.stringify(err), err.stack);
+        return reject(err);
+      } else {
+        console.log("Scan succeeded.", JSON.stringify(data));//Todo, comment data
+        let candidates = data.Items;
+        resolve(candidates);
+      }
+    });
+  });
+};
+
+const removeAddedCandis = (candidates, friends) => {
+  let set = new Set();
+  friends.forEach(obj => set.add(obj.friendId));// Add all friends' Ids in a set
+  if (friends.length>0) set.add(friends[0].userId); // Remove the user from valid candidates
+  
+  let validCandis = [];
+  candidates.forEach((candidate) => {
+    if (!set.has(candidate.id)) validCandis.push(candidate);
+  });
+  return validCandis;
+};
+
+const removeFullFriendsCandidates = (candidates) => {
+  let validCandis = [];
+  candidates.forEach(candi => {
+    if (candi.addFollowersMax > candi.followers) validCandis.push(candi);
+  });
+  return validCandis;
+};
+
 module.exports = (event, context, callback) => {
   // console.log("DynamoDB triggered lambda successfully");
   // console.log("event", JSON.stringify(event));
   // console.log("context", context);
   
-  let data = event.Records[0],
-      item = data.dynamodb,
-      userDraft = Object.assign({id: item.Keys.id.S}, item.NewImage),
-      eventName = data.eventName,
-      user = {};
-  
-  // Clean user attribute
-  Object.keys(userDraft).forEach(key => {
-    let attribute = userDraft[key];
-    let value = attribute[Object.keys(attribute)[0]];
-    // console.log("Object.keys(attribute)[0]", Object.keys(attribute)[0]);
-    // console.log("Object.keys(attribute)[0]", Object.keys(attribute)[0]);
-    // console.log('attribute[Object.keys(attribute)[0]]', attribute[Object.keys(attribute)[0]]);
-    user[key] = value;
-  });
-  
+  let data = JSON.parse(event.body);
+  console.log("input data", JSON.stringify(data));
+  if (!data.user) {
+    callback(new Error("Data format error: not found `user`."));
+    return;
+  }
   let response = {
     statusCode: 200,
     headers: {"Access-Control-Allow-Origin": "*"},
   };
   
-  if (eventName !== "INSERT") {
-    console.log("DynamoDB not insertion, quiting Lambda");
-    response.body = {message: "DynamoDB update is not insertion, stop following users"};
-    callback(null, response);
-    return;
-  }
-  
-  // console.log("data", data);
-  // console.log("item", item);
-  // console.log("user", user);
-  // console.log("userId", userId);
-  // console.log("eventName", eventName);
-  
-  getAllUserIds(user.id)
-      .then(candidateIds => pickFollowerIds(candidateIds, user.id,
-          user.followNumber))//returns userIds
-      .then(getPickedUsers)// get all users
-      .then(users => followAndStore(users, user))
-      .then((friendships) => {
+  let user = data.user;
+  let friends;
+  getFriends(user.id)//获得所有好友的ids
+      .then(friendsList => friends = friendsList)
+      .then(() => getCandisByScan(user))//scan+filterExpression获得所有符合filter的用户，只传递回，login, id, 4个crits
+      .then((candidates) => removeAddedCandis(candidates, friends)) //去除已经是好友的人
+      .then((candidates) => removeFullFriendsCandidates(candidates)) //去除超过上限的人
+      .then((validCandis) => randPickFollowers(validCandis, user.addFollowersNow))//从validCandis中调出xx个
+      .then((foUsers) => doFollowUsers(foUsers, user)) //开始用户互相follow
+      .then((newFriends) => {
         // console.log("friendships", friendships);
         console.log("Follow user task is accomplished");
-        response.body = {message: "Users have followed each other successfully"};
+        response.body = {message: "Users have followed each other successfully", newFriends};
         return callback(null, response);
       })//follow task is accomplished;
       .catch((err) => {
         console.error("err", err, err.stack);
         callback(new Error("Error found:", err));
       });
+  
+  // getAllUserIds(user.id)
+  //     .then(candidateIds => pickFollowerIds(candidateIds, user.id,
+  //         user.followNumber))//returns userIds
+  //     .then(getPickedUsers)// get all users
+  //     .then(users => followAndStore(users, user))
+  //     .then((friendships) => {
+  //       // console.log("friendships", friendships);
+  //       console.log("Follow user task is accomplished");
+  //       response.body = {message: "Users have followed each other successfully"};
+  //       return callback(null, response);
+  //     })//follow task is accomplished;
+  //     .catch((err) => {
+  //       console.error("err", err, err.stack);
+  //       callback(new Error("Error found:", err));
+  //     });
 };
+
+/*
+ * getCandisByScan([filters]) - scan+filterExpression获得所有符合filter的用户，只传递4个crits，login, id,
+ * removeHighCritCandis(foCandis, user) 去除candidates里，条件超过user的
+ getFollowUsers(foCandis, pickNmber) - 从候选人中，随机选出 {Math.max(addFollowersNow, userFriends.length) - unfoUsers.length}，
+ doFollowUsers(foUsers, user) 让用户和需要follow的User互相follow
+ return foUsers
+ * */

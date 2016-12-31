@@ -218,7 +218,7 @@ const updateConfig = (user) => {
       .then(response => response.json())
       .then(response => {
         console.log("response", response);
-        return response;
+        return response.user;
       })
 };
 
@@ -227,7 +227,7 @@ const followUsers = (user) => {
   const url = config.lambda[stage].followUsersEndpoint;
   const options = {
     method: "POST",
-    body: JSON.stringify(user),
+    body: JSON.stringify({user}),
   };
   
   return fetch(url, options)
@@ -293,10 +293,11 @@ export const onFollowModalNextStep = (currentStep, data) => {
   
         dispatch(loadNextBtn("保存中"));
         saveUserIfChanged(user, data)
-            .then(() => {
+            .then((user) => {
               dispatch(followModalNextStep());
               dispatch(loadNextBtn("添加中"));
-              throw new Error("Stopped manually for testing");
+              // throw new Error("Stopped manually for testing");
+              return user;
             })
             .then(followUsers)
             .then(({followers, data}) => {
@@ -313,6 +314,7 @@ export const onFollowModalNextStep = (currentStep, data) => {
         if (!userCanFollow(user, data)) {
           return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
         }
+        
       };
     default:
       return (dispatch) => {
