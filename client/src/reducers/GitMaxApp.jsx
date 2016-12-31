@@ -5,7 +5,7 @@ const userBase = {
   addFollowersMax: 5000,
   crit_FollowersCount: 0,
   crit_StargazersCount: 0,
-  lastTimeFollow: null,
+  followedFriendsAt: null,
   max_created_at: null,
 };
 
@@ -19,7 +19,8 @@ export const initialState = {
   followers: {
     isFetching: false,
     list: [],
-  }
+  },
+  newFriends:[],
 };
 
 const gitMaxApp = (state = initialState, action) => {
@@ -63,14 +64,21 @@ const gitMaxApp = (state = initialState, action) => {
           state,
           {isFollowing: true}
       );
+    
+    // case "USER_ACKNOWLEDGE_FOLLOW":
     case "FOLLOW_USER_SUCCESS":
-    case "USER_ACKNOWLEDGE_FOLLOW":
+      console.log("FOLLOW_USER_SUCCESS");
+      console.log(action.newFriends);
       return Object.assign({},
           state,
-          {isFollowing: false}
+          {
+            isFollowing: false,
+            newFriends: action.newFriends,
+          }
       );
     
     case "FOLLOW_USER_FAIL":
+      console.log("FOLLOW_USER_FAIL");
       return Object.assign({},
           state,
           {isFollowing: true}

@@ -69,10 +69,10 @@ export const userAcknowledgeFollow = () => {
   }
 };
 
-const followUserSuccess = (followers) => {
+const followUserSuccess = (newFriends) => {
   return {
     type: "FOLLOW_USER_SUCCESS",
-    followers
+    newFriends
   }
 };
 
@@ -193,8 +193,8 @@ const upsertGitUser = (token) => {
  */
 const saveUserIfChanged = (user, data) => {
   return new Promise((resolve, reject) => {
-    const configChanged = isConfigChanged(user, data);
-    if (configChanged) {
+    const canUpdate = canUpdateConfig(user, data);
+    if (canUpdate) {
       console.log("configChanged");
       const newUser = Object.assign({}, user, data);
       resolve(updateConfig(newUser));
@@ -269,18 +269,20 @@ const userCanFollow = (user, data) => {
     return canFollow || user[key] !== data[key]
   }, false);
   
-  const passTimeLimit = isNaN(user.lastTimeFollow) ||
-      (new Date().getTime() - user.lastTimeFollow) > 24 * 60 * 60 * 1000;
+  const passTimeLimit = !user.followedFriendsAt ||
+      (new Date().getTime() - user.followedFriendsAt) > 24 * 60 * 60 * 1000;
   return hasNewCrit || passTimeLimit;
 };
 
-const isConfigChanged = (user, data) => {
-  console.log("user", user);
-  console.log("data", data);
-  
-  return Object.keys(data).reduce((result, key) => {
+const canUpdateConfig = (user, data) => {
+  // console.log("user", user);
+  // console.log("data", data);
+  const configChanged = Object.keys(data).reduce((result, key) => {
     return result || user[key] !== data[key];
   }, false);
+  const newUser = !user.followedFriendsAt;
+  
+  return configChanged || newUser;
 };
 
 export const onFollowModalNextStep = (currentStep, data) => {
@@ -304,8 +306,8 @@ export const onFollowModalNextStep = (currentStep, data) => {
                 return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
               }
               return followUsers(user)
-                  .then(({followers, data}) => {
-                    dispatch(followUserSuccess(followers));
+                  .then(({newFriends, data}) => {
+                    dispatch(followUserSuccess(newFriends));
                     dispatch(followModalNextStep());
                   })
             })

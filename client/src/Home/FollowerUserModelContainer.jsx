@@ -18,6 +18,7 @@ const mapStateToProps = (state, ownProps) => {
     visible: state.userFollowModal.visible,
     current: state.userFollowModal.current,
     nextBtnLoading: state.userFollowModal.nextBtnLoading,
+    newFriends: state.newFriends,
   }
 };
 const mapDispatchToProps = (dispatch) => {

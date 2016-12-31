@@ -203,6 +203,7 @@ FollowerUserModal.propTypes = {
   followModalClose: PropTypes.func,
   followModalNextStep: PropTypes.array,
   followModalPrevStep: PropTypes.func,
+  newFriends: PropTypes.array,
   // isFollowing: PropTypes.bool,
   // onCloseModal: PropTypes.func,
   // userLoginStr: PropTypes.string,

@@ -236,7 +236,7 @@ function handleConfUpdate(event, context, callback) {
 const main = (event, context, callback) => {
   // console.log("event", event);
   // console.log("context", event);
-  console.log("event.path visited:", event.path);
+  // console.log("event.path visited:", event.path);
   switch (event.path) {
     case "/user/gitUpsert":
       handleGitUpsert(event, context, callback);
