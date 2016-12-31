@@ -1,11 +1,12 @@
 const userBase = {
   isLogging: false,
   isFollowing: false,
-  // addFollowersNow: 99,
-  // addFollowersMax: 5000,
-  // crit_FollowersCount: 0,
-  // crit_StargazersCount: 0,
+  addFollowersNow: 99,
+  addFollowersMax: 5000,
+  crit_FollowersCount: 0,
+  crit_StargazersCount: 0,
   lastTimeFollow: null,
+  max_created_at: null,
 };
 
 export const initialState = {

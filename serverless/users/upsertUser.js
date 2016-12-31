@@ -100,6 +100,9 @@ const getDbUser = (userId) => {
         return reject(err);
       }
       let user = data.Item;
+      console.log("user", user);
+      if (!user) user = {};
+      if (!user.max_created_at) user.max_created_at = new Date().getTime();
       // console.log("GetItem succeeded:", JSON.stringify(item));
       resolve(user);
     });

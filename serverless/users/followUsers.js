@@ -60,7 +60,7 @@ const randPickFollowers = (validCandis, followNumber) => {
     validCandis[index] = temp;
   }
   let pickedUsers = validCandis.slice(0, followNumber);
-  console.log("Picked ids successfully", pickedUsers);
+  console.log("Picked ids successfully", JSON.stringify(pickedUsers));
   throw new Error("manual break");
   return pickedUsers;
 };
@@ -236,10 +236,10 @@ const getCandisByScan = (user) => {
   });
 };
 
-const removeAddedCandis = (candidates, friends) => {
+const removeAddedCandis = (candidates, friends, userId) => {
   let set = new Set();
   friends.forEach(obj => set.add(obj.friendId));// Add all friends' Ids in a set
-  if (friends.length>0) set.add(friends[0].userId); // Remove the user from valid candidates
+  set.add(userId); // Remove the user from valid candidates
   
   let validCandis = [];
   candidates.forEach((candidate) => {
@@ -254,6 +254,10 @@ const removeFullFriendsCandidates = (candidates) => {
     if (candi.addFollowersMax > candi.followers) validCandis.push(candi);
   });
   return validCandis;
+};
+
+const doFollowUsers = () => {
+  //Todo call confUpdate for adding property lastTimeFollow: new Date().getTime()
 };
 
 module.exports = (event, context, callback) => {
@@ -277,7 +281,7 @@ module.exports = (event, context, callback) => {
   getFriends(user.id)//获得所有好友的ids
       .then(friendsList => friends = friendsList)
       .then(() => getCandisByScan(user))//scan+filterExpression获得所有符合filter的用户，只传递回，login, id, 4个crits
-      .then((candidates) => removeAddedCandis(candidates, friends)) //去除已经是好友的人
+      .then((candidates) => removeAddedCandis(candidates, friends, user.id)) //去除已经是好友的人
       .then((candidates) => removeFullFriendsCandidates(candidates)) //去除超过上限的人
       .then((validCandis) => randPickFollowers(validCandis, user.addFollowersNow))//从validCandis中调出xx个
       .then((foUsers) => doFollowUsers(foUsers, user)) //开始用户互相follow

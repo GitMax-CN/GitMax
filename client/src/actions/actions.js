@@ -290,7 +290,7 @@ export const onFollowModalNextStep = (currentStep, data) => {
     case 0:
       return (dispatch, getState) => {
         let user = getState().user;
-  
+        
         dispatch(loadNextBtn("保存中"));
         saveUserIfChanged(user, data)
             .then((user) => {
@@ -299,10 +299,15 @@ export const onFollowModalNextStep = (currentStep, data) => {
               // throw new Error("Stopped manually for testing");
               return user;
             })
-            .then(followUsers)
-            .then(({followers, data}) => {
-              dispatch(followUserSuccess(followers));
-              dispatch(followModalNextStep());
+            .then((user) => {
+              if (!userCanFollow(user, data)) {
+                return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
+              }
+              return followUsers(user)
+                  .then(({followers, data}) => {
+                    dispatch(followUserSuccess(followers));
+                    dispatch(followModalNextStep());
+                  })
             })
             .catch(err => {
               console.error(err);
