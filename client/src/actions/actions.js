@@ -247,7 +247,7 @@ const followUsers = (user) => {
       .then(checkStatus)
       .then(response => response.json())
       .then(response => {
-        console.log("response", response);
+        // console.log("response", response);
         return response;
       })
 };
@@ -316,8 +316,10 @@ export const onFollowModalNextStep = (currentStep, data) => {
                 dispatch(loadNextBtn("添加中"));
                 // throw new Error("Stopped manually for testing");
                 return followUsers(user)
-                    .then(({newFriends, data}) => {
+                    .then(({newFriends, user}) => {
+                      
                       dispatch(followUserSuccess(newFriends));
+                      dispatch(userLoginSuccess(user));
                       dispatch(followModalNextStep());
                     })
               }
