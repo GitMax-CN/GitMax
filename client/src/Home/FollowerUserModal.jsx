@@ -29,7 +29,11 @@ let FollowerUserModal = (props) => {
   };
   
   const showWarnMsg = () => {
-    props.showMessage({type: "warning", content: "为保证稳定性，每次手动添加好友，需间隔24小时"});
+    let minsLeft = (props.user.followedFriendsAt + 24*60*60*1000 - new Date().getTime()) / 1000 / 60;
+    let hoursLeft = Math.trunc(minsLeft / 60);
+    minsLeft = Math.trunc(minsLeft % 60);
+
+    props.showMessage({type: "warning", content: `每次手动添加好友，需间隔24小时，请${hoursLeft}小时${minsLeft}分钟后再试`});
   };
   
   const popOver = {
@@ -66,7 +70,7 @@ let FollowerUserModal = (props) => {
             </div>
             <div className="custom-number-input">
               大于：
-              <InputNumber min={0} max={10000} defaultValue={crit_FollowersCount}
+              <InputNumber min={0} max={10000} defaultValue={props.crit_FollowersCount}
                            size="small" onChange={value => crit_FollowersCount = value}/>
             </div>
           </Card>
@@ -84,7 +88,7 @@ let FollowerUserModal = (props) => {
             </div>
             <div className="custom-number-input">
               大于：
-              <InputNumber min={0} max={10000} defaultValue={crit_StargazersCount}
+              <InputNumber min={0} max={10000} defaultValue={props.crit_StargazersCount}
                            size="small" onChange={value => crit_StargazersCount = value}/>
             </div>
           </Card>
@@ -103,7 +107,7 @@ let FollowerUserModal = (props) => {
                 <Icon type="question-circle-o"/>
               </Popover>
               ：
-              <InputNumber min={1} max={99} defaultValue={addFollowersNow}
+              <InputNumber min={1} max={99} defaultValue={props.addFollowersNow}
                            size="small" onChange={value => addFollowersNow = value}/>
             </div>
             <div className="custom-number-input">
@@ -112,7 +116,7 @@ let FollowerUserModal = (props) => {
                 <Icon type="question-circle-o"/>
               </Popover>
               ：
-              <InputNumber min={1} max={10000} defaultValue={addFollowersMax}
+              <InputNumber min={1} max={10000} defaultValue={props.addFollowersMax}
                            size="small" onChange={value => addFollowersMax = value}/>
             </div>
           </Card>
