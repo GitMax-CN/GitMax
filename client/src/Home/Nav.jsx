@@ -1,12 +1,17 @@
 import React, {PropTypes} from 'react';
 import TweenOne from 'rc-tween-one';
-import {Button, Menu, Dropdown, Badge} from 'antd';
+import {Button, Menu, Dropdown, Badge, message} from 'antd';
 import FollowerUserModalContainer from './FollowerUserModelContainer';
 import {calcInfluenceFactor} from '../api';
 
 const Item = Menu.Item;
 
 let Header = (props) => {
+  if (props.message.type) {
+    message.config({duration: 3});
+    message[props.message.type](props.message.content);
+    props.clearMessage();
+  }
   
   const onBtnClick = () => {
     if (!props.user.id) {
@@ -125,6 +130,7 @@ Header.propTypes = {
   onUserLogout: PropTypes.func,
   isFollowing: PropTypes.bool,
   followModalOpen: PropTypes.func,
+  message: PropTypes.object,
 };
 
 Header.defaultProps = {

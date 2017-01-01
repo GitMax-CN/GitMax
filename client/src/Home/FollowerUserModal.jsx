@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react';
 import {Modal, Button, Steps, InputNumber, Row, Col, Card, Icon, Popover} from 'antd';
 import Spinner from 'react-spinkit';
+import {passTimeLimit} from '../api';
 const Step = Steps.Step;
 
 let FollowerUserModal = (props) => {
@@ -25,11 +26,6 @@ let FollowerUserModal = (props) => {
       default:
         return props.followModalClose();
     }
-  };
-  
-  const onChange = (value) => {
-    console.log('changed', value);
-    
   };
   
   const popOver = {
@@ -151,18 +147,18 @@ let FollowerUserModal = (props) => {
             {
               props.newFriends.slice(0, 12).map(friend => {
                 return <Col span="4" className="follower-col">
-                    <Card bodyStyle={{padding: 10}}>
-                      <div className="new-friend-image">
-                        <a href={"https://github.com/" + friend.login} target="_blank">
-                          <img alt="example" width="100%" src={friend.avatar_url}/>
-                        </a>
-                      </div>
-                      <div className="friend-card">
+                  <Card bodyStyle={{padding: 10}}>
+                    <div className="new-friend-image">
+                      <a href={"https://github.com/" + friend.login} target="_blank">
+                        <img alt="example" width="100%" src={friend.avatar_url}/>
+                      </a>
+                    </div>
+                    <div className="friend-card">
                         <span>
                           {friend.name ? friend.name : friend.login}
                         </span>
-                      </div>
-                    </Card>
+                    </div>
+                  </Card>
                 </Col>
               })
             }
@@ -182,6 +178,11 @@ let FollowerUserModal = (props) => {
     description: "好友添加完成",
   }];
   
+  const btnContent = [
+    passTimeLimit(props.user.followedFriendsAt) ? "下一步" : "保存",
+    "",
+    ""
+  ];
   
   const modalFooter = <div>
     {

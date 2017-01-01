@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import config from '../../config';
-import {getUrlParam, popCenterWindow} from '../api';
+import {getUrlParam, popCenterWindow, passTimeLimit} from '../api';
 
 export const followModalOpen = () => {
   return {type: "FOLLOW_MODAL_OPEN"}
@@ -35,6 +35,19 @@ const userLoginSuccess = (user) => {
   return {
     type: "USER_LOGIN_SUCCESS",
     user,
+  }
+};
+
+export const showMessage = (msg) => {
+  return {
+    type: "GLOBAL_MESSAGE_SHOW",
+    msg
+  }
+};
+
+export const clearMessage = () => {
+  return {
+    type: "GLOBAL_MESSAGE_CLEAR",
   }
 };
 
@@ -269,9 +282,7 @@ const userCanFollow = (user, data) => {
     return canFollow || user[key] !== data[key]
   }, false);
   
-  const passTimeLimit = !user.followedFriendsAt ||
-      (new Date().getTime() - user.followedFriendsAt) > 24 * 60 * 60 * 1000;
-  return hasNewCrit || passTimeLimit;
+  return hasNewCrit || passTimeLimit(user.followedFriendsAt);
 };
 
 const canUpdateConfig = (user, data) => {
@@ -296,20 +307,20 @@ export const onFollowModalNextStep = (currentStep, data) => {
         dispatch(loadNextBtn("保存中"));
         saveUserIfChanged(user, data)
             .then((user) => {
-              dispatch(followModalNextStep());
-              dispatch(loadNextBtn("添加中"));
-              // throw new Error("Stopped manually for testing");
-              return user;
-            })
-            .then((user) => {
               if (!userCanFollow(user, data)) {
-                return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
+                setTimeout(()=>{dispatch(followModalClose())}, 1000);
+                dispatch(showMessage({type: "success", content: "设置已保存"}));
+                // return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
+              } else {
+                dispatch(followModalNextStep());
+                dispatch(loadNextBtn("添加中"));
+                // throw new Error("Stopped manually for testing");
+                return followUsers(user)
+                    .then(({newFriends, data}) => {
+                      dispatch(followUserSuccess(newFriends));
+                      dispatch(followModalNextStep());
+                    })
               }
-              return followUsers(user)
-                  .then(({newFriends, data}) => {
-                    dispatch(followUserSuccess(newFriends));
-                    dispatch(followModalNextStep());
-                  })
             })
             .catch(err => {
               console.error(err);
@@ -321,7 +332,6 @@ export const onFollowModalNextStep = (currentStep, data) => {
         if (!userCanFollow(user, data)) {
           return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
         }
-        
       };
     default:
       return (dispatch) => {

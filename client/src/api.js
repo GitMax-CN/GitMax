@@ -46,4 +46,14 @@ const calcInfluenceFactor = (user) => {
   return String(factor.toFixed(1));
 };
 
-export {getUrlParam, popCenterWindow, calcInfluenceFactor}
+/**
+ * Return if user has passed the 24 hour limit for follow friends
+ * @param followedFriendsAt
+ * @returns {boolean}
+ */
+const passTimeLimit = (followedFriendsAt) => {
+  return !followedFriendsAt ||
+  (new Date().getTime() - followedFriendsAt) > 24 * 60 * 60 * 1000;
+};
+
+export {getUrlParam, popCenterWindow, calcInfluenceFactor, passTimeLimit}

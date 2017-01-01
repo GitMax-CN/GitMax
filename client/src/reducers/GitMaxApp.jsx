@@ -21,6 +21,10 @@ export const initialState = {
     list: [],
   },
   newFriends:[],
+  message: {
+    type: null,
+    content: null
+  }
 };
 
 const gitMaxApp = (state = initialState, action) => {
@@ -106,6 +110,17 @@ const gitMaxApp = (state = initialState, action) => {
       console.log("LOAD_NEXT_BUTTON", action);
       newUserFollowModal = Object.assign({}, state.userFollowModal, {nextBtnLoading: true});
       return Object.assign({}, state, newUserFollowModal);
+      
+    case "GLOBAL_MESSAGE_SHOW":
+      console.log("GLOBAL_MESSAGE_SHOW", action.msg);
+      return Object.assign({}, state, {message: action.msg});
+  
+    case "GLOBAL_MESSAGE_CLEAR":
+      console.log("GLOBAL_MESSAGE_CLEAR", action.msg);
+      return Object.assign({}, state, {message: {
+        type: null,
+        content: null,
+      }});
       
     case "USER_REFRESH":
       console.log("USER_REFRESH start:", action.user);
