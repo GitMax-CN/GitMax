@@ -308,7 +308,7 @@ export const onFollowModalNextStep = (currentStep, data) => {
         saveUserIfChanged(user, data)
             .then((user) => {
               if (!userCanFollow(user, data)) {
-                setTimeout(()=>{dispatch(followModalClose())}, 1000);
+                // setTimeout(()=>{dispatch(followModalClose())}, 1000);
                 dispatch(showMessage({type: "success", content: "设置已保存"}));
                 // return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
               } else {

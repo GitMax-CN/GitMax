@@ -28,6 +28,10 @@ let FollowerUserModal = (props) => {
     }
   };
   
+  const showWarnMsg = () => {
+    props.showMessage({type: "warning", content: "为保证稳定性，每次手动添加好友，需间隔24小时"});
+  };
+  
   const popOver = {
     content1: (<div>
       <p>点击 '下一步' 后，GitMax一次性在GitHub添加的Follower的数量上限（为保证稳定性，一次性最高添加99人，每24小时可执行一次）</p>
@@ -178,27 +182,40 @@ let FollowerUserModal = (props) => {
     description: "好友添加完成",
   }];
   
-  const btnContent = [
-    passTimeLimit(props.user.followedFriendsAt) ? "下一步" : "保存",
-    "",
-    ""
-  ];
-  
   const modalFooter = <div>
     {
-      props.current !== 2 ?
-          <div>
-            <Button key="back" type="ghost" size="large"
-                    onClick={props.followModalClose}>取消</Button>
-            <Button key="submit" type="primary" size="large" loading={props.nextBtnLoading}
-                    onClick={next}>
-              下一步
-            </Button>
-          </div>
-          :
-          <Button key="submit" type="primary" size="large" onClick={next}>
-            完成
-          </Button>
+      props.current !== 2
+      &&
+      <Button key="back" type="ghost" size="large"
+              onClick={props.followModalClose}>取消</Button>
+    }
+    {
+      !passTimeLimit(props.user.followedFriendsAt)
+      &&
+      <Button key="save" type="primary" size="large" onClick={next}>
+        保存
+      </Button>
+    }
+    
+    {
+      props.current !== 2 && passTimeLimit(props.user.followedFriendsAt)
+      &&
+      <Button key="next" type="primary" size="large" loading={props.nextBtnLoading} onClick={next}>
+        下一步
+      </Button>
+    }
+    
+    {
+      !passTimeLimit(props.user.followedFriendsAt)
+      &&
+      <Button key="disabledNext" size="large" onClick={showWarnMsg}>下一步</Button>
+    }
+    {
+      props.current === 2
+      &&
+      <Button key="finish" type="primary" size="large" onClick={next}>
+        完成
+      </Button>
     }
   </div>;
   

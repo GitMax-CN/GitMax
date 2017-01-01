@@ -3,7 +3,8 @@ import {
   followModalOpen,
   followModalClose,
   onFollowModalNextStep,
-  followModalPrevStep
+  followModalPrevStep,
+  showMessage
 } from '../actions/actions';
 import FollowerUserModal from './FollowerUserModal';
 const mapStateToProps = (state, ownProps) => {
@@ -30,6 +31,7 @@ const mapDispatchToProps = (dispatch) => {
     followModalClose: () => dispatch(followModalClose()),
     followModalPrevStep: () => dispatch(followModalPrevStep()),
     followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
+    showMessage: (message) => dispatch(showMessage(message)),
   }
 };
 
