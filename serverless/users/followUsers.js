@@ -290,12 +290,12 @@ const configUpdate = (user, stage) => {
       if (error) {
         return reject(error);
       }
-      let getData = JSON.parse(body);
+      let newUser = JSON.parse(body).user;
       // console.log("response", response);
       // console.log("data", data);
-      // console.log("getData", getData);
+      // console.log("Update followedAt, user:", newUser);
       //DynamoDB不能包含任何empty attributes
-      resolve();
+      resolve(newUser);
     });
   });
 };
@@ -314,6 +314,7 @@ module.exports = (event, context, callback) => {
   
   let user = data.user;
   let friends;
+  let newFriendsList;
   getFriends(user.id)//获得所有好友的ids
       .then(friendsList => friends = friendsList)
       .then(
@@ -323,18 +324,18 @@ module.exports = (event, context, callback) => {
       .then(
           (validCandis) => randPickFollowers(validCandis, user.addFollowersNow))//从validCandis中调出xx个
       .then((foUsers) => followAndStore(foUsers, user)) //开始用户互相follow
-      .then((newFriends) => {
-        configUpdate(user, event.requestContext.stage); //Async update user
+      .then((newFriends) => newFriendsList = newFriends)
+      .then(() => configUpdate(user, event.requestContext.stage))
+      .then((newUser) => {
         // console.log("newFriends", newFriends);
         let response = {
           statusCode: 200,
           headers: {"Access-Control-Allow-Origin": "*"},
         };
         console.log("Follow user task is accomplished");
-        response.body = JSON.stringify({message: "Users have followed each other successfully", newFriends});
+        response.body = JSON.stringify({newFriends: newFriendsList, user: newUser});
         callback(null, response);
       })//follow task is accomplished;
-      // .then(()=>{configUpdate(user, event.requestContext.stage);})
       .catch((err) => {
         console.error("err", err, err.stack);
         callback(new Error("Error found:", err));
