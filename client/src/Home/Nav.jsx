@@ -19,8 +19,13 @@ let Header = (props) => {
   const onMenuClick = ({item, key, keyPath}) => {
     // console.log("item, key, keyPath", item, key, keyPath);
     switch (key) {
+      case "0":
+        console.log("followModalOpen start");
+        props.followModalOpen();
+        break;
       case "2":
         props.onUserLogout();
+        break;
     }
   };
   
@@ -119,6 +124,7 @@ Header.propTypes = {
   onUserLogin: PropTypes.func,
   onUserLogout: PropTypes.func,
   isFollowing: PropTypes.bool,
+  followModalOpen: PropTypes.func,
 };
 
 Header.defaultProps = {

@@ -1,4 +1,4 @@
-import {userLogin, userLogout} from '../actions/actions'
+import {userLogin, userLogout, followModalOpen} from '../actions/actions'
 import {connect} from 'react-redux';
 import Nav from './Nav';
 
@@ -15,7 +15,8 @@ const mapDispatchToProps = (dispatch) => {
   
   return {
     onUserLogin: () => dispatch(userLogin()),
-    onUserLogout: ()=> dispatch(userLogout())
+    onUserLogout: ()=> dispatch(userLogout()),
+    followModalOpen: () => dispatch(followModalOpen()),
   }
 };
 

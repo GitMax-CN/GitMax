@@ -41,6 +41,15 @@ let FollowerUserModal = (props) => {
     </div>)
   };
   
+  const step3PopOver = (<div>
+    <ul>
+      <li>添加好友数 = 设置值 ± 10% 为正常范围</li>
+      <li>如果添加好友数明显小于设置值，请放宽'添加好友'条件后再试</li>
+      <li>随着GitMax用户数增加，GitMax会继续为您添加满足条件的好友，直到达到你设置的好友总数</li>
+    </ul>
+  
+  </div>);
+  
   const steps = [{
     title: '添加好友条件设置',
     content: <div>
@@ -94,7 +103,7 @@ let FollowerUserModal = (props) => {
                 <Icon type="question-circle-o"/>
               </Popover>
               ：
-              <InputNumber min={0} max={99} defaultValue={addFollowersNow}
+              <InputNumber min={1} max={99} defaultValue={addFollowersNow}
                            size="small" onChange={value => addFollowersNow = value}/>
             </div>
             <div className="custom-number-input">
@@ -103,7 +112,7 @@ let FollowerUserModal = (props) => {
                 <Icon type="question-circle-o"/>
               </Popover>
               ：
-              <InputNumber min={0} max={10000} defaultValue={addFollowersMax}
+              <InputNumber min={1} max={10000} defaultValue={addFollowersMax}
                            size="small" onChange={value => addFollowersMax = value}/>
             </div>
           </Card>
@@ -124,27 +133,47 @@ let FollowerUserModal = (props) => {
     title: '添加成功',
     content: <div>
       <Row>
-        <Col span={12}>
-          <img style={{width: 250}} src="https://octodex.github.com/images/welcometocat.png"/>
+        <Col span={8} offset={1}>
+          <img style={{width: 350}} src="https://octodex.github.com/images/welcometocat.png"/>
           {/*<Progress type="circle" percent={100} />*/}
-          <h2>恭喜你已经完成好友添加</h2>
-          <br/>
-          <p>快去你的GitHub账户，
-            <a href={`https://www.github.com/${props.user.login}/followers`} target="_blank">看看你的新朋友吧</a>
-          </p>
-          <p>随着用户增多，GitMax会自动为你添加更多好友</p>
+        
         </Col>
-        <Col span={12}>
-          {/*显示follow的用户*/}
-          <Col span={8}>
-          
-          </Col>
-          <Col span={8}>
-          
-          </Col>
-          <Col span={8}>
-          
-          </Col>
+        <Col span={13} offset={1}>
+          <Row>
+            <h2>{`GixMax为您成功添加 ${props.newFriends.length} 位好友 `}
+              <Popover placement="top" title={"好友添加说明"} content={step3PopOver} trigger="hover">
+                <Icon type="question-circle-o" className="h1-question-mark"/>
+              </Popover>
+            </h2>
+            <p>每次手动添加，需间隔 24 小时</p>
+          </Row>
+          <Row gutter={8} type="flex" justify="space-around" className={"new-friends-container"}>
+            {
+              props.newFriends.slice(0, 12).map(friend => {
+                return <Col span="4" className="follower-col">
+                    <Card bodyStyle={{padding: 10}}>
+                      <div className="new-friend-image">
+                        <a href={"https://github.com/" + friend.login} target="_blank">
+                          <img alt="example" width="100%" src={friend.avatar_url}/>
+                        </a>
+                      </div>
+                      <div className="friend-card">
+                        <span>
+                          {friend.name ? friend.name : friend.login}
+                        </span>
+                      </div>
+                    </Card>
+                </Col>
+              })
+            }
+          </Row>
+          <Row>
+            <p>快去你的GitHub账户，
+              <a href={`https://www.github.com/${props.user.login}/followers`} target="_blank">
+                看看{props.newFriends.length > 12 ? "更多" : "这些"}新朋友吧
+              </a>
+            </p>
+          </Row>
         </Col>
       </Row>
     
@@ -172,7 +201,7 @@ let FollowerUserModal = (props) => {
     }
   </div>;
   
-
+  
   return (
       <div>
         <Modal

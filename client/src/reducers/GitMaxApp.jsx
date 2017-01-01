@@ -68,7 +68,8 @@ const gitMaxApp = (state = initialState, action) => {
     // case "USER_ACKNOWLEDGE_FOLLOW":
     case "FOLLOW_USER_SUCCESS":
       console.log("FOLLOW_USER_SUCCESS");
-      console.log(action.newFriends);
+      // console.log("action.newFriends", JSON.stringify(action.newFriends));
+      console.log("action.newFriends", action.newFriends);
       return Object.assign({},
           state,
           {
@@ -90,7 +91,7 @@ const gitMaxApp = (state = initialState, action) => {
       return Object.assign({}, state, {userFollowModal: {visible: true, current: 0,}});
     case "FOLLOW_MODAL_CLOSE":
       console.log("FOLLOW_MODAL_CLOSE");
-      return Object.assign({}, state, {userFollowModal: {visible: false, current: 0,}});
+      return Object.assign({}, state, {userFollowModal: {visible: false, current: state.userFollowModal.current}});
     case "FOLLOW_NEXT_STEP":
       console.log("FOLLOW_NEXT_STEP");
       newCurrent = state.userFollowModal.current + 1;

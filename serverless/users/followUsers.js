@@ -178,6 +178,7 @@ const followAndStore = (users, user) => {
       avatar_url: friend.avatar_url,
       login: friend.login,
       name: friend.name,
+      created_at: friend.created_at,
     }
   }
   
@@ -219,8 +220,8 @@ const getFriends = (userId) => {
 const getCandisByScan = (user) => {
   const params = { // 找到与用户互相欣赏的人，作为好友candidate
     TableName: "Users",
-    ProjectionExpression: "#id, #url, avatar_url, followers, following, login, #name, #token," +
-    " addFollowersMax, crit_FollowersCount, crit_StargazersCount, totalStars",
+    ProjectionExpression: "#id, #url, created_at, avatar_url, followers, following, login, #name," +
+    " #token, addFollowersMax, crit_FollowersCount, crit_StargazersCount, totalStars",
     FilterExpression: "totalStars >= :user_star_crit AND followers >= :user_follower_crit AND" +
     " crit_StargazersCount <= :user_star AND crit_FollowersCount <= :user_follower",
     ExpressionAttributeNames: {

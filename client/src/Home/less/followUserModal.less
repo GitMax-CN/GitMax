@@ -1,3 +1,5 @@
+@import './custom.less';
+
 .steps-content {
   margin-top: 16px;
   border: 1px dashed #e9e9e9;
@@ -19,6 +21,7 @@
 .custom-image img {
   display: block;
 }
+
 .custom-card {
   float: left;
   padding: 10px 0px;
@@ -33,7 +36,18 @@
 }
 
 
+.friend-card {
+  float: left;
+  padding: 10px 0px;
+}
 
+.friend-card span{
+  display: block;
+  width: 65px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
 
 .double-bounce {
   width: 37px;
@@ -77,3 +91,22 @@
   top: 0;
   text-align: left;
 }
+
+.follower-col{
+  margin: 6px 0;
+}
+
+.h1-question-mark{
+  font-size: 14px;
+  color: @line-deep-color;
+  cursor: pointer;
+}
+
+.new-friends-container{
+  margin: 20px 0;
+}
+
+.new-friend-image img {
+  display: block;
+}
+
