@@ -29,11 +29,13 @@ let FollowerUserModal = (props) => {
   };
   
   const showWarnMsg = () => {
-    let minsLeft = (props.user.followedFriendsAt + 24*60*60*1000 - new Date().getTime()) / 1000 / 60;
+    let minsLeft = (props.user.followedFriendsAt + 24 * 60 * 60 * 1000 - new Date().getTime()) /
+        1000 / 60;
     let hoursLeft = Math.trunc(minsLeft / 60);
     minsLeft = Math.trunc(minsLeft % 60);
-
-    props.showMessage({type: "warning", content: `每次手动添加好友，需间隔24小时，请${hoursLeft}小时${minsLeft}分钟后再试`});
+    
+    props.showMessage(
+        {type: "warning", content: `每次手动添加好友，需间隔24小时，请${hoursLeft}小时${minsLeft}分钟后再试`});
   };
   
   const popOver = {
@@ -135,54 +137,78 @@ let FollowerUserModal = (props) => {
     description: "好友添加中...",
   }, {
     title: '添加成功',
-    content: <div>
-      <Row>
-        <Col span={8} offset={1}>
-          <img style={{width: 350}} src="https://octodex.github.com/images/welcometocat.png"/>
-          {/*<Progress type="circle" percent={100} />*/}
-        
-        </Col>
-        <Col span={13} offset={1}>
+    content: props.newFriends.length > 0
+        ?
+        <div>
           <Row>
-            <h2>{`GixMax为您成功添加 ${props.newFriends.length} 位好友 `}
-              <Popover placement="top" title={"好友添加说明"} content={step3PopOver} trigger="hover">
-                <Icon type="question-circle-o" className="h1-question-mark"/>
-              </Popover>
-            </h2>
-            <p>每次手动添加，需间隔 24 小时</p>
-          </Row>
-          <Row gutter={8} type="flex" justify="space-around" className={"new-friends-container"}>
-            {
-              props.newFriends.slice(0, 12).map(friend => {
-                return <Col span="4" className="follower-col">
-                  <Card bodyStyle={{padding: 10}}>
-                    <div className="new-friend-image">
-                      <a href={"https://github.com/" + friend.login} target="_blank">
-                        <img alt="example" width="100%" src={friend.avatar_url}/>
-                      </a>
-                    </div>
-                    <div className="friend-card">
+            <Col span={8} offset={1}>
+              <img style={{width: 350}} src="https://octodex.github.com/images/welcometocat.png"/>
+            
+            </Col>
+            <Col span={13} offset={1}>
+              <Row>
+                <h2>{`GixMax为您成功添加 ${props.newFriends.length} 位好友 `}
+                  <Popover placement="top" title={"好友添加说明"} content={step3PopOver} trigger="hover">
+                    <Icon type="question-circle-o" className="h1-question-mark"/>
+                  </Popover>
+                </h2>
+                <p>每次手动添加，需间隔 24 小时</p>
+              </Row>
+              <Row gutter={8} type="flex" justify="space-around"
+                   className={"new-friends-container"}>
+                {
+                  props.newFriends.slice(0, 12).map(friend => {
+                    return <Col span="4" className="follower-col">
+                      <Card bodyStyle={{padding: 10}}>
+                        <div className="new-friend-image">
+                          <a href={"https://github.com/" + friend.login} target="_blank">
+                            <img alt="example" width="100%" src={friend.avatar_url}/>
+                          </a>
+                        </div>
+                        <div className="friend-card">
                         <span>
                           {friend.name ? friend.name : friend.login}
                         </span>
-                    </div>
-                  </Card>
-                </Col>
-              })
-            }
+                        </div>
+                      </Card>
+                    </Col>
+                  })
+                }
+              </Row>
+              <Row>
+                <p>快去你的GitHub账户，
+                  <a href={`https://www.github.com/${props.user.login}/followers`} target="_blank">
+                    看看{props.newFriends.length > 12 ? "更多" : "这些"}新朋友吧
+                  </a>
+                </p>
+              </Row>
+            </Col>
           </Row>
+        </div>
+        :
+        <div>
           <Row>
-            <p>快去你的GitHub账户，
-              <a href={`https://www.github.com/${props.user.login}/followers`} target="_blank">
-                看看{props.newFriends.length > 12 ? "更多" : "这些"}新朋友吧
-              </a>
-            </p>
+            <Col span={8} offset={1}>
+              <img style={{width: 350}} src="https://octodex.github.com/images/maxtocat.gif"/>
+            </Col>
+            <Col span={13} offset={1}>
+              <Row>
+                <h2>{`抱歉，GixMax没有为你找到新的好友`}
+                </h2>
+                <p>GitMax用户中没有满足条件的用户了</p>
+              </Row>
+              <Row className="not-found-row2">
+                <p className="first-row">您可以选择：</p>
+                <p>不做修改：随着用户数增加，GitMax会为你筛选符合条件的用户加为好友</p>
+                <p className="or"> 或者 </p>
+                <p><a onClick={()=>{props.followModalPrevStep(); props.followModalPrevStep();}}>
+                  修改好友添加条件
+                </a>，24小时后，再试一次（每次手动添加，需间隔24小时）</p>
+              </Row>
+            </Col>
           </Row>
-        </Col>
-      </Row>
-    
-    
-    </div>,
+        </div>
+    ,
     description: "好友添加完成",
   }];
   
