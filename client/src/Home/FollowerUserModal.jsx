@@ -5,7 +5,7 @@ import {passTimeLimit} from '../api';
 const Step = Steps.Step;
 
 let FollowerUserModal = (props) => {
-  console.log("props", props);
+  // console.log("props", props);
   let crit_FollowersCount = props.crit_FollowersCount,
       crit_StargazersCount = props.crit_StargazersCount,
       addFollowersNow = props.addFollowersNow,

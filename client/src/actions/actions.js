@@ -159,9 +159,9 @@ const loginWithPopup = () => {
           // const tokenType = getUrlParam(url, 'token_type');
           // const expiresIn = getUrlParam(url, 'expires_in');
           
-          console.log("acToken", acToken);
+          // console.log("acToken", acToken);
           
-          console.log("closing window");
+          // console.log("closing window");
           win.close();
           window.clearInterval(pollTimer);
           
@@ -198,7 +198,7 @@ const upsertGitUser = (token) => {
       .then(checkStatus)
       .then(response => response.json())
       .then(response => {//{user}
-        console.log("response", response);
+        // console.log("response", response);
         return response;
       });
 };
@@ -235,7 +235,7 @@ const updateConfig = (user) => {
       .then(checkStatus)
       .then(response => response.json())
       .then(response => {
-        console.log("response", response);
+        // console.log("response", response);
         return response.user;
       })
 };
