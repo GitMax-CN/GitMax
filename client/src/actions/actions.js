@@ -64,9 +64,14 @@ const userLoginFail = (error) => {
   }
 };
 
+const userLogoutStart = () => {
+  return {
+    type: "USER_LOGOUT_START",
+  }
+};
 const userLogoutSuccess = () => {
   return {
-    type: "USER_LOGOUT",
+    type: "USER_LOGOUT_SUCCESS",
   }
 };
 
@@ -272,8 +277,9 @@ export const userLogin = () => {
 
 export const userLogout = () => {
   return (dispatch) => {
-    localStorage.setItem("user", null);
-    dispatch(userLogoutSuccess());
+    // localStorage.setItem("user", null);
+    dispatch(userLogoutStart());
+    setTimeout(() => window.location.reload(), 2000);
   };
 };
 

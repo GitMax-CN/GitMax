@@ -55,9 +55,14 @@ const gitMaxApp = (state = initialState, action) => {
           state,
           {user: userBase}
       );
-    
-    case "USER_LOGOUT":
-      console.log("USER_LOGOUT");
+  
+    case "USER_LOGOUT_START":
+      console.log("USER_LOGOUT_START");
+      newUser = Object.assign({}, userBase, {isLogging: true});
+      return Object.assign({}, state, {user: newUser});
+      
+    case "USER_LOGOUT_SUCCESS":
+      console.log("USER_LOGOUT_SUCCESS");
       return Object.assign({},
           state,
           {user: userBase}
