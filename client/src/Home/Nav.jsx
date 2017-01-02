@@ -1,6 +1,6 @@
 import React, {PropTypes} from 'react';
 import TweenOne from 'rc-tween-one';
-import {Button, Menu, Dropdown, Badge, message} from 'antd';
+import {Button, Menu, Dropdown, Badge, message, Icon} from 'antd';
 import FollowerUserModalContainer from './FollowerUserModelContainer';
 import {calcInfluenceFactor} from '../api';
 
@@ -34,26 +34,30 @@ let Header = (props) => {
     }
   };
   
+  
+  //12px 16px
   //Todo Better influence factor calculation
   const menu = (
       <Menu onClick={onMenuClick}>
-        <Menu.Item key="badge" disabled={true}>
-          <a><Badge status="success"/>{"GitHub影响因子："}{calcInfluenceFactor(props.user)}</a>
+        <Menu.Item key="username" disabled={true} className = "user-menu-item">
+          <div className="username user-info">
+            <span> {props.user.name || props.user.login} </span>
+          </div>
+          <div className="user-info">
+            {"GitHub影响因子："}<Badge status="success"/>{calcInfluenceFactor(props.user)}
+          </div>
         </Menu.Item>
         <Menu.Divider />
-        
-        <Menu.Item key="0">
-          <a>添加好友设置</a>
-        </Menu.Item>
-        <Menu.Item key="1">
-          <a href={`https://www.github.com/${props.user.login}/followers`} target="_blank">访问Github账户</a>
-        </Menu.Item>
-        
+          <Menu.Item key="0">
+            <a>添加好友设置</a>
+          </Menu.Item>
+          <Menu.Item key="1">
+            <a href={`https://www.github.com/${props.user.login}/followers`} target="_blank">访问Github账户</a>
+          </Menu.Item>
         <Menu.Divider />
         <Menu.Item key="2">登出</Menu.Item>
       </Menu>
   );
-  
   const navData = {menu1: '导航一', menu2: '导航二', menu3: '导航三', menu4: '导航四'};
   const navChildren = Object.keys(navData)
       .map((key, i) => (<Item key={i}>{navData[key]}</Item>));
@@ -88,7 +92,7 @@ let Header = (props) => {
                     width="30"
                     height="30"
                 />
-                <span>{props.user.name || props.user.login}</span>
+                <Icon type="caret-down" className="custom-caret-down"/>
               </span>
             </a>
           </TweenOne>
