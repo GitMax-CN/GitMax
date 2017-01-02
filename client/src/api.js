@@ -41,7 +41,8 @@ const getUrlParam = (url, name) => {
  * @returns {string}
  */
 const calcInfluenceFactor = (user) => {
-  let factor = user.public_gists * 0.8 + user.public_repos * 0.6 + user.followers * 0.3;
+  let factor = (user.public_gists || 0) * 0.8 + (user.public_repos || 0) * 0.6 +
+      (user.followers || 0) * 0.3 + (user.totalStars || 0) * 1.5;
   if (factor >= 10000) return (factor/1000).toFixed(1) + "k";
   return String(factor.toFixed(1));
 };
