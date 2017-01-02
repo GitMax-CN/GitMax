@@ -194,7 +194,7 @@ let FollowerUserModal = (props) => {
               onClick={props.followModalClose}>取消</Button>
     }
     {
-      !passTimeLimit(props.user.followedFriendsAt)
+      props.current === 0 && !passTimeLimit(props.user.followedFriendsAt)
       &&
       <Button key="save" type="primary" size="large" onClick={next}>
         保存
@@ -210,7 +210,7 @@ let FollowerUserModal = (props) => {
     }
     
     {
-      !passTimeLimit(props.user.followedFriendsAt)
+      props.current === 0 && !passTimeLimit(props.user.followedFriendsAt)
       &&
       <Button key="disabledNext" size="large" onClick={showWarnMsg}>下一步</Button>
     }
