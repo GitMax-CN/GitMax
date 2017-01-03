@@ -143,7 +143,7 @@ const loginWithPopup = () => {
   // console.log("stage", stage, "url", url);
   return new Promise((resolve, reject) => {
     const REDIRECT = location.origin;
-    let win = popCenterWindow(url, '_blank', 500, 800);
+    let win = popCenterWindow(`${url}?state=${location.origin}`, '_blank', 500, 800);
     // console.log(win.document.URL);
     
     let pollTimer = window.setInterval(() => {

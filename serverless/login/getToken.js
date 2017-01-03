@@ -7,7 +7,7 @@ const requestToken = (event, context, callback) => {
   let params = event.queryStringParameters;
   const stage = event.requestContext.stage;
   console.log("params", params);
-  console.log("stage", stage);
+  // console.log("stage", stage);
   // console.log("event", JSON.stringify(event));
   // console.log("context", JSON.stringify(context));
   // console.log("event.requestContext.stage", event.requestContext.stage);
@@ -34,18 +34,27 @@ const requestToken = (event, context, callback) => {
             callback(new Error("Server responded with a " + e.statusCode + " status"));
             return
           }
+          
           if (results.error) {
             callback(new Error(results.error_description));
             return;
           }
           
-          const baseURL = stage === "dev" ? "http://localhost:5000/#/" : "http://www.gitmax.cn/#/";
+          const origin = params["state"];
+          // if (host !== "localhost:5000" && host !=="www.gitmax.cn.s3-website-us-west-2.amazonaws.com" && host !== "www.gitmax.cn") {
+          //   callback(new Error("The state is incorrect, someone might be attacking GitMax!!"));
+          //   return
+          // }
+          
+          const redirectURL = `${origin}/#/`;
+          console.log("redirect URL", redirectURL);
+          // const baseURL = stage === "dev" ? "http://localhost:5000/#/" : "http://www.gitmax.cn/#/";
   
           const response = {
             statusCode: 302,
             headers: {
               "Access-Control-Allow-Origin": "*",
-              Location: baseURL + "?access_token=" + access_token,
+              Location: redirectURL + "?access_token=" + access_token,
             },
             body: JSON.stringify(results),
           };

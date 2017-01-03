@@ -6,7 +6,8 @@ const config = require('../config').githubConfig;
 const main = (event, context, callback) => {
   const stage = event.requestContext.stage;
   // let params = event && event.queryStringParameters;
-  // console.log("params");
+  // console.log("params", params);
+  const origin = event.queryStringParameters.state;
   
   let oauth2 = new OAuth2(
       config[stage].clientID,
@@ -19,7 +20,7 @@ const main = (event, context, callback) => {
   let authURL = oauth2.getAuthorizeUrl({
     // redirect_uri: config.callbackURI,
     scope: 'public_repo user:follow',
-    state: 'rYdVsUnGKVYaa9avH3iDyVir'
+    state: origin,
   });
   
   console.log("authURL", authURL);
