@@ -27,19 +27,7 @@ const postToken = (nextState, replace, callback) => {
     token: nextState.token,
     scope: nextState.scope
   }, "*");// todo change this to specific urls - http://www.gitmax.cn, http://localhost:5000, etc
-  
-  // fetch(...)
-  //     .then(response = response.json())
-  //     .then(userTeams => {
-  //       if (userTeams.length === 0) {
-  //         replace(`/users/${nextState.params.userId}/teams/new`)
-  //       }
-  //       callback();
-  //     })
-  //     .catch(error => {
-  //       // do some error handling here
-  //       callback(error);
-  //     })
+
 };
 
 window.addEventListener("message", (event) => {

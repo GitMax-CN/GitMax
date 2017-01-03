@@ -79,7 +79,7 @@ let FollowerUserModal = (props) => {
         </Col>
         
         <Col span={8}>
-          <Card title={<div>超过一定总Star数的用户才加好友</div>} style={{width: 300, margin: "0 auto"}}
+          <Card title={<div>超过一定Star数的用户才加好友</div>} style={{width: 300, margin: "0 auto"}}
                 bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
@@ -97,7 +97,7 @@ let FollowerUserModal = (props) => {
         </Col>
         
         <Col span={8}>
-          <Card title={<div> 总共要添加Follower的上限</div>}
+          <Card title={<div> 要添加Follower的本次上限 + 总上限</div>}
                 style={{width: 300, margin: "auto"}} bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
@@ -106,7 +106,7 @@ let FollowerUserModal = (props) => {
             <div className="custom-card">
               本次
               <Popover placement="bottom" content={popOver.content1} arrowPointAtCenter>
-                <Icon type="question-circle-o"/>
+                <a><Icon type="question-circle-o"/></a>
               </Popover>
               ：
               <InputNumber min={1} max={99} defaultValue={props.addFollowersNow}
@@ -115,7 +115,7 @@ let FollowerUserModal = (props) => {
             <div className="custom-number-input">
               总计
               <Popover placement="bottom" content={popOver.content2} arrowPointAtCenter>
-                <Icon type="question-circle-o"/>
+                <a><Icon type="question-circle-o"/></a>
               </Popover>
               ：
               <InputNumber min={1} max={10000} defaultValue={props.addFollowersMax}
@@ -248,7 +248,6 @@ let FollowerUserModal = (props) => {
       </Button>
     }
   </div>;
-  
   
   return (
       <div>
