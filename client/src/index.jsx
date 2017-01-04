@@ -1,15 +1,15 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {Router, Route, hashHistory, IndexRoute} from 'react-router';
-import HOME from './Home/index.jsx';
+import HOME from './Components/Home/index.jsx';
 import 'babel-polyfill';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import GitMaxApp from './reducers/GitMaxApp';
-import App from './Home/App';
-import FollowerConfig from './Home/FollowerConfig';
-import FriendsList from './Home/FriendsList';
+import App from './Components/App';
+import FollowerConfig from './Components/FollowerConfig';
+import FriendsList from './Components/FriendsList';
 
 // import testFollowModal from './reducers/test';
 // testFollowModal();

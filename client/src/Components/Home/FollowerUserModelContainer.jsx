@@ -5,7 +5,7 @@ import {
   onFollowModalNextStep,
   followModalPrevStep,
   showMessage
-} from '../actions/actions';
+} from '../../actions/actions';
 import FollowerUserModal from './FollowerUserModal';
 const mapStateToProps = (state, ownProps) => {
   return {

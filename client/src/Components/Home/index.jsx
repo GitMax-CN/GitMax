@@ -10,7 +10,7 @@ import Content3 from './Content3';
 import Footer from './Footer';
 import Point from './Point';
 
-import './less/antMotion_style.less';
+import '../less/antMotion_style.less';
 
 export default class Home extends React.Component {
   componentDidMount() {

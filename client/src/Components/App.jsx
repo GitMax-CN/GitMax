@@ -1,9 +1,9 @@
 import React from 'react';
 import {Menu, Row, Col} from 'antd';
 import {Link} from 'react-router';
-import Content1 from './Content1';
-import Content2 from './Content2';
-import Content3 from './Content3';
+import Content1 from './Home/Content1';
+import Content2 from './Home/Content2';
+import Content3 from './Home/Content3';
 import AppNavContainer from './AppNavContainer';
 const SubMenu = Menu.SubMenu;
 

@@ -1,4 +1,4 @@
-import {userLogin, userLogout, followModalOpen, clearMessage} from '../actions/actions'
+import {userLogin, userLogout, followModalOpen, clearMessage} from '../../actions/actions'
 import {connect} from 'react-redux';
 import Nav from './Nav';
 

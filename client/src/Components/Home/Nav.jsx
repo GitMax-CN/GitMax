@@ -2,7 +2,7 @@ import React, {PropTypes} from 'react';
 import TweenOne from 'rc-tween-one';
 import {Button, Menu, Dropdown, Badge, message, Icon} from 'antd';
 import FollowerUserModalContainer from './FollowerUserModelContainer';
-import {calcInfluenceFactor} from '../api';
+import {calcInfluenceFactor} from '../../api';
 
 const Item = Menu.Item;
 
