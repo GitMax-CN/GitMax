@@ -37,6 +37,10 @@ window.addEventListener("message", (event) => {
   }
 }, false);
 
+const requireLogin = () => {
+  console.log("requires login!");//Todo implement require login
+};
+
 const router = (
     <Router history={hashHistory}>
       <Route path="/" component={HOME}>
@@ -44,7 +48,7 @@ const router = (
         {/*<Route path="/authenticate/:token(/:scope)" onEnter={postToken}/>*/}
         {/*<Route path="about" component={AboutPage}/>*/}
       </Route>
-      <Route path="app" component={App}>
+      <Route path="app" component={App} onEnter={requireLogin}>
         <IndexRoute component={FollowerConfigContainer}/>
         <Route path="addFollower" component={FollowerConfigContainer}/>
         <Route path="friends" component={FriendsListContainer}/>

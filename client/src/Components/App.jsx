@@ -2,6 +2,7 @@ import React from 'react';
 import {Menu, Row, Col} from 'antd';
 import {Link} from 'react-router';
 import NavContainer from './Home/NavContainer';
+import Footer from './Home/Footer';
 
 const App = (props) => {
   
@@ -33,6 +34,7 @@ const App = (props) => {
               </Col>
             </Row>
           </div>
+          <Footer/>
         </div>
       </div>
   );
