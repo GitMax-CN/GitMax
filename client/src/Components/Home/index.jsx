@@ -2,12 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { scrollScreen } from 'rc-scroll-anim';
 
-import NavContainer from './NavContainer';
+import NavContainer from '../NavContainer';
 import Content0 from './Content0';
 import Content1 from './Content1';
 import Content2 from './Content2';
 import Content3 from './Content3';
-import Footer from './Footer';
+import Footer from '../Footer';
 import Point from './Point';
 
 import '../less/antMotion_style.less';

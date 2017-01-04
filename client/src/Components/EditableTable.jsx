@@ -4,34 +4,35 @@ import EditableCell from './EditableCell';
 
 class EditableTable extends React.Component {
   constructor(props) {
+    console.log("props", props);
     super(props);
     this.columns = [{
-      title: 'name',
-      dataIndex: 'name',
+      title: 'Follower数',
+      dataIndex: 'crit_FollowersCount',
       width: '25%',
-      render: (text, record, index) => this.renderColumns(this.state.data, index, 'name', text),
+      render: (text, record, index) => this.renderColumns(this.state.data, index, 'crit_FollowersCount', text),
     }, {
-      title: 'age',
-      dataIndex: 'age',
+      title: 'Star数',
+      dataIndex: 'crit_StargazersCount',
       width: '15%',
-      render: (text, record, index) => this.renderColumns(this.state.data, index, 'age', text),
+      render: (text, record, index) => this.renderColumns(this.state.data, index, 'crit_StargazersCount', text),
     }, {
-      title: 'address',
-      dataIndex: 'address',
+      title: '我要添加好友的总数',
+      dataIndex: 'addFollowersMax',
       width: '40%',
-      render: (text, record, index) => this.renderColumns(this.state.data, index, 'address', text),
+      render: (text, record, index) => this.renderColumns(this.state.data, index, 'addFollowersMax', text),
     }, {
-      title: 'operation',
+      title: '操作',
       dataIndex: 'operation',
       render: (text, record, index) => {
-        const { editable } = this.state.data[index].name;
+        const { editable } = this.state.data[index].crit_FollowersCount;
         return (<div className="editable-row-operations">
           {
             editable ?
                 <span>
-              <a onClick={() => this.editDone(index, 'save')}>Save</a>
+              <a onClick={() => this.editDone(index, 'save')}>保存</a>
               <Popconfirm title="Sure to cancel?" onConfirm={() => this.editDone(index, 'cancel')}>
-                <a>Cancel</a>
+                <a>取消</a>
               </Popconfirm>
             </span>
                 :
@@ -45,15 +46,16 @@ class EditableTable extends React.Component {
     this.state = {
       data: [{
         key: '0',
-        name: {
-          editable: false,
+        crit_FollowersCount: {
+          editable: false,//其实属性名应该是'editing'. ant design团队有个typo
           value: 'Edward King 0',
         },
-        age: {
+        crit_StargazersCount: {
           editable: false,
           value: '32',
         },
-        address: {
+        addFollowersMax: {
+          editable: false,
           value: 'London, Park Lane no. 0',
         },
       }],
@@ -115,7 +117,11 @@ class EditableTable extends React.Component {
       return obj;
     });
     const columns = this.columns;
-    return <Table bordered dataSource={dataSource} columns={columns} />;
+    return <div>
+      <h4>好友添加条件</h4>
+      <Table pagination={false} bordered dataSource={dataSource}
+                  columns={columns} />
+    </div>;
   }
 }
 

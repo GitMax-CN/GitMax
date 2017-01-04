@@ -1,8 +1,8 @@
 import React from 'react';
 import {Menu, Row, Col} from 'antd';
 import {Link} from 'react-router';
-import NavContainer from './Home/NavContainer';
-import Footer from './Home/Footer';
+import NavContainer from './NavContainer';
+import Footer from './Footer';
 
 const App = (props) => {
   

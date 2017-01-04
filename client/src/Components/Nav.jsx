@@ -1,13 +1,13 @@
 import React, {PropTypes} from 'react';
 import TweenOne from 'rc-tween-one';
 import {Button, Menu, Dropdown, Badge, message, Icon} from 'antd';
-import FollowerUserModalContainer from './FollowerUserModelContainer';
-import {calcInfluenceFactor} from '../../api';
+import FollowerUserModalContainer from './Home/FollowerUserModelContainer';
+import {calcInfluenceFactor} from '../api';
 import {Link} from 'react-router';
 const Item = Menu.Item;
 
 let Header = (props) => {
-  console.log("props", props);
+  // console.log("props", props);
   if (props.message.type) {
     message.config({duration: 3});
     message[props.message.type](props.message.content);
