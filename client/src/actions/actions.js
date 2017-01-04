@@ -69,6 +69,7 @@ const userLogoutStart = () => {
     type: "USER_LOGOUT_START",
   }
 };
+
 const userLogoutSuccess = () => {
   return {
     type: "USER_LOGOUT_SUCCESS",

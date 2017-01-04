@@ -1,15 +1,15 @@
 import React from 'react';
 import {render} from 'react-dom';
 import {Router, Route, hashHistory, IndexRoute} from 'react-router';
-// import Home from './Home.jsx';
 import HOME from './Home/index.jsx';
 import 'babel-polyfill';
 import {Provider} from 'react-redux';
 import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
-import {userLogin} from './actions/actions';
 import GitMaxApp from './reducers/GitMaxApp';
-
+import App from './Home/App';
+import FollowerConfig from './Home/FollowerConfig';
+import FriendsList from './Home/FriendsList';
 
 // import testFollowModal from './reducers/test';
 // testFollowModal();
@@ -27,13 +27,12 @@ const postToken = (nextState, replace, callback) => {
     token: nextState.token,
     scope: nextState.scope
   }, "*");// todo change this to specific urls - http://www.gitmax.cn, http://localhost:5000, etc
-
 };
 
 window.addEventListener("message", (event) => {
   const origin = event.origin || event.originalEvent.origin;
   console.log("origin", origin);
-  if (origin){
+  if (origin) {
     // store.dispatch(userLogin(event.token));
   }
 }, false);
@@ -41,9 +40,14 @@ window.addEventListener("message", (event) => {
 const router = (
     <Router history={hashHistory}>
       <Route path="/" component={HOME}>
-        <IndexRoute component={HOME}/>
-        <Route path="/authenticate/:token(/:scope)" onEnter={postToken}/>
+        
+        {/*<Route path="/authenticate/:token(/:scope)" onEnter={postToken}/>*/}
         {/*<Route path="about" component={AboutPage}/>*/}
+      </Route>
+      <Route path="app" component={App}>
+        <IndexRoute component={FollowerConfig}/>
+        <Route path="addFollower" component={FollowerConfig}/>
+        <Route path="friends" component={FriendsList}/>
       </Route>
       {/*<Route path="*" component={PageNotFound}/>*/}
     </Router>
