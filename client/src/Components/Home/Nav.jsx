@@ -3,10 +3,11 @@ import TweenOne from 'rc-tween-one';
 import {Button, Menu, Dropdown, Badge, message, Icon} from 'antd';
 import FollowerUserModalContainer from './FollowerUserModelContainer';
 import {calcInfluenceFactor} from '../../api';
-
+import {Link} from 'react-router';
 const Item = Menu.Item;
 
 let Header = (props) => {
+  console.log("props", props);
   if (props.message.type) {
     message.config({duration: 3});
     message[props.message.type](props.message.content);
@@ -68,13 +69,15 @@ let Header = (props) => {
         animation={{opacity: 0, type: 'from'}}
         id={props.id}
         className={props.className}
-        style={{backgroundColor: '#ffffff', position: 'fixed'}}
+        style={props.navStyle}
     >
       <TweenOne
           className={`${props.className}-logo`}
           animation={{x: -30, type: 'from', ease: 'easeOutQuad'}}
       >
+        <Link to = "/">
         <img width="100%" src="images/gitmax_logo_mono_horizontal2.png"/>
+        </Link>
       </TweenOne>
       
       {

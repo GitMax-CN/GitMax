@@ -8,8 +8,8 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import GitMaxApp from './reducers/GitMaxApp';
 import App from './Components/App';
-import FollowerConfig from './Components/FollowerConfig';
-import FriendsList from './Components/FriendsList';
+import FollowerConfigContainer from './Components/FollowerConfigContainer';
+import FriendsListContainer from './Components/FriendsListContainer';
 
 // import testFollowModal from './reducers/test';
 // testFollowModal();
@@ -31,7 +31,7 @@ const postToken = (nextState, replace, callback) => {
 
 window.addEventListener("message", (event) => {
   const origin = event.origin || event.originalEvent.origin;
-  console.log("origin", origin);
+  // console.log("origin", origin);
   if (origin) {
     // store.dispatch(userLogin(event.token));
   }
@@ -45,9 +45,9 @@ const router = (
         {/*<Route path="about" component={AboutPage}/>*/}
       </Route>
       <Route path="app" component={App}>
-        <IndexRoute component={FollowerConfig}/>
-        <Route path="addFollower" component={FollowerConfig}/>
-        <Route path="friends" component={FriendsList}/>
+        <IndexRoute component={FollowerConfigContainer}/>
+        <Route path="addFollower" component={FollowerConfigContainer}/>
+        <Route path="friends" component={FriendsListContainer}/>
       </Route>
       {/*<Route path="*" component={PageNotFound}/>*/}
     </Router>

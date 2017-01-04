@@ -258,7 +258,7 @@ const followUsers = (user) => {
       })
 };
 
-export const userLogin = () => {
+export const userLogin = (router) => {
   return (dispatch) => {
     
     dispatch(userLoginStart());
@@ -267,7 +267,9 @@ export const userLogin = () => {
         .then(upsertGitUser)
         .then(({user, data}) => {
           dispatch(userLoginSuccess(user));
-          dispatch(followModalOpen());
+          router.push('/app/addFollower');
+  
+          // dispatch(followModalOpen());
         })
         .catch((err) => {
           console.error("error", err);

@@ -22,7 +22,7 @@ export default class Home extends React.Component {
 
   render() {
     const children = [
-      <NavContainer id="Nav" key="Nav"/>,
+      <NavContainer id="Nav" key="Nav" router = {this.props.router}/>,
       <Content0 id="Content0" key="Content0"/>,
       <Content1 id="Content1" key="Content1"/>,
       <Content2 id="Content2" key="Content2"/>,
