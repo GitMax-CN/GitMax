@@ -24,7 +24,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onUserLogout: ()=> dispatch(userLogout()),
     followModalOpen: () => dispatch(followModalOpen()),
     clearMessage: () => dispatch(clearMessage()),
-    clearMessageLoading: () => dispatch(clearMessageLoading()),
   }
 };
 

@@ -15,7 +15,6 @@ let Header = (props) => {
     //call cancel loading function, clear the function variable, set loadingFinish to false again
     cancelLoading();
     cancelLoading = null;
-    props.clearMessageLoading();
   }
   if (props.message.type) {
     if (props.message.type !== "loading"){
