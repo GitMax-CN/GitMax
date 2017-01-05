@@ -392,34 +392,42 @@ export const refreshUser = () => {
 };
 
 //dispatch(modalOpen)
-export const onStartFollow = (user) => {
+export const onStartFollow = () => {
   return (dispatch, getState) => {
+    const user = getState().user;
+    
     if (!passTimeLimit(user.followedFriendsAt)) {
       
       let minsLeft = calcMinsLeft(user.followedFriendsAt);
       let hoursLeft = Math.trunc(minsLeft / 60);
       minsLeft = Math.trunc(minsLeft % 60);
+      const content = `每次手动添加好友，需间隔24小时，请${hoursLeft}小时${minsLeft}分钟后再试`;
       
-      return dispatch(
-          showMessage({
-            type: "warning",
-            content: `每次手动添加好友，需间隔24小时，请${hoursLeft}小时${minsLeft}分钟后再试`
-          })
-      );
+      return dispatch(showMessage({type: "warning", content: content}));
       // setTimeout(()=>{dispatch(followModalClose())}, 1000);
       // dispatch(showMessage({type: "success", content: "设置已保存"}));
       // return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
     } else {
-      dispatch(followModalNextStep());
-      dispatch(loadNextBtn("添加中"));
-      // throw new Error("Stopped manually for testing");
+      dispatch(showMessage({type: "loading", content: "正在为你添加好友，请稍候"}));
       return followUsers(user)
           .then(({newFriends, user}) => {
-            
+            dispatch(clearMessageLoading());
             dispatch(followUserSuccess(newFriends));
             dispatch(userLoginSuccess(user));
-            dispatch(followModalNextStep());
-          })
+            dispatch(followModalOpen());
+          });
+      
+      
+      // dispatch(followModalNextStep());
+      // dispatch(loadNextBtn("添加中"));
+      // // throw new Error("Stopped manually for testing");
+      // return followUsers(user)
+      //     .then(({newFriends, user}) => {
+      //
+      //       dispatch(followUserSuccess(newFriends));
+      //       dispatch(userLoginSuccess(user));
+      //       dispatch(followModalNextStep());
+      //     })
     }
   };
 };

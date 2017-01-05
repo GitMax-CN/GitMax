@@ -10,7 +10,7 @@ let FollowerConfig = (props) => {
       
       <EditableTableContainer />
       <div className="follow-btn">
-        <Button type="primary" size="large" onClick="">开始添加</Button>
+        <Button type="primary" size="large" onClick={() => props.onStartFollow()}>开始添加</Button>
       </div>
   </div>
 };

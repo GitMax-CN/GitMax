@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import FollowerConfig from './FollowerConfig';
-import {followModalPrevStep, onFollowModalNextStep, showMessage, saveConfigIfChanged} from '../actions/actions';
+import {onStartFollow, followModalPrevStep, onFollowModalNextStep, showMessage, saveConfigIfChanged} from '../actions/actions';
 
 const mapStateToProps = (state, ownProps) => {
   // console.log("state.user", state.user);
@@ -19,6 +19,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onStartFollow: () => dispatch(onStartFollow()),
     // followModalPrevStep: () => dispatch(followModalPrevStep()),
     // followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
     // showMessage: (message) => dispatch(showMessage(message)),

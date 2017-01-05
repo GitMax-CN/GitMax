@@ -1,7 +1,8 @@
 import React, {PropTypes} from 'react';
 import TweenOne from 'rc-tween-one';
 import {Button, Menu, Dropdown, Badge, message, Icon} from 'antd';
-import FollowerUserModalContainer from './Home/FollowerUserModelContainer';
+import UserConfigModalContainer from './Home/UserConfigModalContainer';
+import FollowerUserModelContainer from './FollowerUserModelContainer';
 import {calcInfluenceFactor} from '../api';
 import {Link} from 'react-router';
 const Item = Menu.Item;
@@ -138,7 +139,8 @@ let Header = (props) => {
       </TweenOne>
     
     </TweenOne>
-    <FollowerUserModalContainer />
+    <UserConfigModalContainer />
+    <FollowerUserModelContainer />
   </div>);
 };
 
