@@ -2,11 +2,16 @@ import React from 'react';
 import {Button, Row, Col, Card, Icon, Pagination, Badge} from 'antd';
 
 const FriendsList = (props) => {
-  // console.log("FriendsList props", props);
-  console.log("FriendsList", JSON.stringify(props.friends.list));
+  // console.log("FriendsList", JSON.stringify(props.friends.list));
   const friendsPerPage = 15;
   const currentFriendList = props.friends.list.slice((props.friends.page - 1) * friendsPerPage,
       props.friends.page * friendsPerPage);
+  // console.log("currentFriendList", currentFriendList);
+  
+  const pagination = <div className="friend-pagination">
+    <Pagination id="pagination" pageSize={friendsPerPage} total={props.friends.list.length}
+                current={props.friends.page} onChange={props.changeFriendListPageNumber}/>
+  </div>;
   
   return <div>
     <h1 id="GitMax好友列表">
@@ -24,8 +29,6 @@ const FriendsList = (props) => {
              style={{backgroundColor: '#87d068'}}/>
       </a>
     </p>
-    
-      
     
     <div className="friend-list-container">
       <Row gutter={16} className="new-friends-container">
@@ -77,12 +80,8 @@ const FriendsList = (props) => {
         }
       </Row>
     </div>
-    {/*<Pagination defaultCurrent={1} pageSize = {friendsPerPage} total={props.friends.list.length} className="friend-pagination"/>*/}
-    {/*<Pagination current={1} total={2} />*/}
-    <div className="friend-pagination">
-    <Pagination id="pagination" pageSize={friendsPerPage} total={props.friends.list.length}
-                current={props.friends.page} onChange={props.changeFriendListPageNumber}/>
-    </div>
+    
+    {pagination}
   </div>
 };
 

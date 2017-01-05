@@ -32,9 +32,11 @@ export const initialState = {
 };
 
 const gitMaxApp = (state = initialState, action) => {
-  let newUser;
-  let newCurrent;
-  let newUserFollowModal;
+  let newUser,
+      newCurrent,
+      newUserFollowModal,
+      newInitialConfigModal,
+      newFriends;
   
   switch (action.type) {
     case "USER_LOGIN_START":
@@ -159,17 +161,19 @@ const gitMaxApp = (state = initialState, action) => {
     case "FETCH_FRIENDS_SUCCESS":
       console.log("FETCH_FRIENDS_SUCCESS");
       console.log("action.friendList", action.friendList);
+      newFriends = Object.assign({}, state.friends);
+      newFriends.list = action.friendList;
       return Object.assign({},
           state,
           {
-            friends: {list: action.friendList, isFetching: false}
+            friends: newFriends
           }
       );
       
     case "CHANGE_FRIEND_LIST_PAGE_NUMBER":
       console.log("CHANGE_FRIEND_LIST_PAGE_NUMBER, action.page", action.page);
       
-      let newFriends = Object.assign({}, state.friends);
+      newFriends = Object.assign({}, state.friends);
       newFriends.page = action.page;
       return Object.assign({},
           state,
