@@ -140,6 +140,14 @@ const followAndStore = (users, user) => {
         "friendUrl": user2.html_url,
         "friendAvatarUrl": user2.avatar_url,
       };
+      if (user2.bio) item["friendBio"] = user2.bio;
+      if (user2.company) item["friendCompany"] = user2.company;
+      if (user2.followers) item["friendFollowers"] = user2.followers;
+      if (user2.totalStars) item["friendTotalStars"] = user2.totalStars;
+      if (user2.location) item["friendLocation"] = user2.location;
+      if (user2.email) item["friendEmail"] = user2.email;
+      if (user2.created_at) item["friendCreated_at"] = user2.created_at;
+      
       let params = {
         TableName: "Friends",
         Item: item,
@@ -301,6 +309,7 @@ const configUpdate = (user, stage) => {
 };
 
 const handleFollow = (event, context, callback) => {
+  console.log("handleFollow start");;
   // console.log("DynamoDB triggered lambda successfully");
   // console.log("event", JSON.stringify(event));
   // console.log("context", context);
@@ -343,6 +352,7 @@ const handleFollow = (event, context, callback) => {
 };
 
 const handleGetFollowers = (event, context, callback) => {
+  console.log("handleGetFollowers start");
   let data = JSON.parse(event.body);
   console.log("input data", JSON.stringify(data));
   if (!data.user) {
@@ -354,11 +364,27 @@ const handleGetFollowers = (event, context, callback) => {
   
   getFriends(user.id)//获得所有好友的ids
       .then(friendsList => {
+        let TruncdFriends = friendsList.map(friend => {
+          return {
+            friendId: friend.friendId,
+            friendName: friend.friendName,
+            friendLogin: friend.friendLogin,
+            friendUrl: friend.friendUrl,
+            friendAvatarUrl: friend.friendAvatarUrl,
+            friendBio: friend.friendBio,
+            friendCompany: friend.friendCompany,
+            friendFollowers: friend.friendFollowers,
+            friendTotalStars: friend.friendTotalStars,
+            friendLocation: friend.friendLocation,
+            friendEmail: friend.friendEmail,
+            friendCreated_at: friend.friendCreated_at,
+          }
+        });
         // console.log("friendsList", JSON.stringify(friendsList));
         let response = {
           statusCode: 200,
           headers: {"Access-Control-Allow-Origin": "*"},
-          body: JSON.stringify(friendsList),
+          body: JSON.stringify(TruncdFriends),
         };
         console.log("Get followers successfully");
         callback(null, response);
@@ -374,7 +400,7 @@ const main = (event, context, callback) => {
     case "/user/getFollowers":
       handleGetFollowers(event, context, callback);
       break;
-    case "user/follow":
+    case "/user/follow":
       handleFollow(event, context, callback);
       break;
   }
