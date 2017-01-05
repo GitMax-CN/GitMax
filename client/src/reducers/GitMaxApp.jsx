@@ -40,6 +40,7 @@ const gitMaxApp = (state = initialState, action) => {
       return Object.assign({}, state, {user: newUser});
     
     case "USER_LOGIN_SUCCESS":
+    case "USER_UPDATE_SUCCESS":
       console.log("USER_LOGIN_SUCCESS, action.user", action.user);
       newUser = Object.assign({},
           state.user,

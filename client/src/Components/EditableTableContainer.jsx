@@ -1,28 +1,29 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import FollowerConfig from './FollowerConfig';
+import EditableTable from './EditableTable';
 import {followModalPrevStep, onFollowModalNextStep, showMessage, saveConfigIfChanged} from '../actions/actions';
 
 const mapStateToProps = (state, ownProps) => {
   // console.log("state.user", state.user);
   // console.log("ownProps", ownProps);
   return {
-    // user: state.user,
-    // crit_FollowersCount: state.user.crit_FollowersCount,
-    // crit_StargazersCount: state.user.crit_StargazersCount,
-    // addFollowersNow: state.user.addFollowersNow,
-    // addFollowersMax: state.user.addFollowersMax,
+    user: state.user,
+    crit_FollowersCount: state.user.crit_FollowersCount,
+    crit_StargazersCount: state.user.crit_StargazersCount,
+    addFollowersNow: state.user.addFollowersNow,
+    addFollowersMax: state.user.addFollowersMax,
     // message: {type:"success", content:"设置保存成功"},
     // message: state.message,
+    ...ownProps
   }
 };
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    // followModalPrevStep: () => dispatch(followModalPrevStep()),
-    // followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
-    // showMessage: (message) => dispatch(showMessage(message)),
-    // saveConfigIfChanged: (data) => dispatch(saveConfigIfChanged(data))
+    followModalPrevStep: () => dispatch(followModalPrevStep()),
+    followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
+    showMessage: (message) => dispatch(showMessage(message)),
+    saveConfigIfChanged: (data) => dispatch(saveConfigIfChanged(data))
     // onUserLogin: () => dispatch(userLogin()),
     // onUserLogout: ()=> dispatch(userLogout()),
     // followModalOpen: () => dispatch(followModalOpen()),
@@ -30,9 +31,9 @@ const mapDispatchToProps = (dispatch) => {
   }
 };
 
-const FollowerConfigContainer = connect(
+const EditableTableContainer = connect(
     mapStateToProps,
     mapDispatchToProps
-)(FollowerConfig);
+)(EditableTable);
 
-export default FollowerConfigContainer;
+export default EditableTableContainer;

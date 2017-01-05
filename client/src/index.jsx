@@ -8,8 +8,8 @@ import {createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import GitMaxApp from './reducers/GitMaxApp';
 import App from './Components/App';
+import FollowerConfig from './Components/FollowerConfig';
 import FollowerConfigContainer from './Components/FollowerConfigContainer';
-import FriendsListContainer from './Components/FriendsListContainer';
 
 // import testFollowModal from './reducers/test';
 // testFollowModal();
@@ -49,9 +49,9 @@ const router = (
         {/*<Route path="about" component={AboutPage}/>*/}
       </Route>
       <Route path="app" component={App} onEnter={requireLogin}>
-        <IndexRoute component={FollowerConfigContainer}/>
+        <IndexRoute component={FollowerConfig}/>
         <Route path="addFollower" component={FollowerConfigContainer}/>
-        <Route path="friends" component={FriendsListContainer}/>
+        <Route path="friends" component={FollowerConfigContainer}/>
       </Route>
       {/*<Route path="*" component={PageNotFound}/>*/}
     </Router>

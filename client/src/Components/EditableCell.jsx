@@ -1,6 +1,5 @@
 import React from 'react';
-import { Input} from 'antd';
-
+import { Input, InputNumber} from 'antd';
 
 class EditableCell extends React.Component {
   state = {
@@ -27,9 +26,8 @@ class EditableCell extends React.Component {
     return nextProps.editable !== this.state.editable ||
         nextState.value !== this.state.value;
   }
-  handleChange(e) {
-    const value = e.target.value;
-    this.setState({ value });
+  handleChange(value) {
+    
   }
   render() {
     const { value, editable } = this.state;
@@ -37,10 +35,8 @@ class EditableCell extends React.Component {
       {
         editable ?
             <div>
-              <Input
-                  value={value}
-                  onChange={e => this.handleChange(e)}
-              />
+              <InputNumber min={this.props.min} max={this.props.max} value={value}
+                           onChange={value => this.setState({ value })}/>
             </div>
             :
             <div className="editable-row-text">

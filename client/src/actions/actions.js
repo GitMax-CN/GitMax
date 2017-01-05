@@ -38,6 +38,13 @@ const userLoginSuccess = (user) => {
   }
 };
 
+const userUpdateSuccess = (user) => {
+  return {
+    type: "USER_UPDATE_SUCCESS",
+    user,
+  }
+};
+
 export const showMessage = (msg) => {
   return {
     type: "GLOBAL_MESSAGE_SHOW",
@@ -205,12 +212,12 @@ const upsertGitUser = (token) => {
 };
 
 /**
- * Save the changed config to database if config is changed
+ * Save the changed config to database if config is changed (data里的属性与对应user属性不同)
  * @param user
  * @param data
  * @returns {Promise.<user>}
  */
-const saveUserIfChanged = (user, data) => {
+export const saveUserIfChanged = (user, data) => {
   return new Promise((resolve, reject) => {
     const canUpdate = canUpdateConfig(user, data);
     if (canUpdate) {
@@ -222,6 +229,44 @@ const saveUserIfChanged = (user, data) => {
       resolve(user);
     }
   })
+};
+
+export const saveConfigIfChanged = (data) => {
+  return (dispatch, getState)=> {
+    const user = getState().user;
+    console.log("user", user);
+    console.log("data", data);
+    
+    const canUpdate = canUpdateConfig(user, data);
+    const newUser = !user.followedFriendsAt;
+    
+    return new Promise((resolve, reject)=>{
+      if (canUpdate) {
+        console.log("configChanged");
+        const newUser = Object.assign({}, user, data);
+        return resolve(updateConfig(newUser));
+      } else {
+        console.log("config not Changed");
+        return resolve(user);
+      }
+    })
+        .then(user => {
+          console.log("user is updated ", user);
+          dispatch(userUpdateSuccess(user))
+        });
+    
+    // return new Promise((resolve, reject) => {
+    //   const canUpdate = canUpdateConfig(user, data);
+    //   if (canUpdate) {
+    //     console.log("configChanged");
+    //     const newUser = Object.assign({}, user, data);
+    //     resolve(updateConfig(newUser));
+    //   } else {
+    //     console.log("config not Changed");
+    //     resolve(user);
+    //   }
+    // })
+  }
 };
 
 const updateConfig = (user) => {
@@ -300,9 +345,7 @@ const canUpdateConfig = (user, data) => {
   const configChanged = Object.keys(data).reduce((result, key) => {
     return result || user[key] !== data[key];
   }, false);
-  const newUser = !user.followedFriendsAt;
-  
-  return configChanged || newUser;
+  return configChanged;
 };
 
 export const onFollowModalNextStep = (currentStep, data) => {
