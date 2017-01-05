@@ -5,14 +5,13 @@ import {Button} from 'antd';
 let FollowerConfig = (props) => {
   // console.log("props", props);
   return <div>
-    <div className="markdown">
       <h1 id="添加好友"><span>添加好友</span><a href="#添加好友" className="anchor">#</a></h1>
       <p>在此设置好友添加条件，并添加GitMax好友。</p>
-    </div>
-    <EditableTableContainer />
-    <div className="follow-btn">
-      <Button type="primary" size="large" onClick="">开始添加</Button>
-    </div>
+      
+      <EditableTableContainer />
+      <div className="follow-btn">
+        <Button type="primary" size="large" onClick="">开始添加</Button>
+      </div>
   </div>
 };
 

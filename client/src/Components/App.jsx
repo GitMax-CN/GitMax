@@ -6,6 +6,15 @@ import Footer from './Footer';
 
 const App = (props) => {
   
+  const getSelectedKey = () => {
+    // console.log("props.router.location.pathname", props.router.location.pathname);
+    switch(props.router.location.pathname){
+      case "/app/addFollower": return "1";
+      case "/app/friends": return "2";
+      default: return "x";
+    }
+  };
+  
   const handleClick = () => console.log("handleClick!");
   
   const leftBar = <Menu
@@ -13,9 +22,10 @@ const App = (props) => {
       style={{width: "100%", height: "100%"}}
       defaultOpenKeys={['sub1']}
       mode="inline"
+      selectedKeys = {getSelectedKey()}
   >
-    <Menu.Item key="1"><Link to = "/app/addFollower">添加好友</Link></Menu.Item>
-    <Menu.Item key="2"><Link to = "/app/friends">我的好友</Link></Menu.Item>
+    <Menu.Item key="1"><Link to="/app/addFollower">添加好友</Link></Menu.Item>
+    <Menu.Item key="2"><div onClick={() => props.goToFriendsListPage(props.router)}>我的好友</div></Menu.Item>
     <Menu.Item key="3">登出</Menu.Item>
   </Menu>;
   
@@ -30,7 +40,9 @@ const App = (props) => {
               </Col>
               
               <Col className="main-container" span={20}>
-                {props.children}
+                <div className="markdown">
+                  {props.children}
+                </div>
               </Col>
             </Row>
           </div>

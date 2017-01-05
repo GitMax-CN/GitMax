@@ -1,4 +1,4 @@
-import {userLogin, userLogout, followModalOpen, clearMessage} from '../actions/actions'
+import {userLogin, userLogout, followModalOpen, clearMessage, clearMessageLoading} from '../actions/actions'
 import {connect} from 'react-redux';
 import Nav from './Nav';
 
@@ -24,6 +24,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     onUserLogout: ()=> dispatch(userLogout()),
     followModalOpen: () => dispatch(followModalOpen()),
     clearMessage: () => dispatch(clearMessage()),
+    clearMessageLoading: () => dispatch(clearMessageLoading()),
   }
 };
 

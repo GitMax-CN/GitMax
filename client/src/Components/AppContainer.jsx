@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {userLogout} from '../actions/actions';
+import {userLogout, goToFriendsListPage} from '../actions/actions';
 import App from './App';
 
 const mapStateToProps = (state, ownProps) => {
@@ -8,9 +8,9 @@ const mapStateToProps = (state, ownProps) => {
   }
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onUserLogout: ()=> dispatch(userLogout()),
+    goToFriendsListPage: (router) => dispatch(goToFriendsListPage(router)),
   }
 };
 

@@ -54,8 +54,16 @@ const calcInfluenceFactor = (user) => {
  * @returns {boolean}
  */
 const passTimeLimit = (followedFriendsAt) => {
-  return !followedFriendsAt ||
-  (new Date().getTime() - followedFriendsAt) > 24 * 60 * 60 * 1000;
+  return !followedFriendsAt || calcMinsLeft(followedFriendsAt)<=0;
 };
 
-export {getUrlParam, popCenterWindow, calcInfluenceFactor, passTimeLimit}
+/**
+ * Calculate how many minutes left
+ * @param followedFriendsAt
+ * @returns {number}
+ */
+const calcMinsLeft = (followedFriendsAt)=>{
+  return (followedFriendsAt + 24 * 60 * 60 * 1000 - new Date().getTime()) / 1000 / 60;
+};
+
+export {getUrlParam, popCenterWindow, calcInfluenceFactor, passTimeLimit, calcMinsLeft}

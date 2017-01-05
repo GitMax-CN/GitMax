@@ -1,6 +1,6 @@
 import fetch from 'isomorphic-fetch';
 import config from '../../config';
-import {getUrlParam, popCenterWindow, passTimeLimit} from '../api';
+import {getUrlParam, popCenterWindow, passTimeLimit, calcMinsLeft} from '../api';
 
 export const followModalOpen = () => {
   return {type: "FOLLOW_MODAL_OPEN"}
@@ -45,16 +45,34 @@ const userUpdateSuccess = (user) => {
   }
 };
 
-export const showMessage = (msg) => {
-  return {
-    type: "GLOBAL_MESSAGE_SHOW",
-    msg
-  }
+export const showMessage = ({type, content}) => {
+  if (type !== "loading")
+    return {
+      type: "GLOBAL_MESSAGE_SHOW",
+      msg: {
+        type,
+        content
+      }
+    };
+  else
+    return {
+      type: "GLOBAL_MESSAGE_LOADING_SHOW",
+      msg: {
+        type,
+        content
+      }
+    }
 };
 
 export const clearMessage = () => {
   return {
     type: "GLOBAL_MESSAGE_CLEAR",
+  }
+};
+
+export const clearMessageLoading = () => {
+  return {
+    type: "GLOBAL_MESSAGE_LOADING_CLEAR"
   }
 };
 
@@ -231,43 +249,6 @@ export const saveUserIfChanged = (user, data) => {
   })
 };
 
-export const saveConfigIfChanged = (data) => {
-  return (dispatch, getState)=> {
-    const user = getState().user;
-    console.log("user", user);
-    console.log("data", data);
-    
-    const canUpdate = canUpdateConfig(user, data);
-    const newUser = !user.followedFriendsAt;
-    
-    return new Promise((resolve, reject)=>{
-      if (canUpdate) {
-        console.log("configChanged");
-        const newUser = Object.assign({}, user, data);
-        return resolve(updateConfig(newUser));
-      } else {
-        console.log("config not Changed");
-        return resolve(user);
-      }
-    })
-        .then(user => {
-          console.log("user is updated ", user);
-          dispatch(userUpdateSuccess(user))
-        });
-    
-    // return new Promise((resolve, reject) => {
-    //   const canUpdate = canUpdateConfig(user, data);
-    //   if (canUpdate) {
-    //     console.log("configChanged");
-    //     const newUser = Object.assign({}, user, data);
-    //     resolve(updateConfig(newUser));
-    //   } else {
-    //     console.log("config not Changed");
-    //     resolve(user);
-    //   }
-    // })
-  }
-};
 
 const updateConfig = (user) => {
   const stage = config.getStage();
@@ -313,13 +294,20 @@ export const userLogin = (router) => {
         .then(({user, data}) => {
           dispatch(userLoginSuccess(user));
           router.push('/app/addFollower');
-  
+          
           // dispatch(followModalOpen());
         })
         .catch((err) => {
           console.error("error", err);
           dispatch(userLoginFail(err));
         });
+  }
+};
+
+export const goToFriendsListPage = (router) => {
+  return (dispatch) => {
+    dispatch(onFetchFriends());
+    router.push('/app/friends');
   }
 };
 
@@ -347,6 +335,7 @@ const canUpdateConfig = (user, data) => {
   }, false);
   return configChanged;
 };
+
 
 export const onFollowModalNextStep = (currentStep, data) => {
   console.log("currentStep, data", currentStep, data);
@@ -402,10 +391,86 @@ export const refreshUser = () => {
   }
 };
 
+//dispatch(modalOpen)
+export const onStartFollow = (user) => {
+  return (dispatch, getState) => {
+    if (!passTimeLimit(user.followedFriendsAt)) {
+      
+      let minsLeft = calcMinsLeft(user.followedFriendsAt);
+      let hoursLeft = Math.trunc(minsLeft / 60);
+      minsLeft = Math.trunc(minsLeft % 60);
+      
+      return dispatch(
+          showMessage({
+            type: "warning",
+            content: `每次手动添加好友，需间隔24小时，请${hoursLeft}小时${minsLeft}分钟后再试`
+          })
+      );
+      // setTimeout(()=>{dispatch(followModalClose())}, 1000);
+      // dispatch(showMessage({type: "success", content: "设置已保存"}));
+      // return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
+    } else {
+      dispatch(followModalNextStep());
+      dispatch(loadNextBtn("添加中"));
+      // throw new Error("Stopped manually for testing");
+      return followUsers(user)
+          .then(({newFriends, user}) => {
+            
+            dispatch(followUserSuccess(newFriends));
+            dispatch(userLoginSuccess(user));
+            dispatch(followModalNextStep());
+          })
+    }
+  };
+};
 
 
+export const saveConfigIfChanged = (data) => {
+  return (dispatch, getState) => {
+    const user = getState().user;
+    console.log("user", user);
+    console.log("data", data);
+    
+    const canUpdate = canUpdateConfig(user, data);
+    const isNewUser = !user.followedFriendsAt;
+    
+    if (!canUpdate) {
+      console.log("config not Changed");
+      return user;
+    }
+    
+    console.log("configChanged");
+    const newUser = Object.assign({}, user, data);
+    updateConfig(newUser)
+        .then(user => {
+          console.log("user is updated ", user);
+          dispatch(userUpdateSuccess(user))
+        })
+        .catch(err => {
+          console.error(err);
+          dispatch(showMessage({type: "error", content: "设置未保存成功，请重试"}));
+        });
+  }
+};
 
-
+/**
+ * fetch friends for the specific user
+ */
+export const onFetchFriends = () => {
+  return (dispatch, getState) => {
+    if (getState().friends.total){
+      return;
+    }
+    console.log();
+    dispatch(showMessage({type: "loading",content:"获得好友中"}));
+    /*dispatch(friendsUpdated(friends)*/
+    // dispatch(clearMessageLoading());
+    setTimeout(() => {
+      dispatch(clearMessageLoading());
+    }, 3000);
+  };
+  
+};
 
 
 

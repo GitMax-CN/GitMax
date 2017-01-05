@@ -16,14 +16,15 @@ export const initialState = {
     current: 0,
     nextBtnLoading: false,
   },
-  followers: {
+  friends: {
     isFetching: false,
     list: [],
   },
   newFriends:[],
   message: {
     type: null,
-    content: null
+    content: null,
+    loadingFinish: true,
   }
 };
 
@@ -122,10 +123,24 @@ const gitMaxApp = (state = initialState, action) => {
       return Object.assign({}, state, {message: action.msg});
   
     case "GLOBAL_MESSAGE_CLEAR":
-      console.log("GLOBAL_MESSAGE_CLEAR", action.msg);
+      console.log("GLOBAL_MESSAGE_CLEAR");
       return Object.assign({}, state, {message: {
         type: null,
         content: null,
+        loadingFinish: state.message.loadingFinish
+      }});
+  
+    case "GLOBAL_MESSAGE_LOADING_SHOW":
+      console.log("GLOBAL_MESSAGE_SHOW", action.msg);
+      let message = Object.assign({}, action.msg, {loadingFinish: false});
+      return Object.assign({}, state, {message: message});
+      
+    case "GLOBAL_MESSAGE_LOADING_CLEAR":
+      console.log("GLOBAL_MESSAGE_LOADING_CLEAR");
+      return Object.assign({}, state, {message: {
+        type: state.message.type,
+        content: state.message.content,
+        loadingFinish: true
       }});
       
     case "USER_REFRESH":

@@ -5,13 +5,26 @@ import FollowerUserModalContainer from './Home/FollowerUserModelContainer';
 import {calcInfluenceFactor} from '../api';
 import {Link} from 'react-router';
 const Item = Menu.Item;
+let cancelLoading = null;
 
 let Header = (props) => {
   // console.log("props", props);
+  
+  if (!!cancelLoading && props.message.loadingFinish) {
+    //call cancel loading function, clear the function variable, set loadingFinish to false again
+    cancelLoading();
+    cancelLoading = null;
+    props.clearMessageLoading();
+  }
   if (props.message.type) {
-    message.config({duration: 3});
-    message[props.message.type](props.message.content);
-    props.clearMessage();
+    if (props.message.type !== "loading"){
+      message.config({duration: 3});
+      message[props.message.type](props.message.content);
+      props.clearMessage();
+    } else {
+      cancelLoading = message[props.message.type](props.message.content, 0);
+      props.clearMessage();
+    }
   }
   
   const onBtnClick = () => {
