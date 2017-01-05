@@ -154,6 +154,16 @@ const gitMaxApp = (state = initialState, action) => {
         content: state.message.content,
         loadingFinish: true
       }});
+  
+    case "FETCH_FRIENDS_SUCCESS":
+      console.log("FETCH_FRIENDS_SUCCESS");
+      console.log("action.friendList", action.friendList);
+      return Object.assign({},
+          state,
+          {
+            friends: {list: action.friendList, isFetching: false}
+          }
+      );
       
     case "USER_REFRESH":
       console.log("USER_REFRESH start:", action.user);

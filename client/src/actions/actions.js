@@ -2,6 +2,13 @@ import fetch from 'isomorphic-fetch';
 import config from '../../config';
 import {getUrlParam, popCenterWindow, passTimeLimit, calcMinsLeft} from '../api';
 
+const fetchFriendsSuccess = (friendList) => {
+  return {
+    type: "FETCH_FRIENDS_SUCCESS",
+    friendList: friendList,
+  }
+};
+
 export const initialConfigModalOpen = () => {
   return {type: "INITIAL_CONFIG_MODAL_OPEN"}
 };
@@ -486,21 +493,47 @@ export const onInitialModalSave = (data, router) => {
   }
 };
 
+const fetchFriends = (user) => {
+  // console.log("getUserInfo start - token", token);
+  const stage = config.getStage();
+  const url = config.lambda[stage].getFollowersEndpoint;
+  
+  const options = {
+    method: "POST",
+    body: JSON.stringify({user: user}),
+  };
+  
+  return fetch(url, options)
+      .then(checkStatus)
+      .then(response => response.json())
+      .then(friendList => {
+        // console.log("friendList", friendList);
+        return friendList
+      });
+};
 /**
  * fetch friends for the specific user
  */
 export const onFetchFriends = () => {
   return (dispatch, getState) => {
-    if (getState().friends.total) {
-      return;
-    }
+    // if (getState().friends.total) {
+    //   return;
+    // }
     console.log();
     dispatch(showMessage({type: "loading", content: "获得好友中"}));
+    
+    fetchFriends(getState().user)
+        .then((friendList)=>{
+          dispatch(fetchFriendsSuccess(friendList));
+          dispatch(clearMessageLoading());
+        })
+        .catch((error)=>{
+          console.error(error);
+          dispatch(showMessage({type: "error", content: "获得好友中失败，请稍候再试"}));
+        });
+    
     /*dispatch(friendsUpdated(friends)*/
     // dispatch(clearMessageLoading());
-    setTimeout(() => {
-      dispatch(clearMessageLoading());
-    }, 3000);
   };
   
 };
