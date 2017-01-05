@@ -300,7 +300,7 @@ const configUpdate = (user, stage) => {
   });
 };
 
-module.exports = (event, context, callback) => {
+const handleFollow = (event, context, callback) => {
   // console.log("DynamoDB triggered lambda successfully");
   // console.log("event", JSON.stringify(event));
   // console.log("context", context);
@@ -341,3 +341,43 @@ module.exports = (event, context, callback) => {
         callback(new Error("Error found:", err));
       });
 };
+
+const handleGetFollowers = (event, context, callback) => {
+  let data = JSON.parse(event.body);
+  console.log("input data", JSON.stringify(data));
+  if (!data.user) {
+    callback(new Error("Data format error: not found `user`."));
+    return;
+  }
+  
+  let user = data.user;
+  
+  getFriends(user.id)//获得所有好友的ids
+      .then(friendsList => {
+        // console.log("friendsList", JSON.stringify(friendsList));
+        let response = {
+          statusCode: 200,
+          headers: {"Access-Control-Allow-Origin": "*"},
+          body: JSON.stringify(friendsList),
+        };
+        console.log("Get followers successfully");
+        callback(null, response);
+      })
+      .catch((err) => {
+        console.error("err", err, err.stack);
+        callback(new Error("Error found:", err));
+      });
+};
+
+const main = (event, context, callback) => {
+  switch (event.path) {
+    case "/user/getFollowers":
+      handleGetFollowers(event, context, callback);
+      break;
+    case "user/follow":
+      handleFollow(event, context, callback);
+      break;
+  }
+};
+
+module.exports = main;
