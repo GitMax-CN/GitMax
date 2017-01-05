@@ -421,15 +421,15 @@ export const onStartFollow = () => {
       // dispatch(showMessage({type: "success", content: "设置已保存"}));
       // return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
     } else {
-      dispatch(showMessage({type: "loading", content: "正在为你添加好友，请稍候"}));
+      // dispatch(showMessage({type: "loading", content: "正在为你添加好友，请稍候"}));
+      dispatch(followModalOpen());
       return followUsers(user)
           .then(({newFriends, user}) => {
-            dispatch(clearMessageLoading());
+            // dispatch(clearMessageLoading());
             dispatch(followUserSuccess(newFriends));
             dispatch(userLoginSuccess(user));
-            dispatch(followModalOpen());
+            dispatch(followModalNextStep());
           });
-      
       
       // dispatch(followModalNextStep());
       // dispatch(loadNextBtn("添加中"));
@@ -444,7 +444,6 @@ export const onStartFollow = () => {
     }
   };
 };
-
 
 export const saveConfigIfChanged = (data) => {
   return (dispatch, getState) => {

@@ -16,8 +16,7 @@ export const initialState = {
   },
   userFollowModal: {
     visible: false,
-    current: 0,
-    nextBtnLoading: false,
+    current: 0,//1,2
   },
   friends: {
     isFetching: false,
@@ -119,12 +118,12 @@ const gitMaxApp = (state = initialState, action) => {
     case "FOLLOW_NEXT_STEP":
       console.log("FOLLOW_NEXT_STEP");
       newCurrent = state.userFollowModal.current + 1;
-      return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent, nextBtnLoading: false}});
+      return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent}});
     
     case "FOLLOW_PREV_STEP":
       console.log("FOLLOW_PREV_STEP");
       newCurrent = state.userFollowModal.current - 1;
-      return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent, nextBtnLoading: false}});
+      return Object.assign({}, state, {userFollowModal: {visible: true, current: newCurrent}});
   
     case "LOAD_NEXT_BUTTON":
       console.log("LOAD_NEXT_BUTTON", action);
