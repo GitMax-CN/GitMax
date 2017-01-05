@@ -20,6 +20,7 @@ export const initialState = {
   },
   friends: {
     isFetching: false,
+    page: 1,
     list: [],
   },
   newFriends:[],
@@ -162,6 +163,18 @@ const gitMaxApp = (state = initialState, action) => {
           state,
           {
             friends: {list: action.friendList, isFetching: false}
+          }
+      );
+      
+    case "CHANGE_FRIEND_LIST_PAGE_NUMBER":
+      console.log("CHANGE_FRIEND_LIST_PAGE_NUMBER, action.page", action.page);
+      
+      let newFriends = Object.assign({}, state.friends);
+      newFriends.page = action.page;
+      return Object.assign({},
+          state,
+          {
+            friends: newFriends
           }
       );
       

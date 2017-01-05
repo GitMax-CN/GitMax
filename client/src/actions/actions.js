@@ -2,6 +2,13 @@ import fetch from 'isomorphic-fetch';
 import config from '../../config';
 import {getUrlParam, popCenterWindow, passTimeLimit, calcMinsLeft} from '../api';
 
+export const changeFriendListPageNumber = (page) => {
+  return {
+    type: "CHANGE_FRIEND_LIST_PAGE_NUMBER",
+    page,
+  }
+};
+
 const fetchFriendsSuccess = (friendList) => {
   return {
     type: "FETCH_FRIENDS_SUCCESS",
