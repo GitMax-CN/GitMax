@@ -1,7 +1,7 @@
 import React, {PropTypes} from 'react';
 import {Modal, Button, Steps, InputNumber, Row, Col, Card, Icon, Popover} from 'antd';
 import Spinner from 'react-spinkit';
-import {passTimeLimit} from '../../api';
+import {passTimeLimit} from '../api';
 const Step = Steps.Step;
 
 let FollowerUserModal = (props) => {

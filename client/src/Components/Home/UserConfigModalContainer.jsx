@@ -1,9 +1,6 @@
 import {connect} from 'react-redux';
 import {
-  followModalOpen,
-  followModalClose,
-  onFollowModalNextStep,
-  followModalPrevStep,
+  onInitialModalSave,
   showMessage
 } from '../../actions/actions';
 import UserConfigModal from './UserConfigModal';
@@ -16,23 +13,14 @@ const mapStateToProps = (state, ownProps) => {
     crit_StargazersCount: state.user.crit_StargazersCount,
     addFollowersNow: state.user.addFollowersNow,
     addFollowersMax: state.user.addFollowersMax,
-    visible: state.userFollowModal.visible,
-    // visible: true,
-    current: state.userFollowModal.current,
-    // current: 2,
-    nextBtnLoading: state.userFollowModal.nextBtnLoading,
-    newFriends: state.newFriends,
-    // newFriends: [],
+    visible: state.initialConfigModal.visible,
   }
 };
-const mapDispatchToProps = (dispatch) => {
+
+const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    // onCloseModal: () => dispatch(userAcknowledgeFollow()),
-    followModalOpen: () => dispatch(followModalOpen()),
-    followModalClose: () => dispatch(followModalClose()),
-    followModalPrevStep: () => dispatch(followModalPrevStep()),
-    followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
-    showMessage: (message) => dispatch(showMessage(message)),
+    onInitialModalSave: (data) => dispatch(onInitialModalSave(data, ownProps.router)),
+    // showMessage: (message) => dispatch(showMessage(message)),
   }
 };
 

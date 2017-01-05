@@ -2,6 +2,14 @@ import fetch from 'isomorphic-fetch';
 import config from '../../config';
 import {getUrlParam, popCenterWindow, passTimeLimit, calcMinsLeft} from '../api';
 
+export const initialConfigModalOpen = () => {
+  return {type: "INITIAL_CONFIG_MODAL_OPEN"}
+};
+
+export const initialConfigModalClose = () => {
+  return {type: "INITIAL_CONFIG_MODAL_CLOSE"}
+};
+
 export const followModalOpen = () => {
   return {type: "FOLLOW_MODAL_OPEN"}
 };
@@ -9,6 +17,7 @@ export const followModalOpen = () => {
 export const followModalClose = () => {
   return {type: "FOLLOW_MODAL_CLOSE"}
 };
+
 
 const followModalNextStep = () => {
   return {type: "FOLLOW_NEXT_STEP"}
@@ -249,7 +258,6 @@ export const saveUserIfChanged = (user, data) => {
   })
 };
 
-
 const updateConfig = (user) => {
   const stage = config.getStage();
   const url = config.lambda[stage].configUpdateEndpoint;
@@ -293,8 +301,13 @@ export const userLogin = (router) => {
         .then(upsertGitUser)
         .then(({user, data}) => {
           dispatch(userLoginSuccess(user));
-          router.push('/app/addFollower');
           
+          const isNewUser = !user.followedFriendsAt;
+          if (isNewUser) {
+            dispatch(initialConfigModalOpen());
+          } else {
+            router.push('/app/addFollower');
+          }
           // dispatch(followModalOpen());
         })
         .catch((err) => {
@@ -436,11 +449,10 @@ export const onStartFollow = () => {
 export const saveConfigIfChanged = (data) => {
   return (dispatch, getState) => {
     const user = getState().user;
-    console.log("user", user);
-    console.log("data", data);
+    // console.log("user", user);
+    // console.log("data", data);
     
     const canUpdate = canUpdateConfig(user, data);
-    const isNewUser = !user.followedFriendsAt;
     
     if (!canUpdate) {
       console.log("config not Changed");
@@ -449,7 +461,7 @@ export const saveConfigIfChanged = (data) => {
     
     console.log("configChanged");
     const newUser = Object.assign({}, user, data);
-    updateConfig(newUser)
+    return updateConfig(newUser)
         .then(user => {
           console.log("user is updated ", user);
           dispatch(userUpdateSuccess(user))
@@ -461,16 +473,30 @@ export const saveConfigIfChanged = (data) => {
   }
 };
 
+export const onInitialModalSave = (data, router) => {
+  return (dispatch) => {
+    return Promise.resolve(dispatch(saveConfigIfChanged(data)))
+        .then(() => {
+          dispatch(initialConfigModalClose());
+          router.push('/app/addFollower');
+        })
+        .catch(err => {
+          console.error(err);
+          dispatch(showMessage({type: "error", content: "跳转应用出错"}))
+        })
+  }
+};
+
 /**
  * fetch friends for the specific user
  */
 export const onFetchFriends = () => {
   return (dispatch, getState) => {
-    if (getState().friends.total){
+    if (getState().friends.total) {
       return;
     }
     console.log();
-    dispatch(showMessage({type: "loading",content:"获得好友中"}));
+    dispatch(showMessage({type: "loading", content: "获得好友中"}));
     /*dispatch(friendsUpdated(friends)*/
     // dispatch(clearMessageLoading());
     setTimeout(() => {

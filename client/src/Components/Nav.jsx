@@ -139,7 +139,7 @@ let Header = (props) => {
       </TweenOne>
     
     </TweenOne>
-    <UserConfigModalContainer />
+    <UserConfigModalContainer router = {props.router}/>
     <FollowerUserModelContainer />
   </div>);
 };

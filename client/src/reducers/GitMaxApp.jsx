@@ -11,6 +11,9 @@ const userBase = {
 
 export const initialState = {
   user: userBase,
+  initialConfigModal: {
+    visible: false,
+  },
   userFollowModal: {
     visible: false,
     current: 0,
@@ -100,9 +103,19 @@ const gitMaxApp = (state = initialState, action) => {
     case "FOLLOW_MODAL_OPEN":
       console.log("FOLLOW_MODAL_OPEN");
       return Object.assign({}, state, {userFollowModal: {visible: true, current: 0,}});
+      
     case "FOLLOW_MODAL_CLOSE":
       console.log("FOLLOW_MODAL_CLOSE");
       return Object.assign({}, state, {userFollowModal: {visible: false, current: state.userFollowModal.current}});
+  
+    case "INITIAL_CONFIG_MODAL_OPEN":
+      console.log("INITIAL_CONFIG_MODAL_OPEN");
+      return Object.assign({}, state, {initialConfigModal: {visible: true}});
+  
+    case "INITIAL_CONFIG_MODAL_CLOSE":
+      console.log("INITIAL_CONFIG_MODAL_CLOSE");
+      return Object.assign({}, state, {initialConfigModal: {visible: false}});
+      
     case "FOLLOW_NEXT_STEP":
       console.log("FOLLOW_NEXT_STEP");
       newCurrent = state.userFollowModal.current + 1;
