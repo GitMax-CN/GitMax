@@ -75,6 +75,10 @@ functions:
           path: user/follow # follow users
           method: post
           cors: true
+      - http:
+          path: user/getFollowers # follow users
+          method: post
+          cors: true
 #      - stream: ${self:custom.${self:provider.stage}Stream}
 
   loginStart:
