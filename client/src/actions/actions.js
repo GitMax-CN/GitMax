@@ -341,6 +341,7 @@ export const goToFriendsListPage = (router) => {
 export const userLogout = () => {
   return (dispatch) => {
     // localStorage.setItem("user", null);
+    dispatch(showMessage({type:"info", content:"用户登出中"}));
     dispatch(userLogoutStart());
     setTimeout(() => window.location.reload(), 2000);
   };
