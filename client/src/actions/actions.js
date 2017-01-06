@@ -414,7 +414,7 @@ export const onInitialModalSave = (data, router) => {
     return Promise.resolve(dispatch(saveConfigIfChanged(data)))
         .then(() => {
           dispatch(initialConfigModalClose());
-          router.push('/app/addFollower');
+          setTimeout(()=>router.push('/app/addFollower'), 500);//Let modal close before redirect
         })
         .catch(err => {
           console.error(err);
