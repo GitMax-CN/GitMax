@@ -1,5 +1,5 @@
 import React from 'react';
-import {Menu, Row, Col} from 'antd';
+import {Menu, Row, Col, Icon} from 'antd';
 import {Link} from 'react-router';
 import NavContainer from './NavContainer';
 import Footer from './Footer';
@@ -15,18 +15,29 @@ const App = (props) => {
     }
   };
   
-  const handleClick = () => console.log("handleClick!");
+  const onMenuClick = ({item, key, keyPath}) => {
+    // console.log("item, key, keyPath", item, key, keyPath);
+    switch (key) {
+      case "2":
+        props.goToFriendsListPage(props.router);
+        // console.log("followModalOpen start");
+        break;
+      case "3":
+        props.userLogout();
+        break;
+    }
+  };
   
   const leftBar = <Menu
-      onClick={handleClick}
+      onClick={onMenuClick}
       style={{width: "100%", height: "100%"}}
       defaultOpenKeys={['sub1']}
       mode="inline"
       selectedKeys = {getSelectedKey()}
   >
     <Menu.Item key="1"><Link to="/app/addFollower">添加好友</Link></Menu.Item>
-    <Menu.Item key="2"><div onClick={() => props.goToFriendsListPage(props.router)}>我的好友</div></Menu.Item>
-    <Menu.Item key="3">登出</Menu.Item>
+    <Menu.Item key="2">我的好友</Menu.Item>
+    <Menu.Item key="3"><Icon type="poweroff" />登出</Menu.Item>
   </Menu>;
   
   return (

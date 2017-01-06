@@ -11,6 +11,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     goToFriendsListPage: (router) => dispatch(goToFriendsListPage(router)),
+    userLogout: () => dispatch(userLogout()),
   }
 };
 
