@@ -473,11 +473,14 @@ export const saveConfigIfChanged = (data) => {
     }
     
     console.log("configChanged");
+    dispatch(showMessage({type:"loading", content: "保存中"}));
     const newUser = Object.assign({}, user, data);
     return updateConfig(newUser)
         .then(user => {
-          console.log("user is updated ", user);
-          dispatch(userUpdateSuccess(user))
+          // console.log("user is updated ", user);
+          dispatch(userUpdateSuccess(user));
+          dispatch(clearMessageLoading());
+          dispatch(showMessage({type:"success", content: "保存成功"}));
         })
         .catch(err => {
           console.error(err);

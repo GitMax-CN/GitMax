@@ -12,8 +12,6 @@ const mapStateToProps = (state, ownProps) => {
     crit_StargazersCount: state.user.crit_StargazersCount,
     addFollowersNow: state.user.addFollowersNow,
     addFollowersMax: state.user.addFollowersMax,
-    // message: {type:"success", content:"设置保存成功"},
-    // message: state.message,
     ...ownProps
   }
 };
@@ -24,10 +22,6 @@ const mapDispatchToProps = (dispatch) => {
     followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
     showMessage: (message) => dispatch(showMessage(message)),
     saveConfigIfChanged: (data) => dispatch(saveConfigIfChanged(data))
-    // onUserLogin: () => dispatch(userLogin()),
-    // onUserLogout: ()=> dispatch(userLogout()),
-    // followModalOpen: () => dispatch(followModalOpen()),
-    // clearMessage: () => dispatch(clearMessage()),
   }
 };
 
