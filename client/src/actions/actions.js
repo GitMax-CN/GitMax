@@ -252,26 +252,6 @@ const upsertGitUser = (token) => {
       });
 };
 
-/**
- * Save the changed config to database if config is changed (data里的属性与对应user属性不同)
- * @param user
- * @param data
- * @returns {Promise.<user>}
- */
-export const saveUserIfChanged = (user, data) => {
-  return new Promise((resolve, reject) => {
-    const canUpdate = canUpdateConfig(user, data);
-    if (canUpdate) {
-      console.log("configChanged");
-      const newUser = Object.assign({}, user, data);
-      resolve(updateConfig(newUser));
-    } else {
-      console.log("config not Changed");
-      resolve(user);
-    }
-  })
-};
-
 const updateConfig = (user) => {
   const stage = config.getStage();
   const url = config.lambda[stage].configUpdateEndpoint;
@@ -347,14 +327,6 @@ export const userLogout = () => {
   };
 };
 
-const userCanFollow = (user, data) => {
-  const hasNewCrit = Object.keys(data).reduce((canFollow, key) => {
-    return canFollow || user[key] !== data[key]
-  }, false);
-  
-  return hasNewCrit || passTimeLimit(user.followedFriendsAt);
-};
-
 const canUpdateConfig = (user, data) => {
   // console.log("user", user);
   // console.log("data", data);
@@ -362,53 +334,6 @@ const canUpdateConfig = (user, data) => {
     return result || user[key] !== data[key];
   }, false);
   return configChanged;
-};
-
-
-export const onFollowModalNextStep = (currentStep, data) => {
-  console.log("currentStep, data", currentStep, data);
-  
-  switch (currentStep) {
-    case 0:
-      return (dispatch, getState) => {
-        let user = getState().user;
-        
-        dispatch(loadNextBtn("保存中"));
-        saveUserIfChanged(user, data)
-            .then((user) => {
-              if (!userCanFollow(user, data)) {
-                // setTimeout(()=>{dispatch(followModalClose())}, 1000);
-                dispatch(showMessage({type: "success", content: "设置已保存"}));
-                // return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
-              } else {
-                dispatch(followModalNextStep());
-                dispatch(loadNextBtn("添加中"));
-                // throw new Error("Stopped manually for testing");
-                return followUsers(user)
-                    .then(({newFriends, user}) => {
-                      
-                      dispatch(followUserSuccess(newFriends));
-                      dispatch(userLoginSuccess(user));
-                      dispatch(followModalNextStep());
-                    })
-              }
-            })
-            .catch(err => {
-              console.error(err);
-              dispatch(followUserFail(err));
-            });
-      };
-    case 1:
-      return (dispatch) => {
-        if (!userCanFollow(user, data)) {
-          return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
-        }
-      };
-    default:
-      return (dispatch) => {
-        dispatch(followModalNextStep());
-      }
-  }
 };
 
 export const refreshUser = () => {
@@ -419,47 +344,41 @@ export const refreshUser = () => {
   }
 };
 
-//dispatch(modalOpen)
 export const onStartFollow = () => {
   return (dispatch, getState) => {
     const user = getState().user;
     
     if (!passTimeLimit(user.followedFriendsAt)) {
-      
       let minsLeft = calcMinsLeft(user.followedFriendsAt);
       let hoursLeft = Math.trunc(minsLeft / 60);
       minsLeft = Math.trunc(minsLeft % 60);
       const content = `每次手动添加好友，需间隔24小时，请${hoursLeft}小时${minsLeft}分钟后再试`;
       
       return dispatch(showMessage({type: "warning", content: content}));
-      // setTimeout(()=>{dispatch(followModalClose())}, 1000);
-      // dispatch(showMessage({type: "success", content: "设置已保存"}));
-      // return dispatch(followUserFail(new Error("添加好友过于频繁：用户每24小时只能添加一次好友")));
     } else {
-      // dispatch(showMessage({type: "loading", content: "正在为你添加好友，请稍候"}));
       dispatch(followModalOpen());
       return followUsers(user)
           .then(({newFriends, user}) => {
+            // throw new Error("manual break");
             // dispatch(clearMessageLoading());
             dispatch(followUserSuccess(newFriends));
             dispatch(userLoginSuccess(user));
             dispatch(followModalNextStep());
+          })
+          .catch(err => {
+            console.error(err);
+            dispatch(showMessage({type: "error", content:"添加好友失败"}));
+            dispatch(followModalClose());
           });
-      
-      // dispatch(followModalNextStep());
-      // dispatch(loadNextBtn("添加中"));
-      // // throw new Error("Stopped manually for testing");
-      // return followUsers(user)
-      //     .then(({newFriends, user}) => {
-      //
-      //       dispatch(followUserSuccess(newFriends));
-      //       dispatch(userLoginSuccess(user));
-      //       dispatch(followModalNextStep());
-      //     })
+
     }
   };
 };
-
+/**
+ * Save the changed config to database if config is changed (data里的属性与对应user属性不同)
+ * @param data
+ * @returns {Promise.<user>}
+ */
 export const saveConfigIfChanged = (data) => {
   return (dispatch, getState) => {
     const user = getState().user;
