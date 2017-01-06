@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import EditableTable from './EditableTable';
-import {followModalPrevStep, onFollowModalNextStep, showMessage, saveConfigIfChanged} from '../actions/actions';
+import {saveConfigIfChanged} from '../actions/actions';
 
 const mapStateToProps = (state, ownProps) => {
   // console.log("state.user", state.user);
@@ -18,10 +18,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    followModalPrevStep: () => dispatch(followModalPrevStep()),
-    followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
-    showMessage: (message) => dispatch(showMessage(message)),
-    saveConfigIfChanged: (data) => dispatch(saveConfigIfChanged(data))
+    saveConfigIfChanged: (data) => dispatch(saveConfigIfChanged(data)),
   }
 };
 

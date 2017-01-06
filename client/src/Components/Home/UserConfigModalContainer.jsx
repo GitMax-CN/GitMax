@@ -1,7 +1,6 @@
 import {connect} from 'react-redux';
 import {
   onInitialModalSave,
-  showMessage
 } from '../../actions/actions';
 import UserConfigModal from './UserConfigModal';
 const mapStateToProps = (state, ownProps) => {
@@ -20,7 +19,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     onInitialModalSave: (data) => dispatch(onInitialModalSave(data, ownProps.router)),
-    // showMessage: (message) => dispatch(showMessage(message)),
   }
 };
 
