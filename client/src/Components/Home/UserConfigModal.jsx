@@ -96,6 +96,7 @@ let UserConfigModal = (props) => {
   return (
       <div>
         <Modal
+            title="添加GitHub Follower条件设置"
             visible={props.visible}
             maskClosable={false}
             closable={false}
