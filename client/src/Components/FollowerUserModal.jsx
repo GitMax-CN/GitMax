@@ -11,11 +11,10 @@ let FollowerUserModal = (props) => {
   
   const step3PopOver = (<div>
     <ul>
-      <li>添加好友数 = 设置值 ± 10% 为正常范围</li>
-      <li>如果添加好友数明显小于设置值，请放宽'添加好友'条件后再试</li>
-      <li>随着GitMax用户数增加，GitMax会继续为您添加满足条件的好友，直到达到你设置的好友总数</li>
+      <li>每次手动添加，会随机添加40-60位好友</li>
+      <li>如果添加好友数低于40，请放宽'添加好友'条件后再试</li>
+      <li>随着GitMax用户数增加，GitMax会继续随机为您添加满足条件的好友，直到达到你设置的好友总数</li>
     </ul>
-  
   </div>);
   
   const steps = [{
@@ -93,9 +92,7 @@ let FollowerUserModal = (props) => {
                 <p className="first-row">您可以选择：</p>
                 <p>不做修改：随着用户数增加，GitMax会为你筛选符合条件的用户加为好友</p>
                 <p className="or"> 或者 </p>
-                <p><a onClick={()=>{props.followModalPrevStep(); props.followModalPrevStep();}}>
-                  修改好友添加条件
-                </a>，24小时后，再试一次（每次手动添加，需间隔24小时）</p>
+                <p>修改好友添加条件，24小时后，再试一次（每次手动添加，需间隔24小时）</p>
               </Row>
             </Col>
           </Row>
