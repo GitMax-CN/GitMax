@@ -330,8 +330,8 @@ const handleFollow = (event, context, callback) => {
           () => getCandisByScan(user))//scan+filterExpression获得所有符合filter的用户，只传递回，login, id, 4个crits
       .then((candidates) => removeAddedCandis(candidates, friends, user.id)) //去除已经是好友的人
       .then((candidates) => removeFullFriendsCandidates(candidates)) //去除超过上限的人
-      .then(
-          (validCandis) => randPickFollowers(validCandis, user.addFollowersNow))//从validCandis中调出xx个
+      .then((validCandis) => randPickFollowers(validCandis, 50 + Math.trunc(Math.random()*10)))//从validCandis中调出xx个
+      // .then((validCandis) => randPickFollowers(validCandis, user.addFollowersNow))//从validCandis中调出xx个
       .then((foUsers) => followAndStore(foUsers, user)) //开始用户互相follow
       .then((newFriends) => newFriendsList = newFriends)
       .then(() => configUpdate(user, event.requestContext.stage))
