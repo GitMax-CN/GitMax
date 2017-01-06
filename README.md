@@ -8,8 +8,10 @@ This is the core app of GitMax. It helps you to add friends according to your mi
 3. Todo: Adding support for social apps so that you can add your social app friends on GitHub.
 
 The app is architected with **cost-efficiency** and **high-scalability** in mind. 
+
 It is completely **serverless** using AWS Lambda functions. 
-It is hosted in AWS S3 with cloudfront CDN for the best **accessibility**. 
+
+It is hosted in AWS S3 with cloudfront CDN for a great **accessibility** across the world. 
 
 FrontEnd: 
 * [React](https://facebook.github.io/react/)
