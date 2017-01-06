@@ -55,19 +55,18 @@ const FriendsList = (props) => {
             </div>);
             
             return <Col xs={24} sm={24} md={12} lg={8} className="friend-col">
+              <a href={"https://github.com/" + friend.friendLogin} target="_blank" className="friend-list-link">
               <Card bodyStyle={{padding: 0}} className="friend-list-card">
                 <Col span={8}>
                   <div className="new-friend-image">
-                    <a href={"https://github.com/" + friend.friendLogin} target="_blank">
                       <img alt={friend.friendLogin} width="100%" src={friend.friendAvatarUrl}/>
-                    </a>
                   </div>
                 </Col>
                 <Col span={14} offset={1}>
                   <div className="friend-name">
-                    <a href={"https://github.com/" + friend.friendLogin} target="_blank">
+                    
                       {friend.friendName ? friend.friendName : friend.friendLogin}
-                    </a>
+                    
                   </div>
                   <div>
                     {detail}
@@ -75,6 +74,7 @@ const FriendsList = (props) => {
                 </Col>
               
               </Card>
+              </a>
             </Col>
           })
         }
