@@ -29,7 +29,7 @@ let UserConfigModal = (props) => {
                 bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
-                   src="https://octodex.github.com/images/setuptocat.jpg"/>
+                   src="images/setuptocat.jpg"/>
             </div>
             <div className="custom-card">
               GitHub的Follower数
@@ -47,7 +47,7 @@ let UserConfigModal = (props) => {
                 bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
-                   src="https://octodex.github.com/images/electrocat.png"/>
+                   src="images/electrocat.png"/>
             </div>
             <div className="custom-card">
               GitHub项目的Star总数
@@ -65,7 +65,7 @@ let UserConfigModal = (props) => {
                 style={{width: 300, margin: "auto"}} bodyStyle={{padding: 10}}>
             <div className="custom-image">
               <img alt="example" width="100%"
-                   src="https://octodex.github.com/images/swagtocat.png"/>
+                   src="images/swagtocat.png"/>
             </div>
   
             <div className="custom-card">
