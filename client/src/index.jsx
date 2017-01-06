@@ -39,8 +39,16 @@ window.addEventListener("message", (event) => {
   }
 }, false);
 
-const requireLogin = () => {
-  console.log("requires login!");//Todo implement require login
+const requireLogin = (nextState, replace, callback) => {
+  const state = store.getState();
+  if (!state.user.id) {
+    replace('/');
+    callback();
+  } else {
+    callback();
+  }
+  // console.log("nextState", nextState);
+  // console.log("requires login!");//Todo implement require login
 };
 
 const router = (
