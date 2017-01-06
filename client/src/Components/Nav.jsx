@@ -39,8 +39,8 @@ let Header = (props) => {
     // console.log("item, key, keyPath", item, key, keyPath);
     switch (key) {
       case "0":
-        console.log("followModalOpen start");
-        props.followModalOpen();
+        // console.log("followModalOpen start");
+        props.router.push("/app/addFollower");
         break;
       case "2":
         props.onUserLogout();
@@ -63,7 +63,7 @@ let Header = (props) => {
         </Menu.Item>
         <Menu.Divider />
           <Menu.Item key="0">
-            <a>添加好友设置</a>
+            <a>我的GitMax</a>
           </Menu.Item>
           <Menu.Item key="1">
             <a href={`https://www.github.com/${props.user.login}/followers`} target="_blank">访问Github账户</a>
@@ -129,12 +129,6 @@ let Header = (props) => {
           </Button>
         }
         
-        {/*<Menu*/}
-        {/*mode="horizontal" defaultSelectedKeys={['a']}*/}
-        {/*style={{ color: '#ffffff' }}*/}
-        {/*>*/}
-        {/*{navChildren}*/}
-        {/*</Menu>*/}
       </TweenOne>
     
     </TweenOne>
