@@ -1,6 +1,4 @@
-# GitMax
-
-[![Logo](https://cloud.githubusercontent.com/assets/9557418/21736215/e0419284-d423-11e6-9720-df7750631c69.png)](http://www.gitmax.cn)
+# [GitMax](http://www.gitmax.cn)
 
 An app to help GitHub users to gain reputation. 
 
