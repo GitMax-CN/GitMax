@@ -33,7 +33,7 @@ let FollowerUserModal = (props) => {
         <div>
           <Row>
             <Col span={8} offset={1}>
-              <img style={{width: 350}} src="https://octodex.github.com/images/welcometocat.png"/>
+              <img style={{width: 350}} src="images/welcometocat.png"/>
             
             </Col>
             <Col span={13} offset={1}>
@@ -80,7 +80,7 @@ let FollowerUserModal = (props) => {
         <div>
           <Row>
             <Col span={8} offset={1}>
-              <img style={{width: 350}} src="https://octodex.github.com/images/maxtocat.gif"/>
+              <img style={{width: 350}} src="images/maxtocat.gif"/>
             </Col>
             <Col span={13} offset={1}>
               <Row>
