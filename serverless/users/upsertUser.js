@@ -31,7 +31,7 @@ const getGitUser = (token) => {
   function removeEmptyAttr(getData) {
     return Object.keys(getData).reduce((user, key) => {
       let newUser = user;
-      if (getData[key] && (typeof getData[key] !== "string" || getData[key].length !==0)){
+      if (typeof getData[key]==="number" || (getData[key] && (typeof getData[key] !== "string" || getData[key].length !==0))){
         newUser[key] = getData[key];
       }
       return newUser;
