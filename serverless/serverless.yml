@@ -117,12 +117,9 @@ resources:
             AttributeName: id
             KeyType: HASH
         ProvisionedThroughput:
-          ReadCapacityUnits: 100
-          WriteCapacityUnits: 100
+          ReadCapacityUnits: 15
+          WriteCapacityUnits: 5
         TableName: 'Users'
-        StreamSpecification:
-          StreamViewType: NEW_IMAGE
-
 
     FriendsTable:
       Type: 'AWS::DynamoDB::Table'
@@ -143,11 +140,10 @@ resources:
             AttributeName: friendId
             KeyType: RANGE
         ProvisionedThroughput:
-          ReadCapacityUnits: 100
-          WriteCapacityUnits: 100
+          ReadCapacityUnits: 10
+          WriteCapacityUnits: 20
         TableName: 'Friends'
-        StreamSpecification:
-          StreamViewType: NEW_IMAGE
+
 
 #    UserIdsTable:
 #      Type: 'AWS::DynamoDB::Table'
