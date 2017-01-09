@@ -92,7 +92,7 @@ let FollowerUserModal = (props) => {
                 <p className="first-row">您可以选择：</p>
                 <p>不做修改：随着用户数增加，GitMax会为你筛选符合条件的用户加为好友</p>
                 <p className="or"> 或者 </p>
-                <p>修改好友添加条件，24小时后，再试一次（每次手动添加，需间隔24小时）</p>
+                <p>修改好友添加条件，再试一次</p>
               </Row>
             </Col>
           </Row>

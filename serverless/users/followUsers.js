@@ -309,7 +309,7 @@ const configUpdate = (user, stage) => {
 };
 
 const handleFollow = (event, context, callback) => {
-  console.log("handleFollow start");;
+  console.log("handleFollow start");
   // console.log("DynamoDB triggered lambda successfully");
   // console.log("event", JSON.stringify(event));
   // console.log("context", context);
@@ -334,7 +334,10 @@ const handleFollow = (event, context, callback) => {
       // .then((validCandis) => randPickFollowers(validCandis, user.addFollowersNow))//从validCandis中调出xx个
       .then((foUsers) => followAndStore(foUsers, user)) //开始用户互相follow
       .then((newFriends) => newFriendsList = newFriends)
-      .then(() => configUpdate(user, event.requestContext.stage))
+      .then(() => {
+        if (newFriendsList.length > 0) return configUpdate(user, event.requestContext.stage);
+        else return user;
+      })
       .then((newUser) => {
         // console.log("newFriends", newFriends);
         let response = {
