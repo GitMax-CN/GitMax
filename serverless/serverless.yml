@@ -99,6 +99,9 @@ functions:
           method: get
           cors: true
 
+  addingUsersToTest:
+    handler: test.addingUsersToTest
+    timeout: 60
 
 # 当前实用的resource - you can add CloudFormation resource templates here
 
