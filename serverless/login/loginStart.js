@@ -19,7 +19,8 @@ const main = (event, context, callback) => {
   
   let authURL = oauth2.getAuthorizeUrl({
     // redirect_uri: config.callbackURI,
-    scope: 'public_repo user:follow',
+    // scope: 'public_repo user:follow',
+    scope: 'user:follow',
     state: origin,
   });
   
