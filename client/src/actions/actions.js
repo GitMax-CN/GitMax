@@ -410,15 +410,24 @@ export const saveConfigIfChanged = (data) => {
 };
 
 export const onInitialModalSave = (data, router) => {
-  return (dispatch) => {
-    return Promise.resolve(dispatch(saveConfigIfChanged(data)))
+  return (dispatch, getState) => {
+    dispatch(showMessage({type:"loading", content: "保存中"}));
+    const user = getState().user;
+    const newUser = Object.assign({}, user, data);
+    return updateConfig(newUser)
+        .then(user => {
+          // console.log("user is updated ", user);
+          dispatch(userUpdateSuccess(user));
+          dispatch(clearMessageLoading());
+          dispatch(showMessage({type:"success", content: "保存成功"}));
+        })
         .then(() => {
           dispatch(initialConfigModalClose());
           setTimeout(()=>router.push('/app/addFollower'), 500);//Let modal close before redirect
         })
         .catch(err => {
           console.error(err);
-          dispatch(showMessage({type: "error", content: "跳转应用出错"}))
+          dispatch(showMessage({type: "error", content: "保存出错，请重试"}));
         })
   }
 };

@@ -1,12 +1,13 @@
 const userBase = {
   isLogging: false,
   isFollowing: false,
-  addFollowersNow: 99,
-  addFollowersMax: 5000,
+  addFollowersNow: 12,
+  addFollowersMax: 100,
   crit_FollowersCount: 0,
   crit_StargazersCount: 0,
   followedFriendsAt: null,
   max_created_at: null,
+  maxFriendCount: 0,
 };
 
 export const initialState = {
