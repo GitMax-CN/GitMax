@@ -101,6 +101,41 @@ const getPickedUsers = (pickedIds) => {
       });
 };
 
+const updateFollowedUsers = (foUsers) => {
+  // console.log("to be followed friends", JSON.stringify(foUsers));
+  
+  let promises = foUsers.map(friend => {
+    const params = {
+      TableName:"Users",
+      Key:{
+        "id": friend.id,
+      },
+      UpdateExpression: "set maxFriendCount = :newMaxFriendCount",
+      ExpressionAttributeValues:{
+        ":newMaxFriendCount":friend.maxFriendCount + 1,
+      },
+      ReturnValues:"UPDATED_NEW"
+    };
+    return new Promise((resolve, reject) => {
+      docClient.update(params, (err, data) => {
+        if (err) {
+          console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+          reject(err);
+        } else {
+          // console.log("UpdateItem succeeded:", JSON.stringify(data));
+          resolve(data);
+        }
+      })
+    });
+  });
+  
+  return Promise.all(promises)
+      .then(result => {
+        // console.log(JSON.stringify(result));
+        return foUsers;
+      });
+};
+
 const followAndStore = (users, user) => {
   // console.log("fetched users", users);
   // console.log("original user", user);
@@ -257,7 +292,7 @@ const getCandisByScan = (user) => {
         return reject(err);
       } else {
         // console.log("Get all candidates succeeded.", JSON.stringify(data));//Todo, comment data
-        console.log("Scan succeeded."/*, JSON.stringify(data)*/);//Todo, comment data
+        console.log(`Scan succeeded, ${data.Items.length} items obtained`);
         let candidates = data.Items;
         resolve(candidates);
       }
@@ -340,6 +375,7 @@ const handleFollow = (event, context, callback) => {
       .then((candidates) => removeFullFriendsCandidates(candidates)) //去除超过上限的人
       .then((validCandis) => randPickFollowers(validCandis, Math.min(12, (user.addFollowersMax - ~~user.maxFriendCount))))//从validCandis中调出12个
       // .then((validCandis) => randPickFollowers(validCandis, user.addFollowersNow))//从validCandis中调出xx个
+      .then((foUsers) => updateFollowedUsers(foUsers))//更新被follow用户的maxFriendCount
       .then((foUsers) => followAndStore(foUsers, user)) //开始用户互相follow
       .then((newFriends) => newFriendsList = newFriends)
       .then(() => {
