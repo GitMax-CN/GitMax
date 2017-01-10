@@ -112,7 +112,7 @@ const updateFollowedUsers = (foUsers) => {
       },
       UpdateExpression: "set maxFriendCount = :newMaxFriendCount",
       ExpressionAttributeValues:{
-        ":newMaxFriendCount":friend.maxFriendCount + 1,
+        ":newMaxFriendCount": ~~friend.maxFriendCount + 1,
       },
       ReturnValues:"UPDATED_NEW"
     };
