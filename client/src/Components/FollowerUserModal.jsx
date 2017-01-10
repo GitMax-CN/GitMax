@@ -4,15 +4,14 @@ import Spinner from 'react-spinkit';
 const Step = Steps.Step;
 
 let FollowerUserModal = (props) => {
-  console.log("FollowerUserModal props", props);
+  // console.log("FollowerUserModal props", props);
   const finish = () => {
         return props.followModalClose();
   };
   
   const step3PopOver = (<div>
     <ul>
-      <li>每次手动添加，会随机添加40-60位好友</li>
-      <li>如果添加好友数低于40，请放宽'添加好友'条件后再试</li>
+      <li>每次手动添加，会根据你设置的条件，随机添加至多12位好友</li>
       <li>随着GitMax用户数增加，GitMax会继续随机为您添加满足条件的好友，直到达到你设置的好友总数</li>
     </ul>
   </div>);

@@ -47,8 +47,9 @@ const getAllUserIds = (userId) => {
   });
 };
 
-const randPickFollowers = (validCandis, followNumber) => {
-  followNumber = Math.min(followNumber, validCandis.length);
+const randPickFollowers = (validCandis, followNum) => {
+  const followNumber = Math.min(followNum, validCandis.length);
+  console.log(`start to pick ${followNumber} followers`);
   // console.log("userId", userId);
   // console.log("candidateIds", candidateIds);
   for (let i = 0; i < followNumber; i++) {
@@ -61,6 +62,7 @@ const randPickFollowers = (validCandis, followNumber) => {
     validCandis[index] = temp;
   }
   let pickedUsers = validCandis.slice(0, followNumber);
+  // console.log("picked friends successfully", JSON.stringify(pickedUsers));
   console.log("Picked users successfully"/*, JSON.stringify(pickedUsers)*/);
   return pickedUsers;
 };
@@ -201,7 +203,7 @@ const followAndStore = (users, user) => {
 };
 
 const getFriends = (userId) => {
-  console.log("getFriends start with id", userId);
+  console.log("getFriends start for user id", userId);
   const params = {
     TableName: "Friends",
     KeyConditionExpression: "#userId = :id",
@@ -218,6 +220,7 @@ const getFriends = (userId) => {
         console.error("Unable to get friends. Error JSON:", JSON.stringify(err), err.stack);
         return reject(err);
       } else {
+        // console.log("Get current friends succeeded.", JSON.stringify(data));
         console.log("Query succeeded."/*, JSON.stringify(data)*/);
         let friends = data.Items;
         resolve(friends);
@@ -230,7 +233,7 @@ const getCandisByScan = (user) => {
   const params = { // 找到与用户互相欣赏的人，作为好友candidate
     TableName: "Users",
     ProjectionExpression: "#id, #url, created_at, avatar_url, followers, following, login, #name," +
-    " #token, addFollowersMax, crit_FollowersCount, crit_StargazersCount, totalStars",
+    " #token, addFollowersMax, crit_FollowersCount, crit_StargazersCount, totalStars, maxFriendCount",
     FilterExpression: "totalStars >= :user_star_crit AND followers >= :user_follower_crit AND" +
     " crit_StargazersCount <= :user_star AND crit_FollowersCount <= :user_follower",
     ExpressionAttributeNames: {
@@ -253,6 +256,7 @@ const getCandisByScan = (user) => {
         console.error("Unable to get item. Error JSON:", JSON.stringify(err), err.stack);
         return reject(err);
       } else {
+        // console.log("Get all candidates succeeded.", JSON.stringify(data));//Todo, comment data
         console.log("Scan succeeded."/*, JSON.stringify(data)*/);//Todo, comment data
         let candidates = data.Items;
         resolve(candidates);
@@ -270,21 +274,25 @@ const removeAddedCandis = (candidates, friends, userId) => {
   candidates.forEach((candidate) => {
     if (!set.has(candidate.id)) validCandis.push(candidate);
   });
+  // console.log("removeAddedCandis, valid candidates left", validCandis);
+  console.log(`removeAddedCandis, ${validCandis.length} valid candidates left`);
   return validCandis;
 };
 
 const removeFullFriendsCandidates = (candidates) => {
   let validCandis = [];
   candidates.forEach(candi => {
-    if (candi.addFollowersMax > candi.followers) validCandis.push(candi);
+    if (candi.addFollowersMax > ~~candi.maxFriendCount) validCandis.push(candi);
   });
+  console.log(`removeFullFriendsCandidates, ${validCandis.length} valid candidates left`);
   return validCandis;
 };
 
-const configUpdate = (user, stage) => {
+const configUpdate = (user, stage, newFriendCount) => {
   // const stage = event.requestContext.stage;
   // const stage = config.getStage();
   user.followedFriendsAt = new Date().getTime();
+  user.maxFriendCount = ~~user.maxFriendCount + newFriendCount;//If undefined, user.maxFriendCount=0
   const url = config.lambda[stage].configUpdateEndpoint;
   
   let options = {
@@ -327,15 +335,15 @@ const handleFollow = (event, context, callback) => {
   getFriends(user.id)//获得所有好友的ids
       .then(friendsList => friends = friendsList)
       .then(
-          () => getCandisByScan(user))//scan+filterExpression获得所有符合filter的用户，只传递回，login, id, 4个crits
+          () => getCandisByScan(user))//scan+filterExpression获得所有符合filter的用户，只传递回一部分属性
       .then((candidates) => removeAddedCandis(candidates, friends, user.id)) //去除已经是好友的人
       .then((candidates) => removeFullFriendsCandidates(candidates)) //去除超过上限的人
-      .then((validCandis) => randPickFollowers(validCandis, 50 + Math.trunc(Math.random()*10)))//从validCandis中调出xx个
+      .then((validCandis) => randPickFollowers(validCandis, Math.min(12, (user.addFollowersMax - ~~user.maxFriendCount))))//从validCandis中调出12个
       // .then((validCandis) => randPickFollowers(validCandis, user.addFollowersNow))//从validCandis中调出xx个
       .then((foUsers) => followAndStore(foUsers, user)) //开始用户互相follow
       .then((newFriends) => newFriendsList = newFriends)
       .then(() => {
-        if (newFriendsList.length > 0) return configUpdate(user, event.requestContext.stage);
+        if (newFriendsList.length > 0) return configUpdate(user, event.requestContext.stage, newFriendsList.length);
         else return user;
       })
       .then((newUser) => {
