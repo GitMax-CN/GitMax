@@ -409,8 +409,9 @@ const handleGetFollowers = (event, context, callback) => {
   
   let user = data.user;
   
-  getFriends(user.id)//获得所有好友的ids
+  getFriends(user.id)//获得所有好友
       .then(friendsList => {
+        // console.log("fetched friendsList", JSON.stringify(friendsList));
         let TruncdFriends = friendsList.map(friend => {
           return {
             friendId: friend.friendId,
