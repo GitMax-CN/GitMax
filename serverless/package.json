@@ -5,6 +5,7 @@
   "main": " ",
   "dependencies": {
     "oauth": "^0.9.14",
+    "redis": "^2.6.3",
     "request": "^2.79.0"
   },
   "devDependencies": {},
