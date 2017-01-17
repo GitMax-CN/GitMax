@@ -4,7 +4,7 @@ import Spinner from 'react-spinkit';
 const Step = Steps.Step;
 
 let FollowerUserModal = (props) => {
-  // console.log("FollowerUserModal props", props);
+  console.log("FollowerUserModal props", props);
   const finish = () => {
         return props.followModalClose();
   };
@@ -144,8 +144,6 @@ FollowerUserModal.propTypes = {
   current: PropTypes.number,
   followModalOpen: PropTypes.func,
   followModalClose: PropTypes.func,
-  followModalNextStep: PropTypes.array,
-  followModalPrevStep: PropTypes.func,
   newFriends: PropTypes.array,
   // isFollowing: PropTypes.bool,
   // onCloseModal: PropTypes.func,

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import FriendsList from './FriendsList';
-import {onFetchFriends, changeFriendListPageNumber} from '../actions/actions';
+import {friendsActions} from '../modules';
 
 const mapStateToProps = (state, ownProps) => {
   let dummyFriends = Object.assign({}, state.friends);
@@ -14,8 +14,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onFetchFriends: () => dispatch(onFetchFriends()),
-    changeFriendListPageNumber: (page) => dispatch(changeFriendListPageNumber(page)),
+    onFetchFriends: () => dispatch(friendsActions.onFetchFriends()),
+    changeFriendListPageNumber: (page) => dispatch(friendsActions.changeFriendListPageNumber(page)),
   }
 };
 

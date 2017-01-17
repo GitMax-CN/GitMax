@@ -10,18 +10,18 @@ let cancelLoading = null;
 
 let Header = (props) => {
   // console.log("props", props);
-  
   if (!!cancelLoading && props.message.loadingFinish) {
     //call cancel loading function, clear the function variable, set loadingFinish to false again
     cancelLoading();
     cancelLoading = null;
   }
   if (props.message.type) {
+    console.log("props.message", props.message);
     if (props.message.type !== "loading"){
       message.config({duration: 3});
       message[props.message.type](props.message.content);
       props.clearMessage();
-    } else {
+    } else {// Loading message will be finished asynchronously
       cancelLoading = message[props.message.type](props.message.content, 0);
       props.clearMessage();
     }

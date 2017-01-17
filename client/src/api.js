@@ -48,22 +48,33 @@ const calcInfluenceFactor = (user) => {
   return String(factor.toFixed(1));
 };
 
+// /**
+//  * Return if user has passed the 24 hour limit for follow friends
+//  * @param followedFriendsAt
+//  * @returns {boolean}
+//  */
+// const passTimeLimit = (followedFriendsAt) => {
+//   return !followedFriendsAt || calcMinsLeft(followedFriendsAt)<=0;
+// };
+//
+// /**
+//  * Calculate how many minutes left
+//  * @param followedFriendsAt
+//  * @returns {number}
+//  */
+// const calcMinsLeft = (followedFriendsAt)=>{
+//   return (followedFriendsAt + 24 * 60 * 60 * 1000 - new Date().getTime()) / 1000 / 60;
+// };
+
 /**
- * Return if user has passed the 24 hour limit for follow friends
+ * Return whether a day has passed since the last time the user followed users
  * @param followedFriendsAt
  * @returns {boolean}
  */
-const passTimeLimit = (followedFriendsAt) => {
-  return !followedFriendsAt || calcMinsLeft(followedFriendsAt)<=0;
+const oneDayHasPassed = (followedFriendsAt) => {
+  let now = new Date(),
+      then = new Date(followedFriendsAt || 0);
+  return now.getYear() !== then.getYear() || now.getMonth() !== then.getMonth() || now.getDate() !== then.getDate();
 };
 
-/**
- * Calculate how many minutes left
- * @param followedFriendsAt
- * @returns {number}
- */
-const calcMinsLeft = (followedFriendsAt)=>{
-  return (followedFriendsAt + 24 * 60 * 60 * 1000 - new Date().getTime()) / 1000 / 60;
-};
-
-export {getUrlParam, popCenterWindow, calcInfluenceFactor, passTimeLimit, calcMinsLeft}
+export {getUrlParam, popCenterWindow, calcInfluenceFactor, oneDayHasPassed}

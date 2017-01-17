@@ -1,5 +1,5 @@
 import {connect} from 'react-redux';
-import {userLogout, goToFriendsListPage} from '../actions/actions';
+import {friendsActions, userActions} from '../modules';
 import App from './App';
 
 const mapStateToProps = (state, ownProps) => {
@@ -10,8 +10,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    goToFriendsListPage: (router) => dispatch(goToFriendsListPage(router)),
-    userLogout: () => dispatch(userLogout()),
+    goToFriendsListPage: (router) => dispatch(friendsActions.goToFriendsListPage(router)),
+    userLogout: () => dispatch(userActions.userLogout()),
   }
 };
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import FollowerConfig from './FollowerConfig';
-import {onStartFollow, followModalPrevStep, onFollowModalNextStep, showMessage, saveConfigIfChanged} from '../actions/actions';
+import {friendsActions} from '../modules';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -10,7 +10,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    onStartFollow: () => dispatch(onStartFollow()),
+    onStartFollow: () => dispatch(friendsActions.onStartFollow()),
   }
 };
 

@@ -1,7 +1,5 @@
 import {connect} from 'react-redux';
-import {
-  onInitialModalSave,
-} from '../../actions/actions';
+import { initialConfigModalActions } from '../../modules';
 import UserConfigModal from './UserConfigModal';
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -18,7 +16,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onInitialModalSave: (data) => dispatch(onInitialModalSave(data, ownProps.router)),
+    onInitialModalSave: (data) => dispatch(initialConfigModalActions.onInitialModalSave(data, ownProps.router)),
   }
 };
 

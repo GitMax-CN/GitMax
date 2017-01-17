@@ -1,4 +1,4 @@
-import {userLogin, userLogout, followModalOpen, clearMessage, clearMessageLoading} from '../actions/actions'
+import {userActions, globalMessageActions, followModalActions} from '../modules';
 import {connect} from 'react-redux';
 import Nav from './Nav';
 
@@ -20,10 +20,10 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    onUserLogin: () => dispatch(userLogin(ownProps.router)),
-    onUserLogout: ()=> dispatch(userLogout()),
-    followModalOpen: () => dispatch(followModalOpen()),
-    clearMessage: () => dispatch(clearMessage()),
+    onUserLogin: () => dispatch(userActions.userLogin(ownProps.router)),
+    onUserLogout: ()=> dispatch(userActions.userLogout()),
+    followModalOpen: () => dispatch(followModalActions.followModalOpen()),
+    clearMessage: () => dispatch(globalMessageActions.clearMessage()),
   }
 };
 
@@ -31,5 +31,5 @@ let NavContainer = connect(
     mapStateToProps,
     mapDispatchToProps
 )(Nav);
- 
+
 export default NavContainer;

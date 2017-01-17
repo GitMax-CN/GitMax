@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import EditableTable from './EditableTable';
-import {saveConfigIfChanged} from '../actions/actions';
+import {userActions} from '../modules';
 
 const mapStateToProps = (state, ownProps) => {
   // console.log("state.user", state.user);
@@ -18,7 +18,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveConfigIfChanged: (data) => dispatch(saveConfigIfChanged(data)),
+    saveConfigIfChanged: (data) => dispatch(userActions.saveConfigIfChanged(data)),
   }
 };
 

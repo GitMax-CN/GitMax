@@ -1,13 +1,8 @@
 import {connect} from 'react-redux';
-import {
-  followModalOpen,
-  followModalClose,
-  onFollowModalNextStep,
-  followModalPrevStep,
-  showMessage
-} from '../actions/actions';
+import {followModalActions, globalMessageActions} from '../modules';
 import FollowerUserModal from './FollowerUserModal';
 const mapStateToProps = (state, ownProps) => {
+  // console.log("state", state);
   return {
     // isFollowing: state.isFollowing,
     // userLogin: state.user ? state.user.login : null,
@@ -23,11 +18,9 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     // onCloseModal: () => dispatch(userAcknowledgeFollow()),
-    followModalOpen: () => dispatch(followModalOpen()),
-    followModalClose: () => dispatch(followModalClose()),
-    followModalPrevStep: () => dispatch(followModalPrevStep()),
-    followModalNextStep: (current, data) => dispatch(onFollowModalNextStep(current, data)),
-    showMessage: (message) => dispatch(showMessage(message)),
+    followModalOpen: () => dispatch(followModalActions.followModalOpen()),
+    followModalClose: () => dispatch(followModalActions.followModalClose()),
+    showMessage: (message) => dispatch(globalMessageActions.showMessage(message)),
   }
 };
 

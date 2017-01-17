@@ -1,0 +1,7 @@
+export const REFRESH = "USER_REFRESH";
+export const LOGIN_START = "USER_LOGIN_START";
+export const LOGIN_SUCCESS = "USER_LOGIN_SUCCESS";
+export const UPDATE_SUCCESS = "USER_UPDATE_SUCCESS";
+export const LOGIN_FAIL = "USER_LOGIN_FAIL";
+export const LOGOUT_START = "USER_LOGOUT_START";
+
