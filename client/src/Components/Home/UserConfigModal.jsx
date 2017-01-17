@@ -13,9 +13,6 @@ let UserConfigModal = (props) => {
   };
   
   const popOver = {
-    content1: (<div>
-      <p>点击 '下一步' 后，GitMax一次性在GitHub添加的Follower的数量上限（为保证稳定性，一次性最高添加99人，每24小时可执行一次）</p>
-    </div>),
     content2: (<div>
       <p>随着GitMax的用户增多，GitMax给你在GitHub添加的Follower的总数上限</p>
     </div>)
@@ -130,8 +127,7 @@ UserConfigModal.propTypes = {
 UserConfigModal.defaultProps = {
   crit_FollowersCount: 0,
   crit_StargazersCount: 0,
-  addFollowersNow: 99,
-  addFollowersMax: 5000,
+  addFollowersMax: 100,
 };
 
 export default UserConfigModal;
