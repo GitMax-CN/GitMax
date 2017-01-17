@@ -34,6 +34,10 @@ export default function reducer(state = initialState, action){
     case "USER_LOGOUT_SUCCESS":
       console.log("USER_LOGOUT_SUCCESS");
       return initialState;
+  
+    case "USER_REFRESH":
+      console.log("USER_REFRESH start:", action.user);
+      return Object.assign({}, state, action.user);
       
     default : return state;
   }

@@ -1,4 +1,4 @@
-import gitMaxApp, {initialState} from './GitMaxApp';
+import gitMaxApp, {initialState} from '../reducers/GitMaxApp';
 import {createStore} from 'redux';
 import {followModalOpen, followModalClose, followModalNextStep, followModalPrevStep} from '../actions/actions';
 
