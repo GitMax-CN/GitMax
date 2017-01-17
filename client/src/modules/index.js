@@ -7,10 +7,12 @@ import {createStore, applyMiddleware} from 'redux';
 const store = createStore(reducer, applyMiddleware(thunk));
 export default store;
 
-// import * as followModalActions from "./followModal";
-export * as followModalActions from "./followModal";//检查小dux是否export正确
-export * as globalMessageActions from "./globalMessage";
-export * as userActions from "./user";//检查这种较大的dux，是否export正确
-export * as friendsActions from "./friends";
-export * as initialConfigModalActions from "./initialConfigModal";
+import * as initialConfigModalActions from "./initialConfigModal";
+import * as followModalActions from "./followModal";
+import * as globalMessageActions from "./globalMessage";
+import * as userActions from "./user";
+import * as friendsActions from "./friends";
+
+export {initialConfigModalActions, followModalActions, globalMessageActions, userActions, friendsActions};
+
 
