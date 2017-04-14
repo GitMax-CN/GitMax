@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { scrollScreen } from 'rc-scroll-anim';
 
+import PreloadImages from './PreloadImages';
 import NavContainer from '../NavContainer';
 import Content0 from './Content0';
 import Content1 from './Content1';
@@ -22,6 +23,7 @@ export default class Home extends React.Component {
 
   render() {
     const children = [
+      <PreloadImages key="PreloadImages"/>,
       <NavContainer id="Nav" key="Nav" router = {this.props.router}/>,
       <Content0 id="Content0" key="Content0"/>,
       <Content1 id="Content1" key="Content1"/>,
