@@ -8,11 +8,11 @@ import store from './modules/index';
 import AppContainer from './Components/AppContainer';
 import FriendsListContainer from './Components/FriendsListContainer';
 import FollowerConfigContainer from './Components/FollowerConfigContainer';
-import config from "../config";
 
-if (config.getStage()==="production"){
+if (process.env.NODE_ENV === "production") {
   console = console || {};
-  console.log = function(){};
+  console.log = function () {
+  };
 }
 
 const requireLogin = (nextState, replace, callback) => {

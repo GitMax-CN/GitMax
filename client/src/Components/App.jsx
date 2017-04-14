@@ -33,7 +33,7 @@ const App = (props) => {
       style={{width: "100%", height: "100%"}}
       defaultOpenKeys={['sub1']}
       mode="inline"
-      selectedKeys = {getSelectedKey()}
+      selectedKeys = {[getSelectedKey()]}
   >
     <Menu.Item key="1"><Link to="/app/addFollower">添加好友</Link></Menu.Item>
     <Menu.Item key="2">我的好友</Menu.Item>
