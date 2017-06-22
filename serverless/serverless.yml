@@ -103,6 +103,32 @@ functions:
     handler: test.addingUsersToTest
     timeout: 60
 
+# Check if a user unfollowed another user, if so, unfollow each other
+  checkFollowStatus:
+    handler: scheduled.checkFollowStatus
+    events:
+      - http:
+          path: checkFollowStatus
+          method: get
+          cors: true
+      - schedule:
+#          rate: rate(1 minute)
+          rate: rate(48 hours)
+          enabled: true
+
+# Check if a user reinvoked a token, if so, send him/her an email 告诉他，抱歉他的离开，系统会在24小时后清空好友，如果要避免，请重新登录
+  checkTokenStatus:
+    handler: scheduled.checkTokenStatus
+    events:
+      - http:
+          path: checkFollowStatus
+          method: get
+          cors: true
+      - schedule:
+#          rate: rate(1 minute)
+          rate: rate(48 hours)
+          enabled: true
+
 # 当前实用的resource - you can add CloudFormation resource templates here
 
 resources:

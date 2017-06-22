@@ -5,9 +5,9 @@ import HOME from './Components/Home/index.jsx';
 import 'babel-polyfill';
 import {Provider} from 'react-redux';
 import store from './modules/index';
-import AppContainer from './Components/AppContainer';
-import FriendsListContainer from './Components/FriendsListContainer';
-import FollowerConfigContainer from './Components/FollowerConfigContainer';
+import App from './Components/App';
+// import FriendsListContainer from './Components/FriendsListContainer';
+// import FollowerConfigContainer from './Components/FollowerConfigContainer';
 
 if (process.env.NODE_ENV === "production") {
   console = console || {};
@@ -15,30 +15,18 @@ if (process.env.NODE_ENV === "production") {
   };
 }
 
-const requireLogin = (nextState, replace, callback) => {
-  const state = store.getState();
-  if (!state.user.id) {
-    replace('/');
-    callback();
-  } else {
-    callback();
-  }
-  // console.log("nextState", nextState);
-  // console.log("requires login!");//Todo implement require login
-};
-
 const router = (
     <Router history={hashHistory}>
-      <Route path="/" component={HOME}>
+      <Route path="/" component={App}>
         
         {/*<Route path="/authenticate/:token(/:scope)" onEnter={postToken}/>*/}
         {/*<Route path="about" component={AboutPage}/>*/}
       </Route>
-      <Route path="app" component={AppContainer} onEnter={requireLogin}>
-        <IndexRoute component={FollowerConfigContainer}/>
-        <Route path="addFollower" component={FollowerConfigContainer}/>
-        <Route path="friends" component={FriendsListContainer}/>
-      </Route>
+      {/*<Route path="app" component={App}>*/}
+        {/*<IndexRoute component={FollowerConfigContainer}/>*/}
+        {/*<Route path="addFollower" component={FollowerConfigContainer}/>*/}
+        {/*<Route path="friends" component={FriendsListContainer}/>*/}
+      {/*</Route>*/}
       {/*<Route path="*" component={PageNotFound}/>*/}
     </Router>
 );

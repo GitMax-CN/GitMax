@@ -77,4 +77,10 @@ const oneDayHasPassed = (followedFriendsAt) => {
   return now.getYear() !== then.getYear() || now.getMonth() !== then.getMonth() || now.getDate() !== then.getDate();
 };
 
-export {getUrlParam, popCenterWindow, calcInfluenceFactor, oneDayHasPassed}
+const determineCategory = (text) => {
+  let categories = ["greeting", "probing", "closeDeal", "regular"];
+  let index = Math.trunc(Math.random()*categories.length);
+  return categories[index];
+};
+
+export {getUrlParam, popCenterWindow, calcInfluenceFactor, oneDayHasPassed, determineCategory}
