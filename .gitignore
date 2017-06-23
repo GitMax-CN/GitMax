@@ -46,3 +46,4 @@ client/config.js
 serverless/config.js
 *.pdf
 api.js
+trainANN.js

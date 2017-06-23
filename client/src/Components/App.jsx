@@ -4,10 +4,9 @@ const { Header, Content, Footer } = Layout;
 import InputBox from './InputBox';
 import { Button } from 'antd';
 import {withState, compose, withHandlers, lifecycle} from 'recompose';
-import {determineCategory} from '../api';
+import {determineCategory, vec_result, maxarg} from '../api';
 // import Footer from './Footer';
 import Particles from 'react-particles-js';
-
 
 let recognition, start_timestamp;
 
@@ -197,7 +196,7 @@ const App = (props) => {
   );
 };
 
-
+// Container
 export default compose(
     withState('tempText', "updateTemp", ""),
     withState('finalTextList', "updateFinal", []),
