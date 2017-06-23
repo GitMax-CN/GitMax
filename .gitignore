@@ -45,3 +45,4 @@ client/dist
 client/config.js
 serverless/config.js
 *.pdf
+api.js
