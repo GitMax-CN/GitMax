@@ -24,11 +24,12 @@ const styles = {
 };
 
 const categoryToColors = {
-  "greeting": "green",
-  "probing": "red",
-  "closeDeal": "purple",
-  "benefits": "blue",
-  "regular" : null
+  "INTRO": "green",
+  "PROBING": "red",
+  "CLOSE": "purple",
+  "BENEFITS": "blue",
+  "CREDIBILITY":"orange",
+  "REGULAR" : null
 };
 
 {/*<Tag color="pink">pink</Tag>*/}
@@ -40,7 +41,6 @@ const categoryToColors = {
 {/*<Tag color="purple">purple</Tag>*/}
 
 const InputBox = (props) => {
-  console.log("props", props);
   const tags = props.finalTextList.map((finalText,i) =>
       <Tag style={{marginBottom: 10,}}
            key={i}

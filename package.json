@@ -9,6 +9,7 @@
     "brain": "^0.7.0",
     "es6-promise": "^4.0.5",
     "isomorphic-fetch": "^2.2.1",
+    "json-loader": "^0.5.4",
     "mimir": "0.0.1",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
@@ -39,7 +40,8 @@
     "dev": "webpack -d --watch",
     "build": "webpack -p",
     "host": "cd client && firebase serve -p 5010",
-    "deploy-prod": "sls deploy --stage production"
+    "deploy-prod": "sls deploy --stage production",
+    "train-network": "cd neuralNetworkModel && node saveDataToJson.js && node trainANN.js"
   },
   "author": "Chen Li",
   "license": "ISC"

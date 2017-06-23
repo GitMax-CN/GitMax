@@ -25,7 +25,6 @@ const styles = {
 };
 
 const App = (props) => {
-  console.log("App props", props);
   return (
       <Layout style={styles.wrapper}>
         <Header style={{ position: 'fixed', width: '100%' }}>

@@ -1,7 +1,8 @@
 {
-    "INTRO": 0,
-    "CREDIBILITY": 1,
-    "PROBING": 2,
-    "BENEFITS": 3,
-    "CLOSE": 4
+    "REGULAR": 0,
+    "INTRO": 1,
+    "CREDIBILITY": 2,
+    "PROBING": 3,
+    "BENEFITS": 4,
+    "CLOSE": 5
 }
