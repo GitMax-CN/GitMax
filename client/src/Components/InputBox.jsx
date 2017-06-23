@@ -1,6 +1,8 @@
 import React from 'react';
 import {compose, withState, withHandlers} from 'recompose';
 import { Tag } from 'antd';
+const CheckableTag = Tag.CheckableTag;
+
 
 const styles = {
   boxWrapper: {
@@ -25,6 +27,7 @@ const categoryToColors = {
   "greeting": "green",
   "probing": "red",
   "closeDeal": "purple",
+  "benefits": "blue",
   "regular" : null
 };
 
@@ -47,7 +50,13 @@ const InputBox = (props) => {
   );
   return <div style={styles.boxWrapper}>
     {tags}
-    {props.tempText}
+    {
+      props.tempText.length > 0
+          &&
+      <CheckableTag>
+        {props.tempText}
+      </CheckableTag>
+    }
   </div>
   
 };
