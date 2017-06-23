@@ -1,17 +1,1 @@
-{
-    "data":[
-        // history
-        ["The end of the Viking-era in Norway is marked by the Battle of Stiklestad in 1030", ANN_Classes.HISTORY],
-        ["The end of the Viking Age is traditionally marked in England by the failed invasion attempted by the Norwegian king Harald III ", ANN_Classes.HISTORY],
-        ["The earliest date given for a Viking raid is 787 AD when, according to the Anglo-Saxon Chronicle, a group of men from Norway sailed to the Isle of Portland in Dorset", ANN_Classes.HISTORY],
-        // programming
-        ["A programming language is a formal constructed language designed to communicate instructions to a machine, particularly a computer. Programming languages can be used to create programs to control the behavior of a machine or to express algorithms.", ANN_Classes.PROGRAMMING],
-        ["Thousands of different programming languages have been created, mainly in the computer field, and many more still are being created every year.", ANN_Classes.PROGRAMMING],
-        ["The description of a programming language is usually split into the two components of syntax (form) and semantics (meaning). Some languages are defined by a specification document (for example, the C programming language is specified by an ISO Standard), while other languages (such as Perl) have a dominant implementation that is treated as a reference", ANN_Classes.PROGRAMMING],
-
-        // music
-        ["Classical music is art music produced or rooted in the traditions of Western music (both liturgical and secular)", ANN_Classes.MUSIC],
-        ["European music is largely distinguished from many other non-European and popular musical forms by its system of staff notation, in use since about the 16th century", ANN_Classes.MUSIC],
-        ["classical music has been noted for its development of highly sophisticated forms of instrumental music.", ANN_Classes.MUSIC],
-    ]
-}
+{"data":[["The end of the Viking-era in Norway is marked by the Battle of Stiklestad in 1030",0],["The end of the Viking Age is traditionally marked in England by the failed invasion attempted by the Norwegian king Harald III ",0],["The earliest date given for a Viking raid is 787 AD when, according to the Anglo-Saxon Chronicle, a group of men from Norway sailed to the Isle of Portland in Dorset",0],["A programming language is a formal constructed language designed to communicate instructions to a machine, particularly a computer. Programming languages can be used to create programs to control the behavior of a machine or to express algorithms.",1],["Thousands of different programming languages have been created, mainly in the computer field, and many more still are being created every year.",1],["The description of a programming language is usually split into the two components of syntax (form) and semantics (meaning). Some languages are defined by a specification document (for example, the C programming language is specified by an ISO Standard), while other languages (such as Perl) have a dominant implementation that is treated as a reference",1],["Classical music is art music produced or rooted in the traditions of Western music (both liturgical and secular)",2],["European music is largely distinguished from many other non-European and popular musical forms by its system of staff notation, in use since about the 16th century",2],["classical music has been noted for its development of highly sophisticated forms of instrumental music.",2]]}

@@ -47,3 +47,4 @@ serverless/config.js
 *.pdf
 api.js
 trainANN.js
+saveDataToJson.js
