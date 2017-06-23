@@ -18,8 +18,6 @@ const router = (
 );
 
 render(
-    <Provider store={store}>
-      {router}
-    </Provider>,
+    router,
     document.getElementById('app')
 );
