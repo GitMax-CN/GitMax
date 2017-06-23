@@ -6,33 +6,171 @@ import { Button } from 'antd';
 import {withState, compose, withHandlers, lifecycle} from 'recompose';
 import {determineCategory} from '../api';
 // import Footer from './Footer';
+import Particles from 'react-particles-js';
+
 
 let recognition, start_timestamp;
+
+const styles = {
+  wrapper: {
+    backgroundColor: null,
+    minHeight: "100vh",
+    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Helvetica, "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", SimSun, sans-serif;',
+  },
+  logo: {
+    color: "#fff",
+    fontSize: "28px",
+    fontWeight: "normal",
+    letterSpacing: "0.5px",
+  }
+};
 
 const App = (props) => {
   console.log("App props", props);
   return (
-      <Layout style={{minHeight: "100vh"}}>
+      <Layout style={styles.wrapper}>
         <Header style={{ position: 'fixed', width: '100%' }}>
-          <div className="logo" />
-          <Menu
-              theme="dark"
-              mode="horizontal"
-              defaultSelectedKeys={['2']}
-              style={{ lineHeight: '64px' }}
-          >
-            <Menu.Item key="1">nav 1</Menu.Item>
-            <Menu.Item key="2">nav 2</Menu.Item>
-            <Menu.Item key="3">nav 3</Menu.Item>
-          </Menu>
+          <span style={styles.logo}>Clevo</span>
+          {/*<Menu*/}
+              {/*theme="dark"*/}
+              {/*mode="horizontal"*/}
+              {/*defaultSelectedKeys={['2']}*/}
+              {/*style={{ lineHeight: '64px' }}*/}
+          {/*>*/}
+            {/*<Menu.Item key="1">nav 1</Menu.Item>*/}
+            {/*<Menu.Item key="2">nav 2</Menu.Item>*/}
+            {/*<Menu.Item key="3">nav 3</Menu.Item>*/}
+          {/*</Menu>*/}
         </Header>
-        <Content style={{ padding: '0 50px', marginTop: 64 }}>
+  
+        <Particles style={{backgroundColor:"#fff"}} width="100vw" height="90vh" params={{
+          "particles": {
+            "number": {
+              "value": 40,
+              "density": {
+                "enable": true,
+                "value_area": 800
+              }
+            },
+            "color": {
+              "value": "#1c385f"
+            },
+            "shape": {
+              "type": "circle",
+              "stroke": {
+                "width": 0,
+                "color": "#000000"
+              },
+              "polygon": {
+                "nb_sides": 5
+              },
+              "image": {
+                "src": "img/github.svg",
+                "width": 100,
+                "height": 100
+              }
+            },
+            "opacity": {
+              "value": 0.5,
+              "random": false,
+              "anim": {
+                "enable": false,
+                "speed": 1,
+                "opacity_min": 0.1,
+                "sync": false
+              }
+            },
+            "size": {
+              "value": 3,
+              "random": true,
+              "anim": {
+                "enable": false,
+                "speed": 40,
+                "size_min": 0.1,
+                "sync": false
+              }
+            },
+            "line_linked": {
+              "enable": true,
+              "distance": 70,
+              "color": "#1c385f",
+              "opacity": 0.4,
+              "width": 1
+            },
+            "move": {
+              "enable": true,
+              "speed": 3,
+              "direction": "none",
+              "random": false,
+              "straight": false,
+              "out_mode": "out",
+              "bounce": false,
+              "attract": {
+                "enable": false,
+                "rotateX": 600,
+                "rotateY": 1200
+              }
+            }
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": {
+              "onhover": {
+                "enable": false,
+                "mode": "repulse"
+              },
+              "onclick": {
+                "enable": false,
+                "mode": "push"
+              },
+              "resize": true
+            },
+            "modes": {
+              "grab": {
+                "distance": 400,
+                "line_linked": {
+                  "opacity": 1
+                }
+              },
+              "bubble": {
+                "distance": 400,
+                "size": 40,
+                "duration": 2,
+                "opacity": 8,
+                "speed": 3
+              },
+              "repulse": {
+                "distance": 200,
+                "duration": 0.4
+              },
+              "push": {
+                "particles_nb": 4
+              },
+              "remove": {
+                "particles_nb": 2
+              }
+            }
+          },
+          "retina_detect": true
+        }}/>
+        
+        <Content
+            style = {{
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              padding: "64px",
+              position: "fixed",
+            }}
+            //style={{ padding: '0 50px', marginTop: 64}}
+        >
           <Breadcrumb style={{ margin: '12px 0' }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
             <Breadcrumb.Item>App</Breadcrumb.Item>
           </Breadcrumb>
-          
-          <div style={{ background: '#fff', padding: 24, minHeight: "70vh" }}>
+  
+          <div style={{ padding: 24, minHeight: "70vh" }}>
             <h1 id="实时语音分析">
               <span>Real time analytics / 实时语音分析</span>
               <a href="#实时语音分析" className="anchor">#</a>
@@ -60,28 +198,10 @@ const App = (props) => {
 };
 
 
-{/*<p id="info_start">Click on the microphone icon and begin speaking.</p>*/}
-{/*<p id="info_speak_now">Speak now.</p>*/}
-{/*<p id="info_no_speech">No speech was detected. You may need to adjust your*/}
-{/*<a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">*/}
-    {/*microphone settings</a>.</p>*/}
-{/*<p id="info_no_microphone" style="display:none">*/}
-    {/*No microphone was found. Ensure that a microphone is installed and that*/}
-{/*<a href="//support.google.com/chrome/bin/answer.py?hl=en&amp;answer=1407892">*/}
-    {/*microphone settings</a> are configured correctly.</p>*/}
-{/*<p id="info_allow">Click the "Allow" button above to enable your microphone.</p>*/}
-{/*<p id="info_denied">Permission to use microphone was denied.</p>*/}
-{/*<p id="info_blocked">Permission to use microphone is blocked. To change,*/}
-    {/*go to chrome://settings/contentExceptions#media-stream</p>*/}
-    {/*<p id="info_upgrade">Web Speech API is not supported by this browser.*/}
-      {/*Upgrade to <a href="//www.google.com/chrome">Chrome</a>*/}
-      {/*version 25 or later.</p>*/}
-
 export default compose(
     withState('tempText', "updateTemp", ""),
     withState('finalTextList', "updateFinal", []),
     withState("recognizing", "updateRecognizing", false),
-    withState("btnText", "updateBtnText", "start"),
     withState("text", "updateText", "start"),
     withState("ignore_onend", "updateIgnoreEnd", false),
     withHandlers({
@@ -96,24 +216,7 @@ export default compose(
         // select_dialect.selectedIndex = 6;
         // recognition.lang = select_dialect.value;
         recognition.start();
-        // ignore_onend = false;
-        // final_span.innerHTML = '';
-        // interim_span.innerHTML = '';
-        // start_img.src = 'mic-slash.gif';
-        props.updateText("recording");
         start_timestamp = event.timeStamp;
-        
-        // final_transcript = '';
-        // recognition.lang = select_dialect.value;
-        // recognition.start();
-        // ignore_onend = false;
-        // final_span.innerHTML = '';
-        // interim_span.innerHTML = '';
-        // start_img.src = 'mic-slash.gif';
-        // showInfo('info_allow');
-        // showButtons('none');
-        // start_timestamp = event.timeStamp;
-        
       },
     }),
     lifecycle({
@@ -138,7 +241,6 @@ export default compose(
   
           recognition.onerror = (event) => {
             if (event.error == 'no-speech') {
-              this.props.updateBtnText("start");
               this.props.updateIgnoreEnd(true);
               alert("info_no_speech")
               // start_img.src = 'mic.gif';
@@ -146,7 +248,6 @@ export default compose(
               // ignore_onend = true;
             }
             if (event.error == 'audio-capture') {
-              this.props.updateBtnText("start");
               this.props.updateIgnoreEnd(true)
               alert("info_no_microphone")
               // start_img.src = 'mic.gif';
@@ -173,23 +274,10 @@ export default compose(
               return;
             }
             // start_img.src = 'mic.gif';
-            this.props.updateBtnText("start");
             if (!this.props.finalTextList || this.props.finalTextList.length === 0) {
-              // showInfo('info_start');
-              alert("info_start");
+              console.log("no data is recorded");
               return;
             }
-            // showInfo('');
-            // if (window.getSelection) {
-            //   window.getSelection().removeAllRanges();
-            //   var range = document.createRange();
-            //   range.selectNode(document.getElementById('final_span'));
-            //   window.getSelection().addRange(range);
-            // }
-            // if (create_email) {
-            //   create_email = false;
-            //   createEmail();
-            // }
           };
   
           recognition.onresult = (event) => {
@@ -208,12 +296,6 @@ export default compose(
                 this.props.updateTemp(this.props.tempText + event.results[i][0].transcript);
               }
             }
-            // final_transcript = capitalize(final_transcript);
-            // final_span.innerHTML = linebreak(final_transcript);
-            // interim_span.innerHTML = linebreak(interim_transcript);
-            // if (final_transcript || interim_transcript) {
-            //   showButtons('inline-block');
-            // }
           };
         }
       }
