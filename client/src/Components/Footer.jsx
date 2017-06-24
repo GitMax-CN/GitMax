@@ -23,8 +23,7 @@ class Footer extends React.Component {
       >
         <span
         >
-          版权 © 2016 The Project by <a href="#">GitMax</a> | 联系我们：
-          <a href="mailto:support@gitmax.cn">support@gitmax.cn</a>
+          版权 © 2017 The Project by <a href="#">Clevo</a>
         </span>
       </TweenOne>
     </OverPack>);

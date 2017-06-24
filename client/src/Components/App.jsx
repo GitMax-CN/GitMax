@@ -29,16 +29,6 @@ const App = (props) => {
       <Layout style={styles.wrapper}>
         <Header style={{ position: 'fixed', width: '100%' }}>
           <span style={styles.logo}>Clevo</span>
-          {/*<Menu*/}
-              {/*theme="dark"*/}
-              {/*mode="horizontal"*/}
-              {/*defaultSelectedKeys={['2']}*/}
-              {/*style={{ lineHeight: '64px' }}*/}
-          {/*>*/}
-            {/*<Menu.Item key="1">nav 1</Menu.Item>*/}
-            {/*<Menu.Item key="2">nav 2</Menu.Item>*/}
-            {/*<Menu.Item key="3">nav 3</Menu.Item>*/}
-          {/*</Menu>*/}
         </Header>
   
         <Particles style={{backgroundColor:"#fff"}} width="100vw" height="90vh" params={{
@@ -161,7 +151,6 @@ const App = (props) => {
               padding: "64px",
               position: "fixed",
             }}
-            //style={{ padding: '0 50px', marginTop: 64}}
         >
           <Breadcrumb style={{ margin: '12px 0' }}>
             <Breadcrumb.Item>Home</Breadcrumb.Item>
@@ -170,7 +159,7 @@ const App = (props) => {
   
           <div style={{ padding: 24, minHeight: "70vh" }}>
             <h1 id="实时语音分析">
-              <span>Real time analytics / 实时语音分析</span>
+              <span>Real time voice analytics / 实时语音分析</span>
               <a href="#实时语音分析" className="anchor">#</a>
             </h1>
   
@@ -210,9 +199,6 @@ export default compose(
         }
         props.updateFinal([]);
         props.updateIgnoreEnd(false);
-        // select_language.selectedIndex = 6;
-        // select_dialect.selectedIndex = 6;
-        // recognition.lang = select_dialect.value;
         recognition.start();
         start_timestamp = event.timeStamp;
       },
@@ -232,37 +218,25 @@ export default compose(
             // recognizing = true;
             this.props.updateRecognizing(true);
             
-            // update explaination text
-            // showInfo('info_speak_now');
-            // start_img.src = 'mic-animate.gif';
           };
   
           recognition.onerror = (event) => {
             if (event.error == 'no-speech') {
               this.props.updateIgnoreEnd(true);
               alert("info_no_speech")
-              // start_img.src = 'mic.gif';
-              // showInfo('info_no_speech');
-              // ignore_onend = true;
             }
             if (event.error == 'audio-capture') {
               this.props.updateIgnoreEnd(true)
               alert("info_no_microphone")
-              // start_img.src = 'mic.gif';
-              // showInfo('info_no_microphone');
-              // ignore_onend = true;
             }
             if (event.error == 'not-allowed') {
               this.props.updateIgnoreEnd(true)
               
               if (event.timeStamp - start_timestamp < 100) {
                 alert("info_blocked")
-                // showInfo('info_blocked');
               } else {
                 alert("info_denied")
-                // showInfo('info_denied');
               }
-              // ignore_onend = true;
             }
           };
   
