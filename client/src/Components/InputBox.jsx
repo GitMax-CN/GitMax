@@ -40,14 +40,6 @@ const categoryToColors = {
   "CLOSE": "purple"
 };
 
-{/*<Tag color="pink">pink</Tag>*/}
-{/*<Tag color="red">red</Tag>*/}
-{/*<Tag color="orange">orange</Tag>*/}
-{/*<Tag color="green">green</Tag>*/}
-{/*<Tag color="cyan">cyan</Tag>*/}
-{/*<Tag color="blue">blue</Tag>*/}
-{/*<Tag color="purple">purple</Tag>*/}
-
 const InputBox = (props) => {
   const tags = props.finalTextList.map((finalText,i) =>
       <Tag style={styles.tag}
@@ -97,14 +89,13 @@ const InputBox = (props) => {
           </Tag>
         </Row>
 
-  
         <Row>
-          <Tag style={}
+          <Tag style={styles.tag}
                color={"purple"}>
             Attempts to close deal
           </Tag>
         </Row>
-  
+
         <Row>
           <Tag style={styles.tag}>
             Regular
