@@ -2,6 +2,7 @@ import React from 'react';
 import {compose, withState, withHandlers} from 'recompose';
 import { Tag } from 'antd';
 const CheckableTag = Tag.CheckableTag;
+import { Row, Col } from 'antd';
 
 
 const styles = {
@@ -20,16 +21,22 @@ const styles = {
     marginRight: "auto",
     padding: 10,
     overflow: "auto",
+  },
+  rightCol: {
+    height: "50vh",
+    border: "solid #eee",
+    borderWidth: "0 0 0 1px",
+    padding: "10px",
   }
 };
 
 const categoryToColors = {
+  "REGULAR" : null,
   "INTRO": "green",
   "PROBING": "red",
-  "CLOSE": "purple",
   "BENEFITS": "blue",
   "CREDIBILITY":"orange",
-  "REGULAR" : null
+  "CLOSE": "purple"
 };
 
 {/*<Tag color="pink">pink</Tag>*/}
@@ -49,14 +56,62 @@ const InputBox = (props) => {
       </Tag>
   );
   return <div style={styles.boxWrapper}>
-    {tags}
-    {
-      props.tempText.length > 0
+    <Row>
+      <Col span={18}>
+        {tags}
+        {
+          props.tempText.length > 0
           &&
-      <CheckableTag>
-        {props.tempText}
-      </CheckableTag>
-    }
+          <CheckableTag>
+            {props.tempText}
+          </CheckableTag>
+        }
+      </Col>
+      <Col span={6} style={styles.rightCol}>
+        <Row>
+          <Tag style={{marginBottom: 10,}}
+               color={"green"}>
+            Introduction
+          </Tag>
+        </Row>
+  
+        <Row>
+          <Tag style={{marginBottom: 10,}}
+               color={"orange"}>
+            Credibility
+          </Tag>
+        </Row>
+  
+        <Row>
+          <Tag style={{marginBottom: 10,}}
+               color={"red"}>
+            Probing question
+          </Tag>
+        </Row>
+        
+        <Row>
+          <Tag style={{marginBottom: 10,}}
+               color={"blue"}>
+            Product Benefits
+          </Tag>
+        </Row>
+
+  
+        <Row>
+          <Tag style={{marginBottom: 10,}}
+               color={"purple"}>
+            Attempts to close deal
+          </Tag>
+        </Row>
+  
+        <Row>
+          <Tag style={{marginBottom: 10,}}>
+            Regular talk
+          </Tag>
+        </Row>
+        
+      </Col>
+    </Row>
   </div>
   
 };
