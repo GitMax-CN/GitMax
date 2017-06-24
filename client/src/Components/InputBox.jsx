@@ -13,7 +13,7 @@ const styles = {
     background: '#fff',
     borderRadius: 5,
     height: "50vh",
-    width: "70vw",
+    width: "90vw",
     marginTop: 50,
     marginLeft: "auto",
     marginRight: "auto",
@@ -21,13 +21,17 @@ const styles = {
     overflow: "auto",
   },
   rightCol: {
-    height: "50vh",
+    minHeight: "47vh",
     border: "solid #eee",
     borderWidth: "0 0 0 1px",
     padding: "10px",
   },
   tag:{
     marginBottom: 10,
+  },
+  leftCol:{
+    overflow: "auto",
+    minHeight: "40vh",
   }
 };
 
@@ -50,7 +54,7 @@ const InputBox = (props) => {
   );
   return <div style={styles.boxWrapper}>
     <Row>
-      <Col span={18}>
+      <Col span={18} style={styles.leftCol}>
         {tags}
         {
           props.tempText.length > 0
