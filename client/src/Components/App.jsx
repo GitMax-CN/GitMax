@@ -159,7 +159,7 @@ const App = (props) => {
             <Breadcrumb.Item>App</Breadcrumb.Item>
           </Breadcrumb>
   
-          <RecordModal visible={props.isModalVisible} updateModal={props.updateModal}/>
+          <RecordModal visible={props.isModalVisible} updateModal={props.updateModal} stopRecording={props.onPress}/>
           
           <div style={{ padding: 24, minHeight: "70vh" }}>
             <h1 id="实时语音分析">
@@ -176,9 +176,17 @@ const App = (props) => {
                     loading = {props.recognizing}
                     shape={props.recognizing ? "circle" : null}
                     style={{marginLeft: "auto", marginRight: "auto", marginTop: 30, display: "block", paddingLeft: props.recognizing ? 7 : ""}}
+                    disabled={!('webkitSpeechRecognition' in window)}
             >
-              {props.recognizing ? "" : "start"}
+              {props.recognizing ? "" : "start recording"}
             </Button>
+            
+            {
+              !('webkitSpeechRecognition' in window)
+              &&
+              <h3 style={{textAlign:"center"}}>Please use Chrome browser with version > 25</h3>
+            }
+            
           </div>
         </Content>
         <Footer style={{ textAlign: 'center' }}>
