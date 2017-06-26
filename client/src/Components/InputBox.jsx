@@ -1,6 +1,6 @@
 import React from 'react';
 import {compose, withState, withHandlers} from 'recompose';
-import { Tag } from 'antd';
+import { Tag,Popover } from 'antd';
 const CheckableTag = Tag.CheckableTag;
 import { Row, Col } from 'antd';
 
@@ -28,6 +28,9 @@ const styles = {
   },
   tag:{
     marginBottom: 10,
+    fontSize: "16px",
+    padding: 6,
+    height: "34px",
   },
   leftCol:{
     overflow: "auto",
@@ -59,18 +62,21 @@ const InputBox = (props) => {
         {
           props.tempText.length > 0
           &&
-          <CheckableTag>
+          <CheckableTag style={styles.tag}>
             {props.tempText}
           </CheckableTag>
         }
       </Col>
+      
       <Col span={6} style={styles.rightCol}>
-        <Row>
-          <Tag style={styles.tag}
-               color={"green"}>
-            Introduction
-          </Tag>
-        </Row>
+        <Popover placement="left" content={"content"} trigger="click">
+          <Row>
+            <Tag style={styles.tag}
+                 color={"green"}>
+              Introduction
+            </Tag>
+          </Row>
+        </Popover>
   
         <Row>
           <Tag style={styles.tag}

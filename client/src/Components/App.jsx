@@ -5,7 +5,8 @@ import InputBox from './InputBox';
 import { Button } from 'antd';
 import {withState, compose, withHandlers, lifecycle} from 'recompose';
 import {determineCategory, vec_result, maxarg} from '../api';
-// import Footer from './Footer';
+import RecordModal from './RecordModal';
+
 import Particles from 'react-particles-js';
 
 let recognition, start_timestamp;
@@ -25,6 +26,7 @@ const styles = {
 };
 
 const App = (props) => {
+  console.log("props.isModalVisible", props.isModalVisible);
   return (
       <Layout style={styles.wrapper}>
         <Header style={{ position: 'fixed', width: '100%' }}>
@@ -157,6 +159,8 @@ const App = (props) => {
             <Breadcrumb.Item>App</Breadcrumb.Item>
           </Breadcrumb>
   
+          <RecordModal visible={props.isModalVisible} updateModal={props.updateModal}/>
+          
           <div style={{ padding: 24, minHeight: "70vh" }}>
             <h1 id="实时语音分析">
               <span>Real time voice analytics / 实时语音分析</span>
@@ -191,12 +195,15 @@ export default compose(
     withState("recognizing", "updateRecognizing", false),
     withState("text", "updateText", "start"),
     withState("ignore_onend", "updateIgnoreEnd", false),
+    withState("isModalVisible", "updateModal", false),
     withHandlers({
       onPress: props => (event) => {
         if (props.recognizing) {
           recognition.stop();
           return;
         }
+        console.log(props.updateModal(true));
+        props.updateModal(true);
         props.updateFinal([]);
         props.updateIgnoreEnd(false);
         recognition.start();
