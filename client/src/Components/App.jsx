@@ -26,7 +26,6 @@ const styles = {
 };
 
 const App = (props) => {
-  console.log("props.isModalVisible", props.isModalVisible);
   return (
       <Layout style={styles.wrapper}>
         <Header style={{ position: 'fixed', width: '100%' }}>
@@ -162,9 +161,9 @@ const App = (props) => {
           <RecordModal visible={props.isModalVisible} updateModal={props.updateModal} stopRecording={props.onPress}/>
           
           <div style={{ padding: 24, minHeight: "70vh" }}>
-            <h1 id="实时语音分析">
-              <span>Real time voice analytics / 实时语音分析</span>
-              <a href="#实时语音分析" className="anchor">#</a>
+            <h1 id="analytics">
+              <span>Real time voice analytics demo </span>
+              <a href="#analytics" className="anchor">#</a>
             </h1>
   
             <InputBox tempText = {props.tempText}
@@ -238,7 +237,7 @@ export default compose(
           recognition.onerror = (event) => {
             if (event.error == 'no-speech') {
               this.props.updateIgnoreEnd(true);
-              alert("info_no_speech")
+              alert("No speech detected");
             }
             if (event.error == 'audio-capture') {
               this.props.updateIgnoreEnd(true)

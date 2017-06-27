@@ -3,7 +3,6 @@ import {Modal, Tag} from 'antd';
 import {compose, withState, withHandlers} from 'recompose';
 
 const RecordModal = (props) =>{
-  console.log("RecordModal props", props);
   return <Modal
       title="Read Me"
       visible={props.visible}
