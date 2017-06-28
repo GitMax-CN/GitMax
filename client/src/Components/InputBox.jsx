@@ -51,7 +51,6 @@ const contentList = [
   [
     "Good morning, it's John calling from Telus.",
     "Hello Eric, this is Steve from Clevo Analytics, have I caught you in the middle of anything?",
-    "Have you got a min?",
     "Hi, this is Jess from the Virtual Sales Academy. How are you?",
     "Hi, It’s Frank from Johnson & Johnson. I was referred to you by Alex from Procurify",
   ],

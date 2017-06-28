@@ -8,7 +8,7 @@ const RecordModal = (props) =>{
       visible={props.visible}
       okText = "Ok"
       cancelText="Cancel"
-      onOk={()=>props.updateModal(false)}
+      onOk={props.onOk}
       onCancel={props.onCancel}
   >
     Hi there,
@@ -26,7 +26,10 @@ export default compose(
     withHandlers({
       onCancel: props => () => {
         props.updateModal(false);
-        props.stopRecording();
+      },
+      onOk: props => (event) => {
+        props.updateModal(false);
+        props.startRecording(event);
       }
     }),
 )(RecordModal);

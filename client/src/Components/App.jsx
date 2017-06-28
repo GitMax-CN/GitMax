@@ -158,7 +158,10 @@ const App = (props) => {
             <Breadcrumb.Item>App</Breadcrumb.Item>
           </Breadcrumb>
   
-          <RecordModal visible={props.isModalVisible} updateModal={props.updateModal} stopRecording={props.onPress}/>
+          <RecordModal visible={props.isModalVisible}
+                       updateModal={props.updateModal}
+                       startRecording={props.startRecording}
+          />
           
           <div style={{ padding: 24, minHeight: "70vh" }}>
             <h1 id="analytics">
@@ -209,13 +212,14 @@ export default compose(
           recognition.stop();
           return;
         }
-        console.log(props.updateModal(true));
         props.updateModal(true);
+      },
+      startRecording: props => (event) => {
         props.updateFinal([]);
         props.updateIgnoreEnd(false);
         recognition.start();
         start_timestamp = event.timeStamp;
-      },
+      }
     }),
     lifecycle({
       componentWillMount(){

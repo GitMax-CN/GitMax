@@ -41,7 +41,7 @@
     "build": "webpack -p",
     "host": "cd client && firebase serve -p 5010",
     "deploy-prod": "sls deploy --stage production",
-    "train-network": "cd neuralNetworkModel && node saveDataToJson.js && node trainANN.js"
+    "train-network": "cd client/neuralNetworkModel && node saveDataToJson.js && node trainANN.js"
   },
   "author": "Chen Li",
   "license": "ISC"
