@@ -12,7 +12,7 @@ const dict = dictJSON;
 
 const classes_array = Object.keys(ANN_Classes);
 
-const test_intro = 'Good afternoon, this is chen calling from nomii';
+const test_intro = 'Good afternoon, this is chen calling from Clevo';
 const test_benefits = 'With this product, you can significantly reduce coaching prep time for your sales team';
 const test_bow_intro = mimir.bow(test_intro, dict);
 const test_bow_benefits = mimir.bow(test_benefits, dict);
