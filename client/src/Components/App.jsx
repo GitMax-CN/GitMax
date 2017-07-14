@@ -3,7 +3,12 @@ import { Layout, Menu, Breadcrumb } from 'antd';
 const { Header, Content, Footer } = Layout;
 import {withState, compose, withHandlers, lifecycle} from 'recompose';
 
+
+import { Tabs } from 'antd';
+const TabPane = Tabs.TabPane;
+
 import Categorizer from './Categorizer';
+import EmotionAnalyzer from './EmotionAnalyzer';
 import Particles from 'react-particles-js';
 
 const styles = {
@@ -159,7 +164,14 @@ const App = (props) => {
               <a href="#analytics" className="anchor">#</a>
             </h1>
   
-            <Categorizer/>
+            <Tabs defaultActiveKey="1" onChange={(key)=>{console.log(key)}}>
+              <TabPane tab="What you say" key="1">
+                <Categorizer/>
+              </TabPane>
+              <TabPane tab="How you say it" key="2">
+                <EmotionAnalyzer/>
+              </TabPane>
+            </Tabs>
 
           </div>
         </Content>
