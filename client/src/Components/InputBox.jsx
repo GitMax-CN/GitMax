@@ -7,8 +7,8 @@ import { Row, Col } from 'antd';
 
 const styles = {
   boxWrapper: {
-    webkitBoxShadow: "0px 0px 22px -1px rgba(214,214,214,1)",
-    mozBoxShadow: "0px 0px 22px -1px rgba(214,214,214,1)",
+    WebkitBoxShadow: "0px 0px 22px -1px rgba(214,214,214,1)",
+    MozBoxShadow: "0px 0px 22px -1px rgba(214,214,214,1)",
     boxShadow: "0px 0px 54px 3px rgba(237,237,237,1)",
     background: '#fff',
     borderRadius: 5,
