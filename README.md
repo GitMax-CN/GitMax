@@ -1,6 +1,6 @@
 # [GitMax](http://www.gitmax.cn)
 
-An app to help GitHub users to gain reputation. 
+An web app to help GitHub users follow each other. XD
 
 ### Contents
 It helps you to add friends according to your minimum requirement of:
